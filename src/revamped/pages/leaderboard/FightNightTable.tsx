@@ -5,27 +5,11 @@ interface IProps {
   ranks: IRank[]
 }
 
-// export const FN_PRIZES = ["30M", "20M", "14M", "10M", "7M", "5M", "4M", "3M", "2M", "1M"]
-
-// export const FN_PRIZES = [5000000,
-//   3000000,
-//   1500000,
-//   1000000,
-//   750000,
-//   500000,
-//   250000,
-//   250000,
-//   250000,
-//   250000,
-//   250000,
-//   250000, 0, 0, 0, 0, 0, 0, 0]
-
-export const FN_PRIZES = ["50", "25", "15", "10", "0", "0", "0", "0", "0", "0"]
-
+export const FN_PRIZES = ["30M", "20M", "14M", "10M", "7M", "5M", "4M", "3M", "2M", "1M"]
 
 
 export default function FightNightTable({ ranks }: IProps) {
-  console.log("debug ---FightNightTable ", ranks)
+  // console.log("debug ---FightNightTable ", ranks)
   return (
     <>
       <div className='top-3-ranks-wrapper'>
@@ -107,7 +91,7 @@ export default function FightNightTable({ ranks }: IProps) {
 
 
               <div className='part-2' style={{ textAlign: 'right' }} >
-                <h3>{FN_PRIZES[index] ? FN_PRIZES[index] : "0"} {" "} USD</h3>
+                <h3>{FN_PRIZES[index]} {" "}SPICE</h3>
               </div>
             </div>
           )

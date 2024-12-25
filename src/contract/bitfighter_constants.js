@@ -1003,7 +1003,7 @@ export const PROD_BF_CONTRACT = '0x37f956b72255F8ca75202627d96C319F31c751A1'
 
 function GetBFContractAddress() {
   let connectedNetwork = localStorage.getItem('network_connected')
-  console.log('debug running bitfighter_contract_adress --', connectedNetwork)
+  // console.log('debug running bitfighter_contract_adress --', connectedNetwork)
   let response = ''
   if (process.env.REACT_APP_DEV_ENV === 'production') {
     response = PROD_BF_CONTRACT

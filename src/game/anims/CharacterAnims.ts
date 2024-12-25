@@ -3,7 +3,7 @@ import { isNullOrUndefined } from 'util'
 
 export const createOtherCharacterAnimsV2 = (anims: Phaser.Animations.AnimationManager, key: string) => {
   if (isNullOrUndefined(key) || key === "") return;
-  console.log("in createOtherCharacterAnimsV2 ", key)
+  // console.log("in createOtherCharacterAnimsV2 ", key)
 
   // Blcok
   anims.create({

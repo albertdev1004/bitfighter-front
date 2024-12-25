@@ -1,14 +1,14 @@
 {
-  "projectName": "gamebits",
+  "projectName": "newbuildgame",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
     "framework": "react",
     "config": {
       "SourceDir": "src",
-      "DistributionDir": "build",
-      "BuildCommand": "npm run-script build",
-      "StartCommand": "npm run dev"
+      "DistributionDir": "dist",
+      "BuildCommand": "npm run build2",
+      "StartCommand": "npm run build2"
     }
   },
   "providers": [

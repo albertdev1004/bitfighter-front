@@ -567,7 +567,7 @@ const PROD_WBTC_ADDRESS = '0x03c7054bcb39f7b2e5b2c7acb37583e32d70cfa3' // rechec
 
 function GetWbtcontractAddress() {
   let connectedNetwork = localStorage.getItem('network_connected')
-  console.log('debug running GetWbtcontractAddress --', connectedNetwork)
+  // console.log('debug running GetWbtcontractAddress --', connectedNetwork)
   let response = ''
   if (process.env.REACT_APP_DEV_ENV === 'production') {
     // response = PROD_WBTC_ADDRESS
@@ -599,4 +599,4 @@ if (process.env.REACT_APP_DEV_ENV === 'production') {
   // console.log("--environment--", process.env.REACT_APP_DEV_ENV)
   USDC_ADDRESS = DEV_USDC_ADDRESS
 }
-console.log('--environment--', process.env.REACT_APP_DEV_ENV, USDC_ADDRESS)
+// console.log('--environment--', process.env.REACT_APP_DEV_ENV, USDC_ADDRESS)

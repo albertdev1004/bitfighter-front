@@ -5,6 +5,8 @@
 import { Box, Button, FormControl, Grid, InputLabel, List, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { useAppSelector } from '../../../../hooks'
 import './ServerListInfo.css'
+import { v4 as uuidv4 } from 'uuid'
+import styled from 'styled-components'
 import { getEllipsisTxt } from '../../../../utils'
 import { FetchGameServerConnection, fetchSystemWalletsInfo, ListGameServers } from '../../../../utils/game_server_utils'
 import store from '../../../../stores'
@@ -18,74 +20,104 @@ import {
 import { SetGameStarted } from '../../../../stores/PlayerData'
 import Bootstrap from '../../../scenes/Bootstrap'
 import phaserGame from '../../../../PhaserGame'
+import { WaveLoader } from '../../../../landing-page/components/WaveLoader/WaveLoader'
+import { useState } from 'react'
+import { isNullOrUndefined } from 'util'
+import { Container, Row, Col } from 'react-bootstrap'
+import { Label } from '@mui/icons-material'
 
+// const ButtonView = styled(Button)`
+//   span {
+//     color: black;
+//     // font-style: bold;
+//     font-size: 10px;
+//     font-family:'Cooper Black', sans-serif;
+//   }
 
+//   background-color: #9c341a;
 
-const VALID_REGIONS = [
-  { name: "Mumbai", code_name: "India", lat: 19.0760, lon: 72.8777 },
-  { name: "Washington_DC", code_name: "US_East", lat: 38.8954, lon: -77.0365 },
-  { name: "Singapore", code_name: "Singapore", lat: 1.3521, lon: 103.8198 },
-  { name: "Frankfurt", code_name: "Europe", lat: 50.1109, lon: 8.6821 },
-  { name: "Johannesburg", code_name: "Africa", lat: -26.2041, lon: 28.0473 }
-];
+//   &:hover {
+//     background-color: #852d17;
+//   }
 
-function getServerNameForDisplay(region: string) {
-  for (let i = 0; i < VALID_REGIONS.length; i++) {
-    if (region == VALID_REGIONS[i].name) {
-      return VALID_REGIONS[i].code_name
-    }
+//   width: 200px;
+//   height: 50px;
+// `;
+
+const ButtonView = styled.button`
+  background-color: #9c341a;
+
+  &:hover {
+    background-color: #852d17;
   }
-  return region
-}
 
-const haversine = (lat1, lon1, lat2, lon2) => {
-  const R = 6371; // Radius of the Earth in kilometers
-  const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert to radians
-  const dLon = (lon2 - lon1) * (Math.PI / 180); // Convert to radians
+  span {
+    color: #a7a5a5;
+    // font-family: Monospace;
+    font-style: bold;
+    font-size: 20px;
+    font-family: 'Cooper Black';
+    text-transform: uppercase;
+  }
+  width: 100%;
+`
 
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+const BoxWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 
-  return R * c; // Distance in kilometers
-};
+  span {
+    color: aliceblue;
+    font-style: bold;
+    font-size: 20px;
+    font-family: 'Cooper Black', sans-serif;
+  }
 
-const findNearestServer = (playerLat, playerLon, regions) => {
-  let nearestRegion = null;
-  let minDistance = Infinity;
+  p {
+    color: #808080;
+  }
+`
 
-  regions.forEach(region => {
-    const distance = haversine(playerLat, playerLon, region.lat, region.lon);
-    if (distance < minDistance) {
-      minDistance = distance;
-      nearestRegion = region;
-    }
-  });
+const MyDivider = styled.div`
+  border: 1px solid #000000;
+  margin-bottom: 10px;
+`
 
-  return nearestRegion;
-};
+const CenterText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: aliceblue;
+    font-style: bold;
+    font-size: 20px;
+    font-family: 'Cooper Black', sans-serif;
+    justify-content: center;
+    align-items: center;
+  }
+`
 
 export function ServerListInfo() {
   const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap
   const gameServersInfo = useAppSelector((state) => state.websiteStateStore.serversInfo)
 
   const selectedPlayer = useAppSelector((state) => state.playerDataStore.current_game_player_info)
-  const selectedPlayerName = useAppSelector((state) => state.playerDataStore.nick_name)
 
   const gameServerReginoSelected = useAppSelector((state) => state.websiteStateStore.region)
-  console.log('game servers info --', gameServersInfo)
+  // console.log('game servers info --', gameServersInfo)
 
-  // console.log("debug_selected_player ", selectedPlayer)
+  // // console.log("debug_selected_player ", selectedPlayer)
   const SelectGameServerAndLoadInfo = async (region: string) => {
     store.dispatch(SetGameServersData([]))
     ListGameServers(region)
-    console.log('in SelectGameServerAndLoadInfo', region)
+    // console.log('in SelectGameServerAndLoadInfo', region)
     store.dispatch(SetSelectedRegionofGameServer(region))
   }
 
   const fetchServerUrlAndConnect = async (room_id: string) => {
-    console.log(room_id)
+    // console.log(room_id)
     await FetchGameServerConnection(room_id)
     store.dispatch(SetSelectedRoomId(room_id))
 
@@ -98,15 +130,113 @@ export function ServerListInfo() {
 
   const startGame = async () => {
     // event.preventDefault();
-    console.log('debug_startGame----')
+    // console.log('debug_startGame----')
     store.dispatch(SetGameStarted(true))
     localStorage.setItem('game_state', 'start')
     store.dispatch(SetGameLoadingState(true))
+    console.log('select server section', store.getState().playerDataStore.current_game_player_info)
     bootstrap.launchGame(store.getState().playerDataStore.current_game_player_info)
     store.dispatch(SetShowGameServersList(false))
     store.dispatch(SetShowGameServersList(false))
   }
 
+  // return (
+  //   <>
+  //     <BoxWrapper sx={{ flexGrow: 1 }} key={uuidv4()}>
+  //       <FormControl
+  //         fullWidth
+  //         style={{
+  //           alignItems: 'center',
+  //           paddingBottom: '20px',
+  //           paddingTop: '20px',
+  //         }}
+  //       >
+  //         <span className='fs-5'>World Servers</span>
+  //         <p className='fs-6 text-center'> Please connect to your nearest world server for best experience</p>
+  //         <Select
+  //           id='demo-simple-select'
+  //           value={gameServerReginoSelected}
+  //           onChange={(event: SelectChangeEvent) => {
+  //             SelectGameServerAndLoadInfo(event.target.value as string)
+  //           }}
+  //           style={{
+  //             width: 'auto',
+  //           }}
+  //         >
+  //           <MenuItem value={'Washington_DC'}>US-East</MenuItem>
+  //           <MenuItem value={'Mumbai'}>India</MenuItem>
+  //         </Select>
+  //       </FormControl>
+  //       {gameServersInfo && gameServersInfo.length > 0 ? (
+  //         gameServersInfo.map((serverinfo, index) => {
+  //           return (
+  //             <div key={index} style={{ height: '100%', width: '100%' }}>
+  //               <ListItemButton key={uuidv4()} className='p-0'>
+  //                 <div className='w-100'>
+  //                   <div className='w-100 h-100 row m-0'>
+  //                     <Col className='align-items-center'>
+  //                       <div className='h-100 w-100' style={{ display: 'flex', textAlign: 'justify', justifyContent: 'center', alignItems: 'center' }}>
+  //                         <h3
+  //                           style={{
+  //                             color: 'aliceblue',
+  //                             textAlign: 'center',
+  //                           }}
+  //                           className='fs-5'
+  //                         >
+  //                           {index + 1}
+  //                         </h3>
+  //                       </div>
+  //                     </Col>
+  //                     <Col className='align-items-center'>
+  //                       <div className='h-100 w-100' style={{ display: 'flex', textAlign: 'justify', justifyContent: 'center', alignItems: 'center' }}>
+  //                         <ListItemText
+  //                           primary={
+  //                             <span
+  //                               className='fs-6'
+  //                               style={{
+  //                                 color: 'aliceblue',
+  //                                 textAlign: 'center',
+  //                               }}
+  //                             >
+  //                               {`${getServerNameForDisplay(serverinfo.region)} - ${serverinfo.active_users}/ 50`}
+  //                             </span>
+  //                           }
+  //                           secondary={getEllipsisTxt(serverinfo.room_id)}
+  //                         />
+  //                       </div>
+  //                     </Col>
+  //                     <Col className='align-items-center'>
+  //                       <div className='h-100 w-100' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  //                         <ButtonView
+  //                           variant='contained'
+  //                           onClick={() => {
+  //                             fetchServerUrlAndConnect(serverinfo.room_id)
+  //                           }}
+  //                           disabled={selectedPlayer.nick_name === ''}
+  //                         >
+  //                           {selectedPlayer.nick_name === '' ? <span> </span> : <span style={{ fontSize: '1em', alignContent: 'center' }}>Connect</span>}
+  //                         </ButtonView>
+  //                       </div>
+  //                     </Col>
+  //                   </div>
+  //                 </div>
+  //               </ListItemButton>
+  //               <MyDivider className='m-2'></MyDivider>
+  //             </div>
+  //           )
+  //         })
+  //       ) : Object.keys(selectedPlayer).length > 0 ? (
+  //         <div>
+  //           <WaveLoader />
+  //         </div>
+  //       ) : (
+  //         <CenterText>
+  //           <span className='fs-5 text-center'>Choose a Fighter to load game servers</span>
+  //         </CenterText>
+  //       )}
+  //     </BoxWrapper>
+  //   </>
+  // )
 
   return (
     <div className='servers-box'>
@@ -134,12 +264,10 @@ export function ServerListInfo() {
           <MenuItem value={'Washington_DC'}>US-East</MenuItem>
           <MenuItem value={'Mumbai'}>India</MenuItem>
           <MenuItem value={'Singapore'}>Singapore</MenuItem>
-          <MenuItem value={'Johannesburg'}>Africa</MenuItem>
-          <MenuItem value={'Frankfurt'}>Europe</MenuItem>
         </Select>
       </div>
 
-      {gameServersInfo && gameServersInfo.length > 0 && selectedPlayerName != "" ? (
+      {gameServersInfo && gameServersInfo.length > 0 ? (
         gameServersInfo.map((serverinfo, index) => {
           return (
             <div key={index} className='server-card'>
@@ -177,8 +305,14 @@ export function ServerListInfo() {
   )
 }
 
-
-
-
-
-
+function getServerNameForDisplay(region: string) {
+  if (region === 'Washington_DC') {
+    return 'US_East'
+  }
+  if (region === 'Mumbai') {
+    return 'India'
+  }
+  if (region === 'Singapore') {
+    return 'Singapore'
+  }
+}

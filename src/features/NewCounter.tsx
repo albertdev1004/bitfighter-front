@@ -10,7 +10,7 @@ export function NewCounter() {
   const [incrementAmount, setIncrementAmount] = useState(2);
 
   const incrementValue = Number(incrementAmount) || 0;
-  console.log("incrementValue --> ", incrementValue, count);
+  // console.log("incrementValue --> ", incrementValue, count);
 
   return (
     <div>

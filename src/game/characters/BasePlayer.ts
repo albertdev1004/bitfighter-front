@@ -185,7 +185,7 @@ export class BasePlayer {
     this.otherPlayer = otherPlayer;
     this.wallet_address = wallet_address;
     this.minted_id = minted_id;
-    console.log("debug_stats --- ", extra_data);
+    // console.log("debug_stats --- ", extra_data);
     this.extra_data = extra_data;
     this.nick_name = nick_name;
 
@@ -353,7 +353,7 @@ export class BasePlayer {
         window.setTimeout(() => {
           this.buttonStats.clearTint();
         }, 100);
-        console.log("stats button clicked --- ", this.allInfoButtonStateHandler);
+        // console.log("stats button clicked --- ", this.allInfoButtonStateHandler);
       })
       .on("pointerout", (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
         // if (this.allInfoButtonStateHandler === 'friend_clicked') {
@@ -362,11 +362,11 @@ export class BasePlayer {
         //   this.AllInfoButtonContainer.setVisible(false)
         // }ss
         this.allInfoButtonStateHandler = "";
-        console.log("outside stats button clicked --- ", this.allInfoButtonStateHandler);
+        // console.log("outside stats button clicked --- ", this.allInfoButtonStateHandler);
       })
       .on("pointerover", (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
         this.allInfoButtonStateHandler = "stats_clicked";
-        console.log("pointer over stats button --- ", this.allInfoButtonStateHandler);
+        // console.log("pointer over stats button --- ", this.allInfoButtonStateHandler);
       });
 
     this.buttonFriend = this.scene.add
@@ -385,7 +385,7 @@ export class BasePlayer {
         window.setTimeout(() => {
           this.buttonFriend.clearTint();
         }, 100);
-        console.log("friend button clicked --- ");
+        // console.log("friend button clicked --- ");
       })
       .on("pointerout", (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
         // if (this.allInfoButtonStateHandler === 'stats_clicked') {
@@ -394,11 +394,11 @@ export class BasePlayer {
         //   this.AllInfoButtonContainer.setVisible(false)
         // }
         this.allInfoButtonStateHandler = "";
-        console.log("outside friend button clicked --- ", this.allInfoButtonStateHandler);
+        // console.log("outside friend button clicked --- ", this.allInfoButtonStateHandler);
       })
       .on("pointerover", (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
         this.allInfoButtonStateHandler = "friend_clicked";
-        console.log("pointer over friend button --- ", this.allInfoButtonStateHandler);
+        // console.log("pointer over friend button --- ", this.allInfoButtonStateHandler);
       });
 
     // var buttonFight = this.scene.add.dom(0, 0, 'h2', null, "FIGHT")
@@ -440,16 +440,16 @@ export class BasePlayer {
       // .setInteractive(this.AllInfoButtonContainer.getBounds(), Phaser.Geom.Rectangle.Contains)
       .on("pointerdown", (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
         this.allInfoButtonStateHandler = "container_clicked";
-        console.log("all container clicked --- ", this.allInfoButtonStateHandler);
+        // console.log("all container clicked --- ", this.allInfoButtonStateHandler);
       })
       .on("pointerover", (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
         this.allInfoButtonStateHandler = "container_clicked";
-        console.log("pointer over all container --- ", this.allInfoButtonStateHandler);
+        // console.log("pointer over all container --- ", this.allInfoButtonStateHandler);
       })
       .on("pointerout", (pointer: Phaser.Input.Pointer, objectsClicked: Phaser.GameObjects.GameObject[]) => {
 
         this.AllInfoButtonContainer.setVisible(false);
-        console.log("outside all container clicked --- ", this.allInfoButtonStateHandler);
+        // console.log("outside all container clicked --- ", this.allInfoButtonStateHandler);
       });
 
     this.AllInfoButtonContainer.setVisible(false);
@@ -481,7 +481,7 @@ export class BasePlayer {
 
     this.sprite.on("animationstart", (a: Phaser.Animations.Animation, b: any, c: any, d: any) => {
       if (a.key.includes("fly_as_angel")) {
-        console.log("fly_as_angel start tween");
+        // console.log("fly_as_angel start tween");
         const start_pos_x = this.playerContainer.x;
         const start_pos_y = this.playerContainer.y;
         this.deadTweenRunning = true;
@@ -493,7 +493,7 @@ export class BasePlayer {
             duration: 6000,
           })
           .on("complete", () => {
-            console.log("fly_as_angel end tween");
+            // console.log("fly_as_angel end tween");
             this.playerContainer.x = 500;
             this.playerContainer.y = 500;
             this.deadTweenRunning = false;
@@ -506,7 +506,7 @@ export class BasePlayer {
   }
 
   infoButtonClicked = (value: any) => {
-    console.log(" info button clicked.. ", value);
+    // console.log(" info button clicked.. ", value);
   };
 
   private clearDialogBubble(id: string) {
@@ -751,7 +751,7 @@ export class BasePlayer {
     this.healthBar.setY(-18);
     this.staminaBar.setY(-18);
     const temp = (this.totalExperienceValue / 1000) * (store.getState().playerDataStore?.playerStats?.xp || 0)
-    console.log("XP temp1", temp)
+    // console.log("XP temp1", temp)
     this.experienceBar.clear()
     this.experienceBar.fillStyle(0xFF9900, 1);
     this.experienceBar.fillRect(-25, -10, temp, 3);
@@ -851,7 +851,7 @@ export class BasePlayer {
     const newLevelString = "Lvl:" + level.toString();
     if (!this.otherPlayer) {
       if (level > this.currentLevel) {
-        console.log("Level ", newLevelString)
+        // console.log("Level ", newLevelString)
         this.currentLevel = level;
         //player has reached a new level
         this.getLevelSound.play({ loop: false });
@@ -934,7 +934,7 @@ export class BasePlayer {
           this.tween_animation_running = false;
         });
     } catch (err) {
-      console.log("error_in_line 796 in baseplayer ", err, this.playerContainer, pos);
+      // console.log("error_in_line 796 in baseplayer ", err, this.playerContainer, pos);
     }
   }
 
@@ -968,7 +968,7 @@ export class BasePlayer {
           this.tween_anim_running_down = false;
         });
     } catch (err) {
-      console.log("error_in_line 796 in baseplayer ", err, this.playerContainer, pos);
+      // console.log("error_in_line 796 in baseplayer ", err, this.playerContainer, pos);
     }
   }
 }

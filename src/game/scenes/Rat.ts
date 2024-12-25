@@ -120,7 +120,7 @@ export default class Rat {
 
     }
     makeRat() {
-        // console.log('COIN!!!!!!!!!!', this.coin);
+        // // console.log('COIN!!!!!!!!!!', this.coin);
         this.smokeScreen = this.scene.physics.add.sprite(this.x, this.y - DEFAULT_SMOKESCREEN_DISPLAY_HEIGHT / 2 + DEFAULT_RATS_DISPLAY_HEIGHT / 2, "smokeScreen");
         this.smokeScreen.displayHeight = DEFAULT_SMOKESCREEN_DISPLAY_HEIGHT;
         this.smokeScreen.displayWidth = DEFAULT_SMOKESCREEN_DISPLAY_WIDTH;
@@ -277,7 +277,7 @@ export default class Rat {
     }
 
     EnableHealthBars() {
-        console.log(' RATS EnableHealthBars()')
+        // console.log(' RATS EnableHealthBars()')
         const outputLength = 20;
         const inputMaxLength = 40;
         this.healthBar.fillStyle(0x32CD32, 1);
@@ -298,7 +298,7 @@ export default class Rat {
     }
     //Smoke screen on exit
     playSmokeScreen() {
-        console.log(' RATS playSmokeScreen()')
+        // console.log(' RATS playSmokeScreen()')
         this.smokeScreen.x = this.sprite.x;
         this.smokeScreen.y = this.sprite.y - DEFAULT_SMOKESCREEN_DISPLAY_HEIGHT / 2 + DEFAULT_RATS_DISPLAY_HEIGHT / 2;
         this.smokeScreen.visible = true;
@@ -313,7 +313,7 @@ export default class Rat {
         }, this);
     }
     playRatGibs() {
-        console.log(' RATS playRatGibs()')
+        // console.log(' RATS playRatGibs()')
         this.ratGibs.x = this.sprite.x;
         this.ratGibs.y = this.sprite.y - DEFAULT_SMOKESCREEN_DISPLAY_HEIGHT / 2 + DEFAULT_RATS_DISPLAY_HEIGHT / 2;
         this.ratGibs.visible = true;
@@ -321,7 +321,7 @@ export default class Rat {
         this.ratGibs.play("ratGibs");
     }
     DisableHealthBars() {
-        console.log(' RATS DisableHealthBars()')
+        // console.log(' RATS DisableHealthBars()')
         this.ratContainer.remove([this.healthBarBackground, this.staminaBarBackGround]);
         this.ratContainer.remove(this.healthBar);
         this.ratContainer.remove(this.staminaBar);
@@ -355,7 +355,7 @@ export default class Rat {
                 healthsprite.destroy()
             })
         } catch (err) {
-            console.log("error in PopHealthReduced -->", err)
+            // console.log("error in PopHealthReduced -->", err)
         }
     }
 
@@ -370,7 +370,7 @@ export default class Rat {
             return
         }
         let animationTime = Math.abs(this.target_position_stored.x - this.sprite.x) * (Math.random() * 40 + 10)
-        // console.log("SmoothMovement ", this.target_position_stored.x, this.sprite.x )
+        // // console.log("SmoothMovement ", this.target_position_stored.x, this.sprite.x )
         if (forceAnimTime > 0) {
             animationTime = forceAnimTime;
         }
@@ -400,7 +400,7 @@ export default class Rat {
 
             })
         } catch (err) {
-            console.log("error_in_line 790 in baseplayer ", err, this.sprite, this.target_position_stored)
+            // console.log("error_in_line 790 in baseplayer ", err, this.sprite, this.target_position_stored)
         }
 
     }
@@ -416,7 +416,7 @@ export default class Rat {
             return
         }
         const animationTime = Math.abs(this.target_position_stored.x - this.sprite.x) * 30
-        // console.log("SmoothMovement ", this.target_position_stored.x, this.sprite.x )
+        // // console.log("SmoothMovement ", this.target_position_stored.x, this.sprite.x )
         this.gotHitMoving = false;
         if (this.gotHit_tween_animation_running) {
             this.gotHitMoving = true;
@@ -441,12 +441,12 @@ export default class Rat {
                 this.gotHit_tween_animation_running = false;
                 this.gotHitMoving = false;
                 this.sprite.setTint(0xffffff)
-                console.log("RAT HIT!");
+                // console.log("RAT HIT!");
                 this.bootstrap.play_uhOh_sound()
                 this.sprite.play("run")
             })
         } catch (err) {
-            console.log("error_in_line 790 in baseplayer ", err, this.sprite, this.target_position_stored)
+            // console.log("error_in_line 790 in baseplayer ", err, this.sprite, this.target_position_stored)
         }
 
     }
@@ -476,14 +476,14 @@ export default class Rat {
     //       this.gotHit_tween_animation_running = true;
     //       this.gotHitMoving = true;
     //     }).on("complete", () => {
-    //       console.log("got hit moving mouse ")
+    //       // console.log("got hit moving mouse ")
     //       this.sprite.x = targetPos.x;
     //       this.sprite.y = targetPos.y;
     //       this.gotHit_tween_animation_running = false;
     //       this.gotHitMoving = false;
     //     })
     //   } catch (err) {
-    //     console.log("error_in_line 280 in mouse ", err, this.sprite, targetPos)
+    //     // console.log("error_in_line 280 in mouse ", err, this.sprite, targetPos)
     //   }
     // }
 }

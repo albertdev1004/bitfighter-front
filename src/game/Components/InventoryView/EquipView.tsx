@@ -2,22 +2,23 @@
 /* eslint @typescript-eslint/no-unused-vars: off */
 /* eslint @typescript-eslint/no-explicit-any: off */
 
-
 import styled from 'styled-components'
-import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { TurnMouseClickOff } from '../../../stores/UserActions';
-import { useDetectClickOutside } from 'react-detect-click-outside';
+import { useAppDispatch, useAppSelector } from '../../../hooks'
+import { TurnMouseClickOff } from '../../../stores/UserActions'
+import { useDetectClickOutside } from 'react-detect-click-outside'
 // import { parseWBTCBalanceV3 } from '../../../utils/web3_utils';
 
-import { v4 as uuidv4 } from 'uuid';
-import { getSystemInfo } from '../../../utils/systemInfo';
-import phaserGame from '../../../PhaserGame';
-import Game from '../../scenes/Game';
+import { v4 as uuidv4 } from 'uuid'
+import { getSystemInfo } from '../../../utils/systemInfo'
+import phaserGame from '../../../PhaserGame'
+import Game from '../../scenes/Game'
+
+import brew from '../../../assets/bitfgihter_assets/brew/BREW.png'
 
 const Backdrop = styled.div`
   position: fixed;
   bottom: 0%;
-  left: 44%;
+  left: 15%;
   // width: 12%;
   text-align: center;
 `
@@ -64,7 +65,8 @@ const BitsView = styled.div`
     color: white;
   }
 
-  h2, h3 {
+  h2,
+  h3 {
     font-family: Monospace;
     font-style: bold;
     font-size: 25px;
@@ -73,10 +75,8 @@ const BitsView = styled.div`
   }
 `
 
-
 export function EquipView() {
   const equippedBrewCount = useAppSelector((state) => state.assetStore.equippedBrewCount)
-  const semiEquippedBrewCount = useAppSelector((state) => state.assetStore.semiEquippedBrewCount)
   const web2_credit_balance = useAppSelector((state) => state.web3BalanceStore.web2CreditBalance)
   const dispatch = useAppDispatch()
   // equippedBrewCount = 1;
@@ -87,55 +87,85 @@ export function EquipView() {
     // setInventoryState("basic")
   }
 
-  const ref = useDetectClickOutside({ onTriggered: closeView });
+  const ref = useDetectClickOutside({ onTriggered: closeView })
 
-  const ismobile = getSystemInfo();
+  const ismobile = getSystemInfo()
 
   return (
     <div>
-      {(equippedBrewCount > 0 || semiEquippedBrewCount > 0) && <Backdrop
-        ref={ref}
-        onMouseOver={() => {
-          dispatch(TurnMouseClickOff(true))
-        }}
-        onMouseOut={() => {
-          dispatch(TurnMouseClickOff(false))
-        }}
-      >
-        <Wrapper>
-
-          {
-            !ismobile && <span>
-              Press Q to Open
-            </span>
-          }
-
-
-          <div style={{
-            padding: '10px',
-            // paddingRight: '10px',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <img
-              // src="bitfgihter_assets/brew/brew-can.png" 
-              src="bitfgihter_assets/brew/BREW.png"
-              alt="."
-              height="35"
-              width="15"
-              key={uuidv4()}
-
-              onClick={() => {
-                // 
-                game.keyControls.keyQCodeDownHandler()
+      {equippedBrewCount > 0 && (
+        <Backdrop
+          ref={ref}
+          onMouseOver={() => {
+            dispatch(TurnMouseClickOff(true))
+          }}
+          onMouseOut={() => {
+            dispatch(TurnMouseClickOff(false))
+          }}
+          style={{ display: 'flex' }}
+        >
+          <Wrapper>
+            {!ismobile && <span>Press Q to Open</span>}
+            <div
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-            ></img>
-          </div>
-
-
-
-        </Wrapper>
-      </Backdrop>}
+            >
+              <img
+                src={brew}
+                alt='.'
+                height='35'
+                width='15'
+                key={uuidv4()}
+                onClick={() => {
+                  game.keyControls.keyQCodeDownHandler()
+                }}
+              ></img>
+            </div>
+          </Wrapper>
+          <Wrapper>
+            {!ismobile && <span>Press Q to Open</span>}
+            <div
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <img
+                src={brew}
+                alt='.'
+                height='35'
+                width='15'
+                key={uuidv4()}
+                onClick={() => {
+                  game.keyControls.keyQCodeDownHandler()
+                }}
+              ></img>
+            </div>
+          </Wrapper>
+          <Wrapper>
+            {!ismobile && <span>Press Q to Open</span>}
+            <div
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <img
+                src={brew}
+                alt='.'
+                height='35'
+                width='15'
+                key={uuidv4()}
+                onClick={() => {
+                  game.keyControls.keyQCodeDownHandler()
+                }}
+              ></img>
+            </div>
+          </Wrapper>
+        </Backdrop>
+      )}
     </div>
   )
 }

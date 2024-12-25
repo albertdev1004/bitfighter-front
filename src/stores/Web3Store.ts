@@ -13,6 +13,9 @@ interface Web3Store {
   web2EmailAddress: string;
   minted_id: number;
   player_id: string;
+
+  connectKitProcessed: boolean;
+  connectionMode: string;
 }
 
 const initialState: Web3Store = {
@@ -22,7 +25,9 @@ const initialState: Web3Store = {
   web2EmailAddress: "",
   minted_id: 0,
   player_id: "",
-  web3Network: ""
+  web3Network: "",
+  connectKitProcessed: false,
+  connectionMode: ''
 }
 
 export const web3StoreSlice = createSlice({
@@ -35,7 +40,6 @@ export const web3StoreSlice = createSlice({
     },
 
     SetConnectedNetwork: (state: { web3Network: string; }, action: PayloadAction<string>) => {
-      console.log("debug in SetConnectedNetwork reducer ", action.payload)
       state.web3Network = action.payload;
     },
 
@@ -44,12 +48,10 @@ export const web3StoreSlice = createSlice({
     },
 
     SetPlayerIdForGame: (state: { player_id: string; }, action: PayloadAction<string>) => {
-      console.log("SetPlayerIdForGame--", action)
       state.player_id = action.payload;
     },
 
     LogOut: (state: { userAddress: string; loggedIn: boolean },) => {
-      console.log("logging out ..")
       state.userAddress = "";
       state.loggedIn = false;
     },
@@ -59,11 +61,25 @@ export const web3StoreSlice = createSlice({
 
     Web2Login: (state: { web2EmailAddress: string }, action: PayloadAction<string>) => {
       state.web2EmailAddress = action.payload;
-    }
+    },
+
+    Web2LoginV2: (state: { web2EmailAddress: string }, action: PayloadAction<string>) => {
+      state.web2EmailAddress = action.payload;
+    },
+
+    SetConnectKitProcessed: (state: { web2EmailAddress: string }, action: PayloadAction<boolean>) => {
+      state.connectKitProcessed = action.payload;
+    },
+
+
+    SetConnectionMode: (state: { connectionMode: string }, action: PayloadAction<string>) => {
+      state.connectionMode = action.payload;
+    },
+
   },
 })
 
-export const { Login, LogOut, SetConnectedWeb3, Web2Login, SetMintedIdForGame, SetPlayerIdForGame, SetConnectedNetwork } =
+export const { Login, LogOut, SetConnectionMode, SetConnectedWeb3, Web2LoginV2, Web2Login, SetMintedIdForGame, SetPlayerIdForGame, SetConnectedNetwork, SetConnectKitProcessed } =
   web3StoreSlice.actions
 
 export default web3StoreSlice.reducer

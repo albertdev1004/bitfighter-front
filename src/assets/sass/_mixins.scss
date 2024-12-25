@@ -3,7 +3,7 @@
   @content;
   border: 10px solid transparent;
   margin-bottom: 8px;
-  border-image: url('../../assets/images/display-border.png') 10 round;
+  border-image: url('../../../assets/images/display-border.png') 10 round;
 }
 
 @mixin flexcenter {

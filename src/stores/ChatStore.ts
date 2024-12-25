@@ -35,13 +35,13 @@ export const chatMessageStore = createSlice({
   initialState,
   reducers: {
     addToChatArray: (state: { chatMessage: Array<IChatObject>; chatUpdate: number }, action: PayloadAction<IChatObject>) => {
-      console.log("adding ...", action.payload)
+      // console.log("adding ...", action.payload)
       state.chatMessage.push(action.payload);
       state.chatUpdate += 1;
     },
 
     AddInitialToChatArray: (state: { chatMessage: Array<IChatObject>; walletAddress: string }, action: PayloadAction<Array<IChatObject>>) => {
-      // console.log("all_chats adding here")
+      // // console.log("all_chats adding here")
       for (let i = 0; i < action.payload.length; i++) {
         state.chatMessage.push(action.payload[i]);
       }

@@ -17,21 +17,21 @@ export interface BetData {
 
 export async function updateBetInfOfPlayer() {
   const data = await FetchAllBetsOfPlayer()
-  console.log("queue bets all - ", data.data)
+  // console.log("queue bets all - ", data.data)
   const result = data.data as Array<BetData>;
   // const info : Map<string, string> = new Map();
   const info: any = {}
   for (let i = 0; i < result.length; i++) {
     info[result[i].fight_id] = `${result[i].bet_amount}::${result[i].player_bet_on}`;
   }
-  console.log("queue all data -- ", info)
+  // console.log("queue all data -- ", info)
   store.dispatch(AddPlayersBetInfo(result))
   // store.dispatch(ChangeCombinedQueueData(store.getState().userPathStore.CombinedQueueData))
 }
 
 export async function updateSingleBetInfOfPlayer(fight_id: string) {
   const data = await FetchParticularBetOfPlayer(fight_id)
-  console.log("queue single bet - ", data.data)
+  // console.log("queue single bet - ", data.data)
   const result = data.data as BetData;
   const currBetsArray = store.getState().userPathStore.playersBetInfo;
   let found = false;
@@ -51,18 +51,18 @@ export async function LoopAllFightsAndUpdate() {
   // 
 
   const tempCombinedQueueData = store.getState().userPathStore.CombinedQueueData;
-  console.log("in_LoopAllFightsAndUpdate*****", tempCombinedQueueData.length)
+  // console.log("in_LoopAllFightsAndUpdate*****", tempCombinedQueueData.length)
   tempCombinedQueueData.forEach(async (_temp, index) => {
     const result = await FetchFightEntryInfo(_temp.fight_id);
     if (result === "") {
-      console.log("failed in LoopAllFightsAndUpdate--", _temp.fight_id)
+      // console.log("failed in LoopAllFightsAndUpdate--", _temp.fight_id)
     }
     if (index === 0) {
       const tempMap: any = store.getState().queueDetailedInfo.queue_to_fight_info_map;
-      // console.log("LoopAllFightsAndUpdate**", result);
+      // // console.log("LoopAllFightsAndUpdate**", result);
       const copyData = JSON.parse(JSON.stringify(tempMap));
       copyData[_temp.fight_id] = result;
-      console.log("LoopAllFightsAndUpdate**", copyData);
+      // console.log("LoopAllFightsAndUpdate**", copyData);
       store.dispatch(SetFightEntryInfo(copyData))
     }
   })

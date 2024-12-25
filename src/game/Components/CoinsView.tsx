@@ -1,8 +1,7 @@
-
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from '../../hooks'
 import styled from 'styled-components'
 
-
+import coinImgUrl from '../../assets/bitfgihter_assets/items/coin.png'
 
 const Backdrop = styled.div`
   position: fixed;
@@ -34,20 +33,8 @@ export function CoinsView() {
   return (
     <Backdrop>
       <Wrapper>
-
-          <img 
-            src="bitfgihter_assets/items/coin.png" 
-            className="rounded-circle" 
-            alt="Cinque Terre" 
-            height="25" 
-            width="25"
-          ></img>
-
-          <TextDiv>
-            {bitsBalance}
-          </TextDiv>
-        
-
+        <img src={coinImgUrl} className='rounded-circle' alt='Cinque Terre' height='25' width='25'></img>
+        <TextDiv>{bitsBalance}</TextDiv>
       </Wrapper>
     </Backdrop>
   )

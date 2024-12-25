@@ -27,7 +27,6 @@ import { SetGameServersData, SetShowGameServersList } from '../stores/WebsiteSta
 import { SetCurrentGamePlayer, setNickName } from '../stores/PlayerData'
 import { FetchGameServerConnection } from '../utils/game_server_utils'
 import store from '../stores'
-import { SetFailureNotificationBool, SetFailureNotificationMessage } from '../stores/NotificationStore'
 const Content = styled.div({
   display: 'flex',
   height: '100%',
@@ -130,8 +129,6 @@ function Home() {
   const { type } = useOrientation()
   const orientationType = type
 
-  const selectedNetwork = useAppSelector((state) => state.web3store.web3Network);
-
   const handleClose = () => {
     setSnackBarOpen(false)
   }
@@ -141,16 +138,6 @@ function Home() {
     //   // await PhoneWeb3Login()
     //   await Web3Login()
     // } else {
-
-    console.log("click connectButtonHandle -- ",)
-
-    if (selectedNetwork == '') {
-      store.dispatch(SetFailureNotificationBool(true))
-      store.dispatch(SetFailureNotificationMessage("Connect Wallet"))
-      return
-    }
-
-
     if (!metaMaskInstalledBool) {
       onboarding.startOnboarding()
     } else if (metaMaskInstalledBool) {
@@ -163,11 +150,11 @@ function Home() {
 
   const joinAsGuest = async () => {
     const web2Address = localStorage.getItem('web2_wallet_address')
-    console.log('debug_joinAsGuest as guest clicked.. ', web2Address)
+    // console.log('debug_joinAsGuest as guest clicked.. ', web2Address)
     if (web2Address) {
       return Web2Login(web2Address)
     }
-    // console.log("debug_joinAsGuest as guest clicked.. ");
+    // // console.log("debug_joinAsGuest as guest clicked.. ");
     const web2Id = makeid(50)
     dispatch(Login(web2Id))
     dispatch(ChangeValidUserState(true))
@@ -176,7 +163,7 @@ function Home() {
     localStorage.setItem('web2_wallet_address', web2Id)
     setTimeout(async () => {
       const output = await randomGenarateBitfightersV2(web2Id, ethers.constants.AddressZero, 1, 'web2')
-      console.log('--output .. ', output)
+      // console.log('--output .. ', output)
       if (!isNullOrUndefined(output)) {
         const result = await fetchNFTsFromDB(web2Id)
         const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
@@ -199,7 +186,7 @@ function Home() {
         //
         // Washington_DC
         const serverList = await ListGameServersApiCall(store.getState().web3store.userAddress, "Washington_DC", 'create')
-        console.log("----serverlist--", serverList)
+        // console.log("----serverlist--", serverList)
         // store.dispatch(SetGameServersData(serverList.data));
 
         // await FetchGameServerConnection()
@@ -208,9 +195,9 @@ function Home() {
     }, 1000)
   }
 
-  // join and go in game
+  // // join and go in game
   async function joinDirectlyToGame() {
-    await joinAsGuest()
+    // await joinAsGuest()
   }
 
   // useEffect(() => {
@@ -218,7 +205,7 @@ function Home() {
   // }, [])
 
   // const joinWithEmailAddress = async () => {
-  //   console.log(" ..join with email address clicked.. ");
+  //   // console.log(" ..join with email address clicked.. ");
   //   const web2Id = localStorage.getItem("web2_email_address");
   //   setTimeout(async () => {
   //     if (web2Id) {
@@ -229,7 +216,7 @@ function Home() {
   //         randomNickNameGenarate(),
   //         "web2"
   //       );
-  //       console.log("--output .. ", output);
+  //       // console.log("--output .. ", output);
   //       if (!isNullOrUndefined(output)) {
   //         const result = await fetchNFTsFromDB(web2Id);
   //         const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message);

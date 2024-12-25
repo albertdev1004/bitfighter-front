@@ -170,7 +170,7 @@ export default function InGameAssetPurchase() {
             ndata[data.data[i].partner_id] = data.data[i].quantity;
         }
         setPartnerBrewsSold(ndata)
-        console.log("InGameAssetPurchase_useeffect ", data, ndata);
+        // console.log("InGameAssetPurchase_useeffect ", data, ndata);
     }
 
     useEffect(() => {
@@ -211,7 +211,7 @@ export default function InGameAssetPurchase() {
         }
         const result = await purchaseAssets(quantity, "brew", partner_id);
         if (result?.success) {
-            console.log(" brew asset bought ..");
+            // console.log(" brew asset bought ..");
             setTimeout(() => {
                 dispatch(ShowBrewEjectAnimation(true));
                 store.dispatch(SetSuccessNotificationBool(true));

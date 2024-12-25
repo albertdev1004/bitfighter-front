@@ -2,33 +2,14 @@
 /* eslint @typescript-eslint/no-unused-vars: off */
 /* eslint @typescript-eslint/no-explicit-any: off */
 
-import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import RefreshIcon from '@mui/icons-material/Refresh'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { Box, Button, ButtonGroup, Fab, Tab, Tabs } from '@mui/material'
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
-
-import MyLogView from './MenuComponents/MyLogView'
-import MyStatsView from './MenuComponents/MyStatsView'
-import FriendsList from './MenuComponents/FriendsList'
-import MyChartView from './MenuComponents/MyChartView'
-import MyQuestView from './MenuComponents/MyQuestView'
-import QueueListV2 from './MenuComponents/QueueListV2'
-import OtherStatsView from './MenuComponents/OtherStatsView'
+import Box from '@mui/material/Box'
+import { Button, ButtonGroup, Fab, Tab, Tabs } from '@mui/material'
 import PendingRequests from './MenuComponents/PendingRequests'
-import GangView, { MyGangView } from './MenuComponents/GangView'
+import FriendsList from './MenuComponents/FriendsList'
 import SentFriendRequests from './MenuComponents/SentFriendRequest'
-
-import { getEllipsisTxt } from '../../utils'
-import { updateBetInfOfPlayer } from '../../utils/fight_utils'
-
 import { useAppDispatch, useAppSelector } from '../../hooks'
-
 import store from '../../stores'
-import { LogOut } from '../../stores/Web3Store'
-import { setNFTLoadedBool } from '../../stores/BitFighters'
-import { SetMouseClickControlProfileWindow, TurnMouseClickOff } from '../../stores/UserActions'
 import {
   ChangeShowGangView,
   ChangeShowQuestsView,
@@ -37,6 +18,24 @@ import {
   ChangeShowStatsView,
   ChangeShowLog,
 } from '../../stores/UserWebsiteStore'
+import { SetMouseClickControlProfileWindow, TurnMouseClickOff } from '../../stores/UserActions'
+import { getEllipsisTxt } from '../../utils'
+import { setNFTLoadedBool } from '../../stores/BitFighters'
+import { LogOut } from '../../stores/Web3Store'
+// import BetWindowView from './MenuComponents/BetWindowView';
+import RefreshIcon from '@mui/icons-material/Refresh'
+import { updateBetInfOfPlayer } from '../../utils/fight_utils'
+import GangView, { MyGangView } from './MenuComponents/GangView'
+import MyStatsView from './MenuComponents/MyStatsView'
+import MyLogView from './MenuComponents/MyLogView'
+import MyChartView from './MenuComponents/MyChartView'
+import MyQuestView from './MenuComponents/MyQuestView'
+import OtherStatsView from './MenuComponents/OtherStatsView'
+import QueueListV2 from './MenuComponents/QueueListV2'
+import React, { useState, useEffect } from 'react'
+
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -56,6 +55,7 @@ export interface ListViewerDataWrapper {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props
+
   return (
     <div
       role='tabpanel'
@@ -72,6 +72,7 @@ function TabPanel(props: TabPanelProps) {
 
 function TabPanel2(props: TabPanelProps) {
   const { children, value, index, ...other } = props
+
   return (
     <div
       role='tabpanel'
@@ -112,7 +113,7 @@ const Backdrop = styled.div`
   right: 0%;
   height: 100%;
   width: 25%;
-  z-index: 100;
+  z-index: 98;
   overflow-y: scroll;
   margin: auto;
   @media only screen and (max-width: 775.98px) and (orientation: landscape) {
@@ -143,6 +144,8 @@ const Wrapper = styled.div`
 
 const MenuBox = styled(Box)`
   width: 100%;
+  @media only screen and (max-height: 575.98px) and (orientation: landscape) {
+  }
 `
 const ButtonGroupStyled = styled(ButtonGroup)`
   width: 100%; /* Ensure the button group takes full width */
@@ -160,7 +163,11 @@ const MenuBoxHeader = styled.div`
   background: #000000a7;
   display: flex;
   justify-content: center;
+  //border-radius: 10px 10px 0px 0px;
+  //padding: 20px;
+
   @media only screen and (max-width: 775.98px) and (orientation: landscape) {
+    // width: 50%;
     button {
       width: 80%; /* Adjust width as necessary */
       font-size: 0.8rem; /* Reduce font size */
@@ -187,26 +194,29 @@ const TextWrapper = styled.div`
 `
 
 export default function NewMenuSideBar() {
-  const dispatch = useAppDispatch()
-
-  const showLog = useAppSelector((state) => state.userPathStore.ShowLog)
-  const userAddress = useAppSelector((state) => state.web3store.userAddress)
-  const showGangView = useAppSelector((state) => state.userPathStore.ShowGangView)
-  const showStatsBox = useAppSelector((state) => state.userPathStore.ShowStatsView)
-  const ShowMenuBoxRedux = useAppSelector((state) => state.userPathStore.ShowMenuBox)
-  const showQuestsView = useAppSelector((state) => state.userPathStore.ShowQuestsView)
+  // const userAddress = useAppSelector((state) => state.web3store.userAddress)
+  // const ProfilemenuClicked = useAppSelector((state) => state.userPathStore.ShowMenuBox)
   const showQueueBoxRedux = useAppSelector((state) => state.userPathStore.ShowQueueBox)
+  const showGangView = useAppSelector((state) => state.userPathStore.ShowGangView)
+  //Show my status
+  const showStatsBox = useAppSelector((state) => state.userPathStore.ShowStatsView)
+  //Show scanner of other players' statuses
+  //const showScannerBox = useAppSelector((state) => state.userPathStore.ShowStatsView)
+  const showLog = useAppSelector((state) => state.userPathStore.ShowLog)
+  const showQuestsView = useAppSelector((state) => state.userPathStore.ShowQuestsView)
   const showSettingsView = useAppSelector((state) => state.userPathStore.showSettingsView)
-
+  const ShowMenuBoxRedux = useAppSelector((state) => state.userPathStore.ShowMenuBox)
+  const userAddress = useAppSelector((state) => state.web3store.userAddress)
   const [value, setValue] = React.useState(1)
   const [value2, setValue2] = React.useState(0)
   const [value3, setValue3] = React.useState(0)
   const [logChart, setLogChart] = React.useState(0)
+  const dispatch = useAppDispatch()
 
-  // console.log('-- debug showmenubox ', ShowMenuBoxRedux, showQueueBoxRedux, showStatsBox, showLog)
+  // console.log("-- debug showmenubox ", ShowMenuBoxRedux, showQueueBoxRedux, showStatsBox, showLog)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    // console.log('debug handleChange----', newValue)
+    // console.log("debug handleChange----", newValue)
     setValue(newValue)
   }
 
@@ -217,7 +227,6 @@ export default function NewMenuSideBar() {
   const handleChange3 = (event: React.SyntheticEvent, newValue: number) => {
     setValue3(newValue)
   }
-
   const handleLogTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setLogChart(newValue)
   }
@@ -256,6 +265,22 @@ export default function NewMenuSideBar() {
               >
                 <ButtonText>Game</ButtonText>
               </ButtonStyled>
+              {/* <ButtonStyled
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => {
+                                    store.dispatch(ChangeShowQueueBox(false));
+                                    store.dispatch(ChangeShowStatsView(false));
+                                    store.dispatch(ChangeShowLog(false));
+                                    store.dispatch(ChangeShowGangView(false));
+                                    store.dispatch(ChangeShowQuestsView(false));
+                                    store.dispatch(ChangeShowSettingsView(false));
+                                }}
+                            >
+                                <ButtonText>
+                                    Friends
+                                </ButtonText>
+                            </ButtonStyled> */}
               <ButtonStyled
                 variant='outlined'
                 color='secondary'
@@ -316,6 +341,22 @@ export default function NewMenuSideBar() {
               >
                 <ButtonText>Log</ButtonText>
               </ButtonStyled>
+              {/* <ButtonStyled
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => {
+                                    store.dispatch(ChangeShowQueueBox(false));
+                                    store.dispatch(ChangeShowStatsView(false));
+                                    store.dispatch(ChangeShowLog(false));
+                                    store.dispatch(ChangeShowGangView(false));
+                                    store.dispatch(ChangeShowQuestsView(false));
+                                    store.dispatch(ChangeShowSettingsView(true));
+                                }}
+                            >
+                                <ButtonText>
+                                    Settings
+                                </ButtonText>
+                            </ButtonStyled> */}
             </ButtonGroupStyled>
           </MenuBoxHeader>
           {showQueueBoxRedux ? (
@@ -365,7 +406,7 @@ export default function NewMenuSideBar() {
                 <Tabs
                   aria-label='basic tabs example'
                   centered
-                  style={{ fontSize: '8px', minHeight: '24px' }}
+                  style={{ fontSize: '15px' }}
                   onChange={(e, newValue) => {
                     // console.log("debug handleChange----", newValue)
                     setValue(newValue)
@@ -374,24 +415,8 @@ export default function NewMenuSideBar() {
                   textColor='secondary'
                   indicatorColor='secondary'
                 >
-                  <Tab
-                    label='Scanner'
-                    {...a11yProps(0)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
-                  <Tab
-                    label='My Status'
-                    {...a11yProps(1)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
+                  <Tab label='Scanner' {...a11yProps(0)} />
+                  <Tab label='My Status' {...a11yProps(1)} />
                 </Tabs>
               </TabsBoxHeader>
               <MenuBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -409,7 +434,7 @@ export default function NewMenuSideBar() {
                 <Tabs
                   aria-label='basic tabs example'
                   centered
-                  style={{ fontSize: '8px', minHeight: '24px' }}
+                  style={{ fontSize: '5px' }}
                   onChange={(e, newValue) => {
                     // console.log("debug handleChange----", newValue)
                     setValue(newValue)
@@ -418,24 +443,8 @@ export default function NewMenuSideBar() {
                   textColor='secondary'
                   indicatorColor='secondary'
                 >
-                  <Tab
-                    label='SYSTEM'
-                    {...a11yProps(0)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
-                  <Tab
-                    label='MY GANG'
-                    {...a11yProps(1)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
+                  <Tab label='SYSTEM' {...a11yProps(0)} />
+                  <Tab label='MY GANG' {...a11yProps(1)} />
                 </Tabs>
               </TabsBoxHeader>
               <MenuBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -453,7 +462,7 @@ export default function NewMenuSideBar() {
                 <Tabs
                   aria-label='basic tabs example'
                   centered
-                  style={{ fontSize: '8px', minHeight: '24px' }}
+                  style={{ fontSize: '5px' }}
                   onChange={(e, newValue) => {
                     // console.log("debug handleChange----", newValue)
                     setValue(newValue)
@@ -462,24 +471,8 @@ export default function NewMenuSideBar() {
                   textColor='secondary'
                   indicatorColor='secondary'
                 >
-                  <Tab
-                    label='To Do'
-                    {...a11yProps(0)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
-                  <Tab
-                    label='Done'
-                    {...a11yProps(1)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
+                  <Tab label='To Do' {...a11yProps(0)} />
+                  <Tab label='Done' {...a11yProps(1)} />
                 </Tabs>
               </TabsBoxHeader>
               <MenuBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -497,32 +490,14 @@ export default function NewMenuSideBar() {
                 <Tabs
                   aria-label='basic tabs example 2'
                   centered
-                  style={{ fontSize: '8px', minHeight: '24px' }}
+                  style={{ fontSize: '15px' }}
                   onChange={handleChange3}
                   value={value3}
                   textColor='secondary'
                   indicatorColor='secondary'
                 >
-                  <Tab
-                    className='fs-6'
-                    label='Transactions'
-                    {...a11yProps3(0)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
-                  <Tab
-                    className='fs-6'
-                    label='Chart'
-                    {...a11yProps3(1)}
-                    sx={{
-                      padding: '2px 4px', // Adjust padding here
-                      minHeight: '24px', // Adjust height here
-                      fontSize: '12px', // Optionally adjust font size
-                    }}
-                  />
+                  <Tab className='fs-6' label='Transactions' {...a11yProps3(0)} />
+                  <Tab className='fs-6' label='Chart' {...a11yProps3(1)} />
                 </Tabs>
               </TabsBoxHeader>
               <MenuBox sx={{ borderBottom: 1, borderColor: 'divider' }}>

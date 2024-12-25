@@ -1,5 +1,5 @@
 const { extrudeTilesetToImage } = require("tile-extruder");
-console.log('Building tile sets!')
+// console.log('Building tile sets!')
 async function main() {
   try {
     await extrudeTilesetToImage(
@@ -8,7 +8,7 @@ async function main() {
       "public/new_assets/map/HQ_Sprite_Sheet.png",
       "public/new_assets/map/HQ_Sprite_Sheet_Extruded.png"
     );
-    console.log('HQ Tileset extruded successfully!');
+    // console.log('HQ Tileset extruded successfully!');
   } catch (error) {
     console.error('Error extruding tileset:', error);
   }
@@ -20,7 +20,7 @@ async function main() {
       "public/new_assets/map/xMas_Sprite_Sheet.png",
       "public/new_assets/map/xMas_Sprite_Sheet_Extruded.png"
     );
-    console.log('xMas Tileset extruded successfully!');
+    // console.log('xMas Tileset extruded successfully!');
   } catch (error) {
     console.error('Error extruding tileset:', error);
   }
@@ -33,7 +33,7 @@ async function main() {
 //     "public/new_assets/map/Mine_Sprite_Sheet.png",
 //     "public/new_assets/map/Mine_Sprite_Sheet_Extruded.png"
 //   );
-//   console.log('Mine Tileset extruded successfully!');
+//   // console.log('Mine Tileset extruded successfully!');
 // } catch (error) {
 //   console.error('Error extruding tileset:', error);
 // }

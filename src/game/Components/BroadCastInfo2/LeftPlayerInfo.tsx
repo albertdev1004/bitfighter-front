@@ -54,7 +54,7 @@ const Imagewrapper = styled.div`
 
 export function LeftPlayerInfo() {
     const fightersInfo = useAppSelector((state) => state.userActionsDataStore.fightersInfo)
-    console.log("debug____fightersInfo... ", fightersInfo)
+    // console.log("debug____fightersInfo... ", fightersInfo)
     const [openAttributesInfo, setAttributesOpen] = useState(false);
     return (
         <BackWrapper>

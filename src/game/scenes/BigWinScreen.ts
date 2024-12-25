@@ -21,7 +21,7 @@ export default class BigWinScreen extends Phaser.Scene {
   button: any;
 
   constructor() {
-    console.log("--------win_screen_constructor----------");
+    // console.log("--------win_screen_constructor----------");
     super("big_win_screen");
     this.bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
     this.hq_game = phaserGame.scene.keys.game as Game;
@@ -32,7 +32,7 @@ export default class BigWinScreen extends Phaser.Scene {
   }
 
   create() {
-    console.log("--------win_screen_create----------", store.getState().websiteStateStore.money_win_screen_target_value);
+    // console.log("--------win_screen_create----------", store.getState().websiteStateStore.money_win_screen_target_value);
     const jackpotMusic = this.sound.add("jackpotMusic", { volume: 0.5 });
     const congratulations = this.sound.add("congratulations", { volume: 0.5 });
     congratulations.play({ loop: false });
@@ -61,7 +61,7 @@ export default class BigWinScreen extends Phaser.Scene {
 
     this.button = this.add.zone(buttonX, buttonY, buttonWidth, buttonHeight).setOrigin(0, 0).setInteractive();
 
-    //console.log("width ", gameWidth, " height ", gameHeight, " centerX ", centerX);
+    //// console.log("width ", gameWidth, " height ", gameHeight, " centerX ", centerX);
 
     const trigger = () => {
       const image = this.add.image(centerX, gameHeight / 2, "bitz").setScale(0.01); // Start from 1% of the real size
@@ -129,7 +129,7 @@ export default class BigWinScreen extends Phaser.Scene {
         duration: 5000, // 5 seconds
         ease: "Linear",
         onUpdate: function () {
-          console.log(scoreObj.value);
+          // console.log(scoreObj.value);
           const formattedValue = formatNumberWithCommas(Math.round(scoreObj.value));
           scoreText.setText(formattedValue + " Bits!");
         },

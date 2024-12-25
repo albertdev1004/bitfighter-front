@@ -30,7 +30,7 @@ export default class Coin {
 
 
     constructor(scene: Phaser.Scene, x: any, y: any) {
-        // console.log("items_update_creating rat")
+        // // console.log("items_update_creating rat")
         this.scene = scene;
         this.game = phaserGame.scene.keys.game as Game;
         this.bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
@@ -46,7 +46,7 @@ export default class Coin {
         this.silver_coin_sprite.x = x
         this.silver_coin_sprite.y = y
         this.silver_coin_sprite.setDepth(1000)
-        // console.log("items_update_creating rat", this.silver_coin_sprite, this.silver_coin_sprite.x, this.silver_coin_sprite.y)
+        // // console.log("items_update_creating rat", this.silver_coin_sprite, this.silver_coin_sprite.x, this.silver_coin_sprite.y)
 
         this.playCoinDrop()
     }
@@ -54,7 +54,7 @@ export default class Coin {
 
     create() {
 
-        console.log("create coin")
+        // console.log("create coin")
 
     }
     playCoinDrop() {

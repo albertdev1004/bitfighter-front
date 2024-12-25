@@ -33,7 +33,7 @@ const CustomProgressBar = styled(ProgressBar)`
 `;
 export function LeftHealthBars() {
     const fightersInfo = useAppSelector((state) => state.userActionsDataStore.fightersInfo)
-    console.log("NAME", fightersInfo.player1.nick_name)
+    // console.log("NAME", fightersInfo.player1.nick_name)
     let healthBarColorString = ""
     if (fightersInfo.player1.health > 70) {
         healthBarColorString = "success"
@@ -44,7 +44,7 @@ export function LeftHealthBars() {
     else {
         healthBarColorString = "SOME_NAME"
     }
-    console.log("NAME", fightersInfo.player1)
+    // console.log("NAME", fightersInfo.player1)
     return (
         <Backdrop>
             <TextDiv>

@@ -2,12 +2,12 @@
 /* eslint @typescript-eslint/no-unused-vars: off */
 /* eslint @typescript-eslint/no-explicit-any: off */
 
+import { Box, Button, FormControl, Grid, InputLabel, List, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { isNullOrUndefined } from 'util'
 import { Label } from '@mui/icons-material'
 import { Container, Row, Col } from 'react-bootstrap'
-import { Box, Button, FormControl, Grid, InputLabel, List, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 
 import './ServerListInfo.css'
 import styled from 'styled-components'
@@ -27,22 +27,60 @@ import {
   SetShowGameServersList,
 } from '../../../../stores/WebsiteStateStore'
 
-const VALID_REGIONS = [
-  { name: 'Mumbai', code_name: 'India', lat: 19.076, lon: 72.8777 },
-  { name: 'Washington_DC', code_name: 'US_East', lat: 38.8954, lon: -77.0365 },
-  { name: 'Singapore', code_name: 'Singapore', lat: 1.3521, lon: 103.8198 },
-  { name: 'Frankfurt', code_name: 'Europe', lat: 50.1109, lon: 8.6821 },
-  { name: 'Johannesburg', code_name: 'Africa', lat: -26.2041, lon: 28.0473 },
-]
+const ButtonView = styled.button`
+  background-color: #9c341a;
 
-function getServerNameForDisplay(region: string) {
-  for (let i = 0; i < VALID_REGIONS.length; i++) {
-    if (region == VALID_REGIONS[i].name) {
-      return VALID_REGIONS[i].code_name
-    }
+  &:hover {
+    background-color: #852d17;
   }
-  return region
-}
+
+  span {
+    color: #a7a5a5;
+    // font-family: Monospace;
+    font-style: bold;
+    font-size: 20px;
+    font-family: 'Cooper Black';
+    text-transform: uppercase;
+  }
+  width: 100%;
+`
+
+const BoxWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  span {
+    color: aliceblue;
+    font-style: bold;
+    font-size: 20px;
+    font-family: 'Cooper Black', sans-serif;
+  }
+
+  p {
+    color: #808080;
+  }
+`
+
+const MyDivider = styled.div`
+  border: 1px solid #000000;
+  margin-bottom: 10px;
+`
+
+const CenterText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: aliceblue;
+    font-style: bold;
+    font-size: 20px;
+    font-family: 'Cooper Black', sans-serif;
+    justify-content: center;
+    align-items: center;
+  }
+`
 
 export function ServerListInfoPortable() {
   const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap
@@ -77,6 +115,22 @@ export function ServerListInfoPortable() {
       <div className='h2-wrapper-portable'>
         <h2 className='text-portable'>World Servers</h2>
       </div>
+      {/* <div className='select-wrapper'>
+        <Select
+          id='demo-simple-select'
+          value={gameServerReginoSelected}
+          onChange={(event: SelectChangeEvent) => {
+            SelectGameServerAndLoadInfo(event.target.value as string)
+          }}
+          style={{
+            width: 'auto',
+          }}
+        >
+          <MenuItem value={'Washington_DC'}>US-East</MenuItem>
+          <MenuItem value={'Mumbai'}>India</MenuItem>
+          <MenuItem value={'Singapore'}>Singapore</MenuItem>
+        </Select>
+      </div> */}
       <div className='select-wrapper-portable'>
         {gameServersInfo && gameServersInfo.length > 0 ? (
           gameServersInfo.map((serverinfo, index) => {
@@ -91,7 +145,62 @@ export function ServerListInfoPortable() {
         ) : (
           <p>Choose a fighter to load game servers</p>
         )}
+        {/* <p key={'Mumbai'}>India</p>
+        <p key={'Singapore'}>Singapore</p>
+        <p key={'Singapore1'}>Singapore1</p>
+        <p key={'Singapore2'}>Singapore2</p>
+        <p key={'Singapore3'}>Singapore3</p>
+        <p key={'Singapore4'}>Singapore4</p>
+        <p key={'Singapore5'}>Singapore5</p>
+        <p key={'Singapore6'}>Singapore6</p>
+        <p key={'Singapore7'}>Singapore7</p> */}
       </div>
+
+      {/* {gameServersInfo && gameServersInfo.length > 0 ? (
+        gameServersInfo.map((serverinfo, index) => {
+          return (
+            <div key={index} className='server-card'>
+              <p>{index + 1}</p>
+
+              <div className='server-info'>
+                <p>{`${getServerNameForDisplay(serverinfo.region)} - ${serverinfo.active_users} / 50`}</p>
+                <p>{getEllipsisTxt(serverinfo.room_id)}</p>
+              </div>
+
+              <div
+                onClick={() => {
+                  fetchServerUrlAndConnect(serverinfo.room_id)
+                }}
+                className='primary-btn-component'
+              >
+                <span className='dot'></span>
+                <span className='dot'></span>
+                <span className='dot'></span>
+                <span className='dot'></span>
+                <div className='content'>
+                  <span>Connect</span>
+                </div>
+              </div>
+            </div>
+          )
+        })
+      ) : Object.keys(selectedPlayer).length > 0 ? (
+        <p>Loading...</p>
+      ) : (
+        <p>Choose a fighter to load game servers</p>
+      )} */}
     </div>
   )
+}
+
+function getServerNameForDisplay(region: string) {
+  if (region === 'Washington_DC') {
+    return 'US_East'
+  }
+  if (region === 'Mumbai') {
+    return 'India'
+  }
+  if (region === 'Singapore') {
+    return 'Singapore'
+  }
 }

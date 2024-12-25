@@ -79,14 +79,14 @@ export function ATMView() {
     // const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
 
     const closeDialogMenu = () => {
-        console.log("click happened .. ")
+        // console.log("click happened .. ")
         if (store.getState().userActionsDataStore.openAtmView) {
             // dispatch(OpenAtmView(false))
         }
     }
 
     const AddMoneyToWallet = async () => {
-        console.log("debug_AddMoneyToWallet amount ", amount)
+        // console.log("debug_AddMoneyToWallet amount ", amount)
         if (!store.getState().web3store.web3Connected) {
             setErrSnackBarMessage("Web2 Player cannot interact with ATM")
             setErrSnackBarOpen(true)
@@ -105,18 +105,18 @@ export function ATMView() {
         const allowance = await checkAllowance(
             store.getState().web3store.userAddress
         );
-        console.log(
-            "debug_AddMoneyToWallet allowance -- >",
-            allowance.toString(),
-            ethers.BigNumber.from("50000000").gte(ethers.BigNumber.from(allowance.toString()))
-        )
+        // console.log(
+        //     "debug_AddMoneyToWallet allowance -- >",
+        //     allowance.toString(),
+        //     ethers.BigNumber.from("50000000").gte(ethers.BigNumber.from(allowance.toString()))
+        // )
 
         if (
             ethers.BigNumber.from("50000000").gte(
                 ethers.BigNumber.from(allowance.toString())
             )
         ) {
-            console.log("debug_AddMoneyToWallet less allowance");
+            // console.log("debug_AddMoneyToWallet less allowance");
             // setMintingState("Approval in Progress");
             if (
                 !(await approveWBTC2(
@@ -124,7 +124,7 @@ export function ATMView() {
                     ethers.BigNumber.from("10000000000")
                 ))
             ) {
-                console.log("debug_AddMoneyToWallet failed to approve");
+                // console.log("debug_AddMoneyToWallet failed to approve");
                 // setErrorState("Approval Failed")
                 // dispatch(setCardState(PageStates.FailedState))
                 // bootstrap.play_err_sound();
@@ -134,7 +134,7 @@ export function ATMView() {
         }
 
         const done = await depositMoneyToWalletV2(convertWBTCToBigIntWithDecimlas(amount))
-        console.log("debug_AddMoneyToWallet done ", done)
+        // console.log("debug_AddMoneyToWallet done ", done)
         if (done) {
             // crypto success.
             // validate in api service and update db
@@ -163,7 +163,7 @@ export function ATMView() {
     }
 
     const RemoveFromWallet = async () => {
-        console.log("amount ", amount)
+        // console.log("amount ", amount)
 
         if (!store.getState().web3store.web3Connected) {
             setErrSnackBarMessage("Web2 Player cannot interact with ATM")
@@ -188,14 +188,14 @@ export function ATMView() {
         const allowance = await checkAllowance(
             store.getState().web3store.userAddress
         );
-        console.log("debug_RemoveFromWallet allowance -- >", allowance.toString());
+        // console.log("debug_RemoveFromWallet allowance -- >", allowance.toString());
 
         if (
             ethers.BigNumber.from("10000").gte(
                 ethers.BigNumber.from(allowance.toString())
             )
         ) {
-            console.log("debug_RemoveFromWallet less allowance");
+            // console.log("debug_RemoveFromWallet less allowance");
             setAddMoneyState("Appprove tax amount")
             if (
                 !(await approveWBTC2(
@@ -203,13 +203,13 @@ export function ATMView() {
                     ethers.BigNumber.from("10000")
                 ))
             ) {
-                console.log("debug_RemoveFromWallet failed to approve");
+                // console.log("debug_RemoveFromWallet failed to approve");
                 return;
             }
         }
 
         const done = await redeemPlayerBalance(convertWBTCToBigIntWithDecimlas(amount).toString())
-        console.log("debug_redeem ", done)
+        // console.log("debug_redeem ", done)
         if (!isNullOrUndefined(done) && done.done) {
             // setSnackBarOpen(true)
             // setSuccessSnackBarMessage("Updating Balance")
@@ -230,8 +230,8 @@ export function ATMView() {
                 store.dispatch(SetFailureNotificationMessage("Error"))
             }
         } else {
-            console.log("debug_redeem ", "here")
-            console.log("debug_redeem ", done?.error.reason)
+            // console.log("debug_redeem ", "here")
+            // console.log("debug_redeem ", done?.error.reason)
             // setErrSnackBarOpen(true)
             // setErrSnackBarMessage(done?.error)
 
@@ -246,7 +246,7 @@ export function ATMView() {
 
     const closeFunction = () => {
 
-        console.log("debug_mouse in close fn atmview")
+        // console.log("debug_mouse in close fn atmview")
         // store.dispatch(BrewMachinePunched(false))
         dispatch(TurnMouseClickOff(false))
     }

@@ -59,8 +59,8 @@
   width: 320px;
   border: 10px solid transparent;
   margin-bottom: 8px;
-  -o-border-image: url("../../assets/images/display-border.png") 10 round;
-     border-image: url("../../assets/images/display-border.png") 10 round;
+  -o-border-image: url("../../../assets/images/display-border.png") 10 round;
+     border-image: url("../../../assets/images/display-border.png") 10 round;
   margin-bottom: 2px;
 }
 .mint-card-base__display__inner {
@@ -100,8 +100,8 @@
   position: relative;
   border: 10px solid transparent;
   margin-bottom: 8px;
-  -o-border-image: url("../../assets/images/display-border.png") 10 round;
-     border-image: url("../../assets/images/display-border.png") 10 round;
+  -o-border-image: url("../../../assets/images/display-border.png") 10 round;
+     border-image: url("../../../assets/images/display-border.png") 10 round;
 }
 .mint-card-base__info__inner {
   width: 100%;

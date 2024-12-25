@@ -112,8 +112,8 @@ export class OtherPlayer extends BasePlayer {
     max_stamina?: number,
     extra_data?: any
   ) {
-    console.log("debug stats otherp ", extra_data);
-    console.log("otherplayer_create ", otherPlayer, max_health, max_stamina);
+    // console.log("debug stats otherp ", extra_data);
+    // console.log("otherplayer_create ", otherPlayer, max_health, max_stamina);
     super(
       scene,
       x,
@@ -150,12 +150,12 @@ export class OtherPlayer extends BasePlayer {
 
     // const tempActualHealthReduced = this.actualLastHealth - amount;
     const tempActualHealthReduced = oldNumber - amount;
-    console.log(
-      "health other player ",
-      amount,
-      this.actualLastHealth,
-      tempActualHealthReduced
-    );
+    // console.log(
+    //   "health other player ",
+    //   amount,
+    //   this.actualLastHealth,
+    //   tempActualHealthReduced
+    // );
     this.actualLastHealth -= tempActualHealthReduced;
     // console.log("health other player ", this.healthReduced, this.totalActualHealthValue - amount)
     // if (this.totalActualHealthValue - amount > 0) {
@@ -190,7 +190,7 @@ export class OtherPlayer extends BasePlayer {
       !this.game.lobbySocketConnected &&
       store.getState().web3store.userAddress === this.myWalletAddress
     ) {
-      console.log("not connected. with game server.");
+      // console.log("not connected. with game server.");
       if (store.getState().userPathStore.websocketConnectedTime === 0) {
         store.dispatch(ChangeWebSocketConnectedTime(new Date().getTime()));
       } else if (

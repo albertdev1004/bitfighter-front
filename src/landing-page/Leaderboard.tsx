@@ -208,7 +208,7 @@ function Leaderboard() {
                                                 <td>{data.player_alias}</td>
                                                 <td>{data.wins_count}</td>
                                                 <td>{data.loss_count}</td>
-                                                <td>SPICE</td>
+                                                <td>Spice</td>
                                                 <td>{FN_PRIZES[index]}</td>
                                             </tr>
                                         )

@@ -115,7 +115,7 @@ export const web3StoreBalance = createSlice({
     },
 
     SetChangesInBalanceInfo: (state: { balanceInfoUser: IUserBalanceInfo; }, action: PayloadAction<IUserBalanceInfo>) => {
-      console.log("debug_inventory", action.payload)
+      // console.log("debug_inventory", action.payload)
       state.balanceInfoUser = action.payload;
     },
 

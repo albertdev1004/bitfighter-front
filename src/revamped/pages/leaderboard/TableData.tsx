@@ -6,7 +6,7 @@ interface IProps {
 }
 
 export default function TableData({ ranks }: IProps) {
-  console.log("debug ---TableData ", ranks)
+  // console.log("debug ---TableData ", ranks)
   return (
     <>
       <div className='top-3-ranks-wrapper'>

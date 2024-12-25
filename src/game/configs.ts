@@ -12,7 +12,7 @@ export const DEFAULT_SMOKESCREEN_DISPLAY_HEIGHT = 100;
 export const DEFAULT_SMOKESCREEN_DISPLAY_WIDTH = 75;
 
 let REACT_APP_LOBBY_WEBSOCKET_SERVER = "";
-console.log("REACT_APP_DEV_ENV ", process.env.REACT_APP_DEV_ENV)
+// console.log("REACT_APP_DEV_ENV ", process.env.REACT_APP_DEV_ENV)
 if (process.env.REACT_APP_DEV_ENV === "production") {
   REACT_APP_LOBBY_WEBSOCKET_SERVER = process.env.REACT_APP_LOBBY_PROD_WEBSOCKET_SERVER ? process.env.REACT_APP_LOBBY_PROD_WEBSOCKET_SERVER: ""
 } else if (process.env.REACT_APP_DEV_ENV === "development") {
@@ -23,6 +23,6 @@ if (process.env.REACT_APP_DEV_ENV === "production") {
   REACT_APP_LOBBY_WEBSOCKET_SERVER = "ws://localhost:3003"
   // REACT_APP_LOBBY_WEBSOCKET_SERVER = "ws://65.1.108.101:8000/ws"
 }
-console.log("REACT_APP_LOBBY_WEBSOCKET_SERVER ", process.env.REACT_APP_LOBBY_WEBSOCKET_SERVER)
+// console.log("REACT_APP_LOBBY_WEBSOCKET_SERVER ", process.env.REACT_APP_LOBBY_WEBSOCKET_SERVER)
 
 export default REACT_APP_LOBBY_WEBSOCKET_SERVER;

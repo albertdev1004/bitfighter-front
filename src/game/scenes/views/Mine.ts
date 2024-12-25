@@ -141,13 +141,13 @@ export class Mine {
 
     wallCollisionLayer.setDepth(-1)
     stageCollisionLayer.setDepth(-1)
-    console.log('layerNum+1 ', layerNum)
+    // console.log('layerNum+1 ', layerNum)
 
     const stageX: number[] = []
     const stageY: number[] = []
     this.game.stageArea.forEachTile(_tile => {
       if (_tile.index !== -1) {
-        // console.log(_tile)
+        // // console.log(_tile)
         stageX.push(_tile.x * 16)
         stageY.push(_tile.y * 16)
       }
@@ -158,7 +158,7 @@ export class Mine {
     const screenY: number[] = []
     displayScreen_4.forEachTile(_tile => {
       if (_tile.index !== -1 && _tile.index > 0) {
-        // console.log("debug_displayScreen_4 ", _tile.index, _tile.x, _tile.y)
+        // // console.log("debug_displayScreen_4 ", _tile.index, _tile.x, _tile.y)
         screenXY.push({
           x: _tile.x * 16,
           y: _tile.y * 16
@@ -288,10 +288,10 @@ export class Mine {
     ]);
     this.game.fightMachineOverlapText.setVisible(true)
     this.game.fightMachineOverlapText.setDepth(-1)
-    console.log("--***------fightMachineOverLapArea ", this.game.fightMachineOverlapText)
+    // console.log("--***------fightMachineOverLapArea ", this.game.fightMachineOverlapText)
 
-    console.log("inner boundary -- ", temp1);
-    console.log("outer boundary -- ", temp2);
+    // console.log("inner boundary -- ", temp1);
+    // console.log("outer boundary -- ", temp2);
     const scaleValue = isMobile ? 1 : 2;
 
     this.hitFightMachineArrow = this.scene.add.image(380, 360, "hit_box_tutorial")
@@ -329,7 +329,7 @@ export class Mine {
       ) {
         if ((keysInfo.keyK.pressed || keysInfo.keyP.pressed)) {
           // overlap with atm
-          console.log("overlap atm and kick");
+          // console.log("overlap atm and kick");
           this.atmExt.setDepth(-1)
           setTimeout(() => {
             store.dispatch(OpenAtmView(!store.getState().userActionsDataStore.openAtmView));
@@ -372,7 +372,7 @@ export class Mine {
           && tempMyPlayer.gameObject.playerContainer.y < this.brewRect.leftY + this.brewRect.height))
       ) {
         if ((keysInfo.keyK.pressed || keysInfo.keyP.pressed) && (tempMyPlayer.orientation === "left")) {
-          console.log("overlap brew and kick", store.getState().userActionsDataStore.brewMachinePunched);
+          // console.log("overlap brew and kick", store.getState().userActionsDataStore.brewMachinePunched);
           this.brewExt.setDepth(-1)
           setTimeout(() => {
             store.dispatch(BrewMachinePunched(!store.getState().userActionsDataStore.brewMachinePunched))
@@ -383,7 +383,7 @@ export class Mine {
       } else {
         store.dispatch(BrewMachinePunched(false))
       }
-      // console.log("-collision_with--",((tempMyPlayer.gameObject.playerContainer.x > this.game.fightMachineOverlapRectReverse.leftX &&tempMyPlayer.gameObject.playerContainer.x < this.game.fightMachineOverlapRectReverse.leftX + this.game.fightMachineOverlapRectReverse.width )
+      // // console.log("-collision_with--",((tempMyPlayer.gameObject.playerContainer.x > this.game.fightMachineOverlapRectReverse.leftX &&tempMyPlayer.gameObject.playerContainer.x < this.game.fightMachineOverlapRectReverse.leftX + this.game.fightMachineOverlapRectReverse.width )
       //   && (tempMyPlayer.gameObject.playerContainer.y > this.game.fightMachineOverlapRectReverse.leftY && tempMyPlayer.gameObject.playerContainer.y < this.game.fightMachineOverlapRectReverse.leftY + this.game.fightMachineOverlapRectReverse.height ) 
       // ), tempMyPlayer.orientation, keysInfo.keyK.pressed || keysInfo.keyP.pressed)
       if ((tempMyPlayer.gameObject.playerContainer.x > this.FightMachineRect.leftX && tempMyPlayer.gameObject.playerContainer.x < this.FightMachineRect.leftX + this.FightMachineRect.width)
@@ -401,7 +401,7 @@ export class Mine {
           if (store.getState().queueDetailedInfo.added_to_queue_pool) {
             check = true
           }
-          // console.log("collision_with checking if in queue ", check)
+          // // console.log("collision_with checking if in queue ", check)
           if (!check) {
             if (!store.getState().userActionsDataStore.hitFightMachine) {
               this.game.lobbySocketConnection.send(JSON.stringify({
@@ -437,7 +437,7 @@ export class Mine {
     }
 
 
-    // console.log("debug_onmouse ", onGameUI)
+    // // console.log("debug_onmouse ", onGameUI)
     // if (onGameUI) {
     //   store.dispatch(GameTurnMouseClickOff(true))
     // } 
@@ -463,7 +463,7 @@ export class Mine {
     //     "brew-can"
     //   )
     //   this.brewCanSprite.setDisplaySize(7, 14)
-    //   console.log("brew-- ", this.brewCanSprite.x, this.brewCanSprite.y)
+    //   // console.log("brew-- ", this.brewCanSprite.x, this.brewCanSprite.y)
     //   this.brewCanSprite.setDepth(this.brewCanSprite.y - DEFAULT_SPRITE_DISPLAY_HEIGHT/2)
     //   this.scene.tweens.add({
     //     targets: this.brewCanSprite,

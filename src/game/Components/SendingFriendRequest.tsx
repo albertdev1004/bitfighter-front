@@ -67,7 +67,7 @@ export function SendingFriendRequest() {
   // console.log("SendingFriendRequest-PlayerSelectedInfo", friendsDetails)
 
   const addFriendButtonClick = async () => {
-    console.log("sending friend request")
+    // console.log("sending friend request")
     setButtonLoading(true)
     await sendFriendRequest(PlayerSelectedInfo.user_wallet_address, PlayerSelectedInfo.minted_id)
     const user_all_data: USER_DETAILS = await fetchUserDetails();

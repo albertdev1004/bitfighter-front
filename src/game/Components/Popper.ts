@@ -138,7 +138,7 @@ export class Popper {
             
 
         } catch (err) {
-            console.log("error in PopXP -->", err);
+            // console.log("error in PopXP -->", err);
         }
     }
 }

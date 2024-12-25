@@ -305,11 +305,11 @@ export default function MintPage() {
 
   const preSaleMint = async () => {
     // if (!validateFields()) return;
-    console.log('in_presalemint', mintCardsQuantity, refAddrMintCard, mintCardsQuantity < 1)
+    // console.log('in_presalemint', mintCardsQuantity, refAddrMintCard, mintCardsQuantity < 1)
 
     if (mintCardsQuantity < 1) {
       setmintCardsQuantity(1)
-      // console.log("in_presalemint2", mintCardsQuantity, refAddrMintCard, mintCardsQuantity <1)
+      // // console.log("in_presalemint2", mintCardsQuantity, refAddrMintCard, mintCardsQuantity <1)
       // store.dispatch(SetFailureNotificationBool(true))
       // store.dispatch(SetFailureNotificationMessage("Quantity should be greater than 0"))
       // return
@@ -326,9 +326,9 @@ export default function MintPage() {
     setMintingState('Generating Your Mint Card')
 
     const allowance = await checkAllowancePresale(store.getState().web3store.userAddress)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('100000000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       if (!(await approveWBTC2(PRESALE_CONTRACT_ADDRESS, ethers.BigNumber.from('10000000000000000000')))) {
         setMintingBool(false)
         setMintingState('')
@@ -341,7 +341,7 @@ export default function MintPage() {
     }
 
     const output = await randomGenaratePreSaleV2(store.getState().web3store.userAddress, mintCardsQuantity)
-    console.log('---output ', output)
+    // console.log('---output ', output)
 
     setMintingState('Minting Your Mint Card')
     const minted = await mintPreSaleNFTV2(output.data, tempRefAddr)
@@ -369,7 +369,7 @@ export default function MintPage() {
   }
 
   const preSaleMintDrip = async () => {
-    console.log('in_presalemintDrip', dripMintCardsQuantity)
+    // console.log('in_presalemintDrip', dripMintCardsQuantity)
 
     if (dripMintCardsQuantity < 1) {
       setdripMintCardsQuantity(1)
@@ -386,9 +386,9 @@ export default function MintPage() {
     setMintingState('Generating Your Mint Card')
 
     const allowance = await checkAllowanceGeneral(store.getState().web3store.userAddress, PRESALE_DRIP_CONTRACT_V2)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('100000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       if (!(await approveWBTC2(PRESALE_DRIP_CONTRACT_V2, ethers.BigNumber.from('10000000000000000000')))) {
         setMintingBool(false)
         setMintingState('')
@@ -406,7 +406,7 @@ export default function MintPage() {
       driptatooMintCard === 1 ? 'Yes' : 'No',
       driptagMintCard === 1 ? 'Yes' : 'No',
     )
-    console.log('---output ', output)
+    // console.log('---output ', output)
 
     setMintingState('Minting Your Drip Mint Card')
     const minted = await mintPreSaleDripNFTV2(output.data, tempRefAddr, driptatooMintCard === 1 ? 1 : 0, driptagMintCard === 1 ? 1 : 0)
@@ -443,9 +443,9 @@ export default function MintPage() {
     }
 
     const allowance = await checkAllowanceOneKClub(store.getState().web3store.userAddress)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('1000000000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       if (!(await approveUSDC(onek_club_contract_adress, ethers.BigNumber.from('100000000000000000')))) {
         setMintingBool(false)
         setMintingState('')
@@ -458,7 +458,7 @@ export default function MintPage() {
     }
 
     // const output = await randomGenaratePreSale(store.getState().web3store.userAddress);
-    // console.log("---output ", output)
+    // // console.log("---output ", output)
 
     setMintingState('Minting Your Onek Club Card')
     let temp_quantity = 1

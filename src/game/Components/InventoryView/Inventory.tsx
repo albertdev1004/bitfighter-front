@@ -2,26 +2,26 @@
 /* eslint @typescript-eslint/no-unused-vars: off */
 /* eslint @typescript-eslint/no-explicit-any: off */
 
-import { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-import styled from 'styled-components'
 import { Box, Button, Grid } from '@mui/material'
-
+import { useState } from 'react'
+import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
+import { useAppSelector } from '../../../hooks'
 import Game from '../../scenes/Game'
 import phaserGame from '../../../PhaserGame'
-
-import { useAppSelector } from '../../../hooks'
-import { useAssetsApi } from '../../../hooks/ApiCaller'
-
 import store from '../../../stores'
-import { SetEquippedBrewCount } from '../../../stores/AssetStore'
-import { SetMouseClickControlInventory } from '../../../stores/UserActions'
+import { useAssetsApi } from '../../../hooks/ApiCaller'
 import {
   SetFailureNotificationBool,
   SetFailureNotificationMessage,
   SetSuccessNotificationBool,
   SetSuccessNotificationMessage,
 } from '../../../stores/NotificationStore'
+import { SetEquippedBrewCount } from '../../../stores/AssetStore'
+import { SetMouseClickControlInventory } from '../../../stores/UserActions'
+
+import brew from '../../../assets/bitfgihter_assets/brew/brew.png'
+import emptybrew from '../../../assets/bitfgihter_assets/brew/empty-brew.png'
 
 const Bag = styled.div`
   display: flex;
@@ -162,7 +162,7 @@ export function Inventory(data: any) {
             <Grid item xs={4} key={index}>
               <Item>
                 <img
-                  src='bitfgihter_assets/brew/BREW.png'
+                  src={brew}
                   alt='.'
                   height='35'
                   width='15'
@@ -177,7 +177,7 @@ export function Inventory(data: any) {
           {nonBrewArrMap.map((el) => (
             <Grid item xs={4} key={uuidv4()}>
               <Item>
-                <img src='bitfgihter_assets/brew/empty-brew.png' alt='.' height='35' width='15' />
+                <img src={emptybrew} alt='.' height='35' width='15' />
               </Item>
             </Grid>
           ))}
@@ -203,7 +203,7 @@ export function Inventory(data: any) {
               <Grid container spacing={2} style={{ padding: '2px' }}>
                 {/* Left side with buttons */}
                 <Grid item xs={6}>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={1}>
                     <Grid item xs={12}>
                       <Button
                         variant='contained'

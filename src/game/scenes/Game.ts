@@ -78,7 +78,6 @@ import { random_spawn_points } from "../controls/randomSpawnPoints";
 import { checkIpad, getSystemInfo } from '../../utils/systemInfo';
 import Joystick from '../controls/joystick';
 import { checkIfNearOtherplayer } from '../controls/movement';
-import Mixpanel from '../../mixpanel';
 
 const textAreaVisible = false;
 
@@ -182,11 +181,11 @@ export default class Game extends Phaser.Scene {
         this.pressedKeys = [];
         this.CurrentKeysPressed = {};
         this.bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
-        console.log("running constructor game.. ");
+        // console.log("running constructor game.. ");
     }
 
     init(data: { data: any; key: string }) {
-        console.log("running init in game .. ", data);
+        // console.log("running init in game .. ", data);
         this.nftData = data.data;
         store.dispatch(SetCurrentGamePlayer(this.nftData));
         store.dispatch(setNickName(this.nftData.nick_name));
@@ -199,7 +198,7 @@ export default class Game extends Phaser.Scene {
     }
 
     preload(data: { data: IPlayerData; key: string }) {
-        console.log("running preload in game .. ", this.nftData);
+        // console.log("running preload in game .. ", this.nftData);
     }
 
     enableKeyBoard() {
@@ -287,11 +286,6 @@ export default class Game extends Phaser.Scene {
     }
 
     async create(data: { data: any; key: string }) {
-
-
-        // Mixpanel.identify(web2Address);
-        Mixpanel.track('Game_Start');
-
         // this.input.setPollAlways();
         this.err_music = this.sound.add("err_music");
         for (let i = 0; i < 10; i++) {
@@ -323,7 +317,7 @@ export default class Game extends Phaser.Scene {
         // this.coins_drop_sound = this.sound.add("coins_drop", { volume: 0.5 });
 
         this.random_pos_selected = Math.floor(Math.random() * random_spawn_points.length);
-        console.log("this.random pos ", this.random_pos_selected);
+        // console.log("this.random pos ", this.random_pos_selected);
 
         store.dispatch(ChangePath("gamePlay"));
 
@@ -339,7 +333,7 @@ export default class Game extends Phaser.Scene {
         // updateBetInfOfPlayer()
         // FetchWalletLog()
 
-        // console.log(" game created .. ", data, data.key, this.nftData);
+        // // console.log(" game created .. ", data, data.key, this.nftData);
         // createCharacterAnims(this.anims)
         createOtherCharacterAnimsV2(this.anims, "player-" + this.nftData.minted_id.toString());
         createSilverCoinAnim(this.anims, "silver_coin");
@@ -348,23 +342,23 @@ export default class Game extends Phaser.Scene {
 
         // const mapCreator = new MapCreator(this);
         // this.map = mapCreator.createMap(this.mapKey)
-        console.log("websocket server--", process.env.REACT_APP_DEV_ENV, REACT_APP_LOBBY_WEBSOCKET_SERVER, store.getState().playerDataStore.nick_name, store.getState().websiteStateStore.selected_server_url);
+        // console.log("websocket server--", process.env.REACT_APP_DEV_ENV, REACT_APP_LOBBY_WEBSOCKET_SERVER, store.getState().playerDataStore.nick_name, store.getState().websiteStateStore.selected_server_url);
 
         store.dispatch(SetShowGameServersList(false));
         // this.lobbySocketConnection = new WebSocket(REACT_APP_LOBBY_WEBSOCKET_SERVER + "/roomid")
 
         //Local Server
         // this.lobbySocketConnection = new WebSocket("ws://localhost:9001/");
-        // this.lobbySocketConnection = new WebSocket("ws://localhost:9001/");
+        this.lobbySocketConnection = new WebSocket("ws://localhost:9001/");
 
-        // console.log("-game_server_url--", store.getState().websiteStateStore.selected_server_url)
+        // // console.log("-game_server_url--", store.getState().websiteStateStore.selected_server_url)
         //Hosted Server
-        this.lobbySocketConnection = new WebSocket(`${store.getState().websiteStateStore.selected_server_url}/${store.getState().websiteStateStore.selected_roomId}`);
+        // this.lobbySocketConnection = new WebSocket(`${store.getState().websiteStateStore.selected_server_url}/${store.getState().websiteStateStore.selected_roomId}`);
 
         this.lobbySocketConnection.addEventListener("open", (event) => {
             this.lobbySocketConnected = true;
-            // console.log("connected ... ", event)
-            console.log("debug__nft__data ", this.nftData);
+            // // console.log("connected ... ", event)
+            // console.log("debug__nft__data ", this.nftData);
             // let joining_data = {
 
             // }
@@ -385,7 +379,7 @@ export default class Game extends Phaser.Scene {
                     user_type: store.getState().web3store.web3Connected ? "web3" : "web2",
                 })
             );
-            // console.log("important_message--", {
+            // // console.log("important_message--", {
             //   event: "joined",
             //   walletAddress: store.getState().web3store.userAddress,
             //   room_id:"lobby",
@@ -402,20 +396,20 @@ export default class Game extends Phaser.Scene {
             //   data: store.getState().geoStore.geoInfo,
             //   walletAddress: store.getState().web3store.userAddress,
             // }))
-            console.log("sending koined  ", this.nftData);
+            // console.log("sending koined  ", this.nftData);
         });
 
         this.lobbySocketConnection.addEventListener("close", (event) => {
             this.lobbySocketConnected = false;
-            console.log("debug_server disconnected ... ", event);
+            // console.log("debug_server disconnected ... ", event);
         });
-        // console.log()
+        // // console.log()
         store.dispatch(SetPlayerIdForGame(store.getState().web3store.userAddress + "_" + this.nftData.minted_id));
 
         // this.myPlayer = new MyPlayer(this,random_spawn_points[this.random_pos_selected].x, random_spawn_points[this.random_pos_selected].y, "player-"+this.nftData.minted_id.toString(), "idle-player-"+this.nftData.minted_id.toString(), this.nftData.nick_name, this.nftData, this.lobbySocketConnection );
         // this.player.sprite = this.myPlayer.sprite;
         // this.player.gameObject = this.myPlayer;
-        // console.log("@$#%$ player %$--", this.player.sprite);
+        // // console.log("@$#%$ player %$--", this.player.sprite);
 
         // this.fightInfoTextClass = new FightInfoText(this);
 
@@ -436,7 +430,7 @@ export default class Game extends Phaser.Scene {
             // this.clubFrontLayer = clubFrontLayer;
 
             // collisionLayer.forEachTile((_tile) => {
-            //     // console.log(_tile);
+            //     // // console.log(_tile);
             //     if (_tile.index !== -1) {
             //         for (let i = 0; i < 16; i++) {
             //             for (let j = 0; j < 16; j++) {
@@ -506,7 +500,7 @@ export default class Game extends Phaser.Scene {
         const isIpad = checkIpad();
         if (ismobile || isIpad) {
             this.cameras.main.setZoom(1, 1);
-            Joystick.MoveController(orientation, (data: any) => {
+            Joystick.MoveController((data: any) => {
                 this.joystickmovelistener(data);
             });
             Joystick.ShootController(this, orientation, (data: any) => {
@@ -516,10 +510,10 @@ export default class Game extends Phaser.Scene {
     }
 
     resetRats(newRats: IRatsStateManager, create = false) {
-        // console.log("-------in_mouse_reset ", newRats.rats_count, this.rats.length, create);
+        // // console.log("-------in_mouse_reset ", newRats.rats_count, this.rats.length, create);
         if (create) {
             this.rats.map((data: IRat, i) => {
-                console.log("RATS this.rats.map((data: IRat, i) => {")
+                // console.log("RATS this.rats.map((data: IRat, i) => {")
                 data.gameObject.DestroyGameObject();
             });
             this.rats = [];
@@ -544,7 +538,7 @@ export default class Game extends Phaser.Scene {
                 }
             });
 
-            // console.log("-------in_debug_rats_mouse_reset ", newRats.rats_count, this.rats.length, toDelete);
+            // // console.log("-------in_debug_rats_mouse_reset ", newRats.rats_count, this.rats.length, toDelete);
 
             if (toDelete >= 0) {
                 this.rats.splice(toDelete, 1);
@@ -622,7 +616,7 @@ export default class Game extends Phaser.Scene {
         if (this.frameTime > 30) {
             this.frameTime = 0;
         } else {
-            // console.log("not updating ", this.frameTime)
+            // // console.log("not updating ", this.frameTime)
             return;
         }
         this.cameras.main.roundPixels = true;
@@ -630,10 +624,10 @@ export default class Game extends Phaser.Scene {
 
         const pointer: Phaser.Input.Pointer = this.input.activePointer;
         const worldPoint: Phaser.Math.Vector2 = this.input.activePointer.positionToCamera(this.cameras.main) as Phaser.Math.Vector2;
-        // console.log(worldPoint, this.radiatorRect)
-        // console.log("debug_mouse-------",store.getState().userActionsDataStore.turnMouseClickOff, this.mousePressed, pointer.leftButtonDown())
+        // // console.log(worldPoint, this.radiatorRect)
+        // // console.log("debug_mouse-------",store.getState().userActionsDataStore.turnMouseClickOff, this.mousePressed, pointer.leftButtonDown())
 
-        // console.log("debug_mouse-------",
+        // // console.log("debug_mouse-------",
         //   store.getState().userActionsDataStore.turnMouseClickOff,
         //   store.getState().userActionsDataStore.mouseClickControlHeader,
         //   store.getState().userActionsDataStore.mouseClickControlATM,
@@ -658,7 +652,7 @@ export default class Game extends Phaser.Scene {
         ) {
             if (pointer.rightButtonDown() && !this.mousePressed && !Joystick.isTouched) {
                 this.mousePressed = true;
-                // console.log("right button down")
+                // // console.log("right button down")
                 this.keyControls.keys.keyK.pressed = true;
                 this.keyControls.keys.lastKey = "KeyK";
                 this.keyControls.keys.keyD.double_pressed = false;
@@ -676,7 +670,7 @@ export default class Game extends Phaser.Scene {
                     // }, 500)
                 }
             } else if (pointer.leftButtonDown() && !this.mousePressed && !Joystick.isTouched) {
-                console.log("left button down ", this.mousePressed, this.fightMachineOverlapText.depth);
+                // console.log("left button down ", this.mousePressed, this.fightMachineOverlapText.depth);
                 this.mousePressed = true;
                 this.keyControls.keys.keyP.pressed = true;
                 this.keyControls.keys.lastKey = "KeyP";
@@ -695,20 +689,20 @@ export default class Game extends Phaser.Scene {
                     // }, 500)
                 }
             } else if (pointer.leftButtonReleased() && this.mousePressed) {
-                // console.log("left button up")
+                // // console.log("left button up")
                 this.keyControls.keys.keyP.pressed = false;
                 this.mousePressed = false;
             } else if (pointer.rightButtonReleased() && this.mousePressed) {
-                // console.log("right button up")
+                // // console.log("right button up")
                 this.keyControls.keys.keyK.pressed = false;
                 this.mousePressed = false;
             }
         }
 
         if (this.lobbySocketConnected && store.getState().web3store.userAddress !== "" && store.getState().userPathStore.movementAbilityPlayer) {
-            // console.log("timeframe latency_check-- ", this.frameTime)
+            // // console.log("timeframe latency_check-- ", this.frameTime)
             // if (this.frameTime % 100 === 0) {
-            //   console.log("timeframe latency_check-- ", this.frameTime)
+            //   // console.log("timeframe latency_check-- ", this.frameTime)
             //   this.lobbySocketConnection.send(JSON.stringify({
             //     event: "latency_check",
             //     walletAddress: store.getState().web3store.userAddress,
@@ -728,7 +722,7 @@ export default class Game extends Phaser.Scene {
                 //   if (!_otherplayer.kickStart && _otherplayer.wallet_address === store.getState().web3store.userAddress) {
                 //     // let action_id = uuidv4();
                 //     // ActionManager.AddToActionQueue({ event: "kick", walletAddress: store.getState().web3store.userAddress }, action_id );
-                //     // console.log("checking unequip_brew ", )
+                //     // // console.log("checking unequip_brew ", )
                 //     const tempPlayer = _otherplayer.gameObject;
                 //     if (tempPlayer?.sprite) {
                 //       ActionManager.AddTomoveActionQueue({ action_id, task_state: true, x: tempPlayer?.sprite.x, y: tempPlayer.sprite.y} );
@@ -749,7 +743,7 @@ export default class Game extends Phaser.Scene {
                                     _otherplayer.gameObject.sprite.anims.currentAnim.key !== "fly_as_angel-" + _otherplayer.wallet_address + "_" + _otherplayer.minted_id
                                     // && _otherplayer.gameObject.sprite.anims.currentAnim.key !== 'brew-dropped-'+_otherplayer.wallet_address + "_" + _otherplayer.minted_id
                                 ) {
-                                    // console.log("sending move signal")
+                                    // // console.log("sending move signal")
                                     const direction = [];
                                     let running = false;
                                     if (this.keyControls.keys.keyA.pressed) {
@@ -768,7 +762,7 @@ export default class Game extends Phaser.Scene {
                                         running = true;
                                     }
                                     if (this.network.movementUpdateCounter % 2 === 0) {
-                                        // console.log("debug_movement ----- ", this.network.movementUpdateCounter)
+                                        // // console.log("debug_movement ----- ", this.network.movementUpdateCounter)
                                         this.network.movementUpdateCounter = 1;
                                         this.lobbySocketConnection.send(
                                             JSON.stringify({
@@ -787,7 +781,7 @@ export default class Game extends Phaser.Scene {
                                         // this.network.movementUpdateCounter = 0;
                                     }
 
-                                    // console.log("important--- move--", {
+                                    // // console.log("important--- move--", {
                                     //   event: "move",
                                     //   delta: delta,
                                     //   walletAddress: store.getState().web3store.userAddress,
@@ -967,14 +961,14 @@ export default class Game extends Phaser.Scene {
 
         // fight music .
         if (store.getState().userActionsDataStore.fightersInfo.fightStarted && store.getState().userActionsDataStore.fightersInfo.player1.walletAddress !== "" && store.getState().userActionsDataStore.fightersInfo.player2.walletAddress !== "") {
-            // console.log(" starting music ..")
+            // // console.log(" starting music ..")
             this.playFightMusic();
             store.dispatch(FightContinue(true));
         } else {
             this.stopFightMusic();
             store.dispatch(FightContinue(false));
         }
-        // console.log(" current palyer fighting .. " , store.getState().userActionsDataStore.currentPlayerFighting)
+        // // console.log(" current palyer fighting .. " , store.getState().userActionsDataStore.currentPlayerFighting)
         if (store.getState().userActionsDataStore.currentPlayerFighting) {
             store.dispatch(ChangeShowMenuBox(false));
             // store.dispatch(ShowChatWindow(false))
@@ -1004,7 +998,7 @@ export default class Game extends Phaser.Scene {
                             { x: _p2.gameObject?.playerContainer.x, y: _p2.gameObject?.playerContainer.y }
                         )
                         if (otherPlayerClose && (_p1.kicking || _p1.punching)) {
-                            console.log("debug close ", otherPlayerClose, _p1.gameObject?.nick_name, _p2.gameObject?.nick_name)
+                            // console.log("debug close ", otherPlayerClose, _p1.gameObject?.nick_name, _p2.gameObject?.nick_name)
                             // _p2.gameObject?.createNewDialogBox("Let's Fight !!");
                             // show the ui somewhere
                             // if (isNullOrUndefined(localStorage.getItem("fight_tutorials_viewed"))) {
@@ -1062,7 +1056,7 @@ export default class Game extends Phaser.Scene {
                         ) {
                             if (_player.gameObject.gassed_lift_fall_off_started == 0 || _player.gameObject.gassed_lift_fall_off_started + 20000 > new Date().getTime()) {
                                 if (!_player.stunned) {
-                                    // console.log("entering in _player. stunned")
+                                    // // console.log("entering in _player. stunned")
                                     _player.running = false;
                                     _player.kickStart = false;
                                     _player.kicking = false;
@@ -1140,7 +1134,7 @@ export default class Game extends Phaser.Scene {
                     } else if (_player.gameObject.dead) {
                         _player.gameObject.dead = false;
                         _player.gameObject.sprite.play("dying_total_sequqnce-" + _player.wallet_address + "_" + _player.minted_id).once("animationcomplete", (a: any, b: any, c: any, d: any) => {
-                            console.log("fly_as_angel dying finish ", a.key);
+                            // console.log("fly_as_angel dying finish ", a.key);
                             if (_player.gameObject) {
                                 _player.gameObject.sprite.stop();
                                 _player.gameObject.sprite.play("fly_as_angel-" + _player.wallet_address + "_" + _player.minted_id);
@@ -1189,9 +1183,9 @@ export default class Game extends Phaser.Scene {
                             });
                         }
                     } else if (_player.deadStarted) {
-                        // console.log("entering in _player. stunnedstarted", _player.stunned, _player.stunnedStarted)
+                        // // console.log("entering in _player. stunnedstarted", _player.stunned, _player.stunnedStarted)
                         if (!_player.dead) {
-                            // console.log("entering in _player. stunned")
+                            // // console.log("entering in _player. stunned")
                             _player.running = false;
                             _player.kickStart = false;
                             _player.kicking = false;
@@ -1207,7 +1201,7 @@ export default class Game extends Phaser.Scene {
                     } else if (_player.kicking && !_player.stunnedStarted && !_player.deadStarted) {
                         _player.running = false;
                         // _player.gameObject.sprite.play("kick-"+_player.wallet_address + "_" + _player.minted_id ).once('animationcomplete', () => {
-                        //   // console.log("done kicking . ")
+                        //   // // console.log("done kicking . ")
                         //   _player.kicking = false
                         //   _player.kickStart = false
                         //   if (_player.gameObject) {
@@ -1256,7 +1250,7 @@ export default class Game extends Phaser.Scene {
                             });
                         }
                     } else if (_player.runStart && !_player.stunnedStarted && !_player.deadStarted) {
-                        // console.log(" in here player running --- ", _player.running, _player.runStart, _player.stunnedStarted, _player.deadStarted)
+                        // // console.log(" in here player running --- ", _player.running, _player.runStart, _player.stunnedStarted, _player.deadStarted)
                         if (!_player.running) {
                             if (_player.hasBrewInHand) {
                                 _player.gameObject.sprite.play("runBrew-" + _player.wallet_address + "_" + _player.minted_id).once("animationcomplete", () => {
@@ -1281,7 +1275,7 @@ export default class Game extends Phaser.Scene {
                             _player.running = true;
                         }
                     } else if (_player.gameObject.moving && !_player.stunnedStarted && !_player.deadStarted && !_player.running) {
-                        // console.log("other_player_moving ", _player.wallet_address, _player.gameObject.sprite.anims)
+                        // // console.log("other_player_moving ", _player.wallet_address, _player.gameObject.sprite.anims)
                         // if (_player.gameObject?.sprite.anims && _player.gameObject.sprite.anims.currentAnim) {
                         // if (isNullOrUndefined(_player.gameObject.sprite.anims.currentAnim)) {
                         //   _player.gameObject.sprite.play("walk-"+_player.wallet_address + "_" + _player.minted_id)
@@ -1353,7 +1347,7 @@ export default class Game extends Phaser.Scene {
                     _player.gotBackHit = false;
                 }
             } catch (err) {
-                console.log("error ", err, _player);
+                // console.log("error ", err, _player);
             }
         });
 
@@ -1382,7 +1376,7 @@ export default class Game extends Phaser.Scene {
                     }
                 }
             } else if (_mouse.gameObject.dead) {
-                // console.log("created dead RAT!!");
+                // // console.log("created dead RAT!!");
                 if (!_mouse.gameObject.deadAnim) {
                     _mouse.gameObject.deadAnim = true;
                     _mouse.gameObject.sprite.play("die").once("animationcomplete", () => {

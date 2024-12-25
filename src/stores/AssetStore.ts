@@ -14,14 +14,12 @@ export interface IAssetsOfPlayer {
 interface IAssetStoreManager {
   assets: Array<IAssetsOfPlayer>,
   equippedBrewCount: number,
-  semiEquippedBrewCount: number,
   in_hand_brew: boolean,
 }
 
 const initialState: IAssetStoreManager = {
   assets: [],
   equippedBrewCount: 0,
-  semiEquippedBrewCount: 0,
   in_hand_brew: false
 }
 
@@ -35,25 +33,14 @@ export const AssetsManager = createSlice({
     },
 
     SetEquippedBrewCount: (state: { equippedBrewCount: number; }, action: PayloadAction<number>) => {
-      if (action.payload >= 0) {
-        state.equippedBrewCount = action.payload;
-      }
-
+      state.equippedBrewCount = action.payload;
     },
-
-    SetSemiEquippedBrewCount: (state: { equippedBrewCount: number; }, action: PayloadAction<number>) => {
-      if (action.payload >= 0) {
-        state.semiEquippedBrewCount = action.payload;
-      }
-    },
-
-
     SetInHandBrew: (state: { in_hand_brew: boolean; }, action: PayloadAction<boolean>) => {
       state.in_hand_brew = action.payload;
     },
   },
 })
 
-export const { SetAssetsInAssetManager, SetEquippedBrewCount, SetSemiEquippedBrewCount, SetInHandBrew } = AssetsManager.actions
+export const { SetAssetsInAssetManager, SetEquippedBrewCount, SetInHandBrew } = AssetsManager.actions
 
 export default AssetsManager.reducer

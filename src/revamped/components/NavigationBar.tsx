@@ -16,7 +16,6 @@ import { Box, FormControl, MenuItem, Select } from '@mui/material';
 import { GetBFContractAddress } from '../../contract/bitfighter_constants';
 import { GetGameLogicContractAddress } from '../../contract/gamelogic_constants';
 import { UpdateUserNetwork } from '../../hooks/ApiCaller';
-import { updateOneKClubMintedCount } from '../../utils/web3_utils';
 // import { useDispatch } from 'react-redux';
 // import { useAppDispatch, useAppSelector } from '../../hooks'
 
@@ -44,16 +43,12 @@ function Menu() {
   const dispatch = useAppDispatch();
   const location = useLocation()
 
-  useEffect(() => {
-    if (selectedNetwork == "") {
-      store.dispatch(SetConnectedNetwork("AVALANCHE"))
-      localStorage.setItem("network_connected", "AVALANCHE")
-    }
-    console.log("debug selectedNetwork updated:", selectedNetwork); // Should log "AVALANCHE" or "BOB"
-  }, [selectedNetwork]);
+  // useEffect(() => {
+  //   // console.log("debug selectedNetwork updated:", selectedNetwork); // Should log "AVALANCHE" or "BOB"
+  // }, [selectedNetwork]);
 
   const web3SemiLogOut = async () => {
-    // console.log("button pressed");
+    // // console.log("button pressed");
     store.dispatch(setNFTLoadedBool(false))
     dispatch(LogOut())
     localStorage.removeItem('connected_matic_network')
@@ -62,28 +57,21 @@ function Menu() {
     localStorage.removeItem('web2_wallet_address')
     localStorage.removeItem('web2_email_address')
     // localStorage.removeItem('saw_controls')
-    // console.log('logged out ')
+    // // console.log('logged out ')
     // setTimeout(() => {
     //   window.location.reload()
     // }, 500)
 
   }
 
-  console.log("init menu -- debug -- ", selectedNetwork)
+  // console.log("init menu -- debug -- ", selectedNetwork)
   const handleSelectNetwork = (network: string) => {
-    console.log("debug_handleSelectNetwork ", network)
+    // console.log("debug_handleSelectNetwork ", network)
     store.dispatch(SetConnectedNetwork(network))
     localStorage.setItem("network_connected", network)
-
-    if (network == "AVALANCHE") {
-      updateOneKClubMintedCount();
-    }
-
-
-    console.log("debug .. bf network address ", GetBFContractAddress(), GetGameLogicContractAddress())
+    // console.log("debug .. bf network address ", GetBFContractAddress(), GetGameLogicContractAddress())
     web3SemiLogOut()
     setTimeout(() => {
-
       UpdateUserNetwork()
     }, 400)
 
@@ -91,11 +79,10 @@ function Menu() {
 
   // Define marketplace URLs based on the selected network
   const getMarketplaceURL = () => {
-    console.log("getMarketplaceURL ", selectedNetwork)
-    switch (selectedNetwork.toLowerCase()) {
-      case 'avalanche':
+    switch (selectedNetwork) {
+      case 'Avalanche':
         return 'https://joepegs.com/collections/avalanche/bit-fighters-gen-0';
-      case 'bob':
+      case 'BOB':
         return 'https://element.market/collections/bitfighters';
       default:
         return '#'; // Default or fallback URL
@@ -150,6 +137,28 @@ function Menu() {
         </Link>
       </li>
 
+      {/* <li className={`${location.pathname === '/contest' ? 'active' : ''}`}>
+        <span className='dot'></span>
+        <span className='dot'></span>
+        <span className='dot'></span>
+        <span className='dot'></span>
+
+        <Link to={'/contest'}>
+          <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <path
+              d='M7.99935 7.33334H8.66602V14.6667H7.33268V10H4.66602V9.33334H3.33268V8.66668H2.66602V8.00001H1.99935V6.66668H1.33268V5.33334H0.666016V3.33334H3.99935V4.00001H5.33268V4.66668H6.66602V5.33334H7.33268V6.00001H7.99935V7.33334Z'
+              fill='white'
+            />
+            <path
+              d='M15.3333 1.33334V4.00001H14.6667V5.33334H14V6.00001H13.3333V6.66668H12V7.33334H10.6667V8.00001H9.33333V6.66668H8.66667V5.33334H8V4.00001H8.66667V3.33334H9.33333V2.66668H10.6667V2.00001H12V1.33334H15.3333Z'
+              fill='white'
+            />
+          </svg>
+
+          <span>Contest</span>
+        </Link>
+      </li> */}
+
       <li>
         <span className='dot'></span>
         <span className='dot'></span>
@@ -186,7 +195,7 @@ function Menu() {
           <span>Leaderboard</span>
         </Link>
       </li>
-      <li className={`${location.pathname === '/network' ? 'active' : ''}`}>
+      {/* <li className={`${location.pathname === '/network' ? 'active' : ''}`}>
         <FormControl className='dropdown_header gameFont1' fullWidth sx={{
           minHeight: '36px',
           maxHeight: '40px',
@@ -233,7 +242,7 @@ function Menu() {
             })}
           </Select>
         </FormControl>
-      </li>
+      </li> */}
 
     </ul>
   )
@@ -249,10 +258,12 @@ function Profile() {
   const profileName = selectedPlayer.nick_name !== '' ? selectedPlayer.nick_name : '?'
 
   const web3LogOut = async () => {
-    // console.log("button pressed");
+    // // console.log("button pressed");
     if (window.confirm('You sure you want to Logout? ')) {
       store.dispatch(setNFTLoadedBool(false))
       // await Moralis.User.logOut();
+
+      localStorage.clear()
       dispatch(LogOut())
       localStorage.removeItem('connected_matic_network')
       localStorage.removeItem('last_web3_login_time')
@@ -260,7 +271,7 @@ function Profile() {
       localStorage.removeItem('web2_wallet_address')
       localStorage.removeItem('web2_email_address')
       localStorage.removeItem('saw_controls')
-      console.log('logged out ')
+      // console.log('logged out ')
       setTimeout(() => {
         window.location.reload()
       }, 500)

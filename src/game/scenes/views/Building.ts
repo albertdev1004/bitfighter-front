@@ -134,8 +134,6 @@ export class HQ {
     const propsMid = this.game.map.createLayer(layerNum, hqTilemap); layerNum += 1;
 
     //const xmas = this.game.map.createLayer(layerNum, xMasTileMap); layerNum += 1;
-    const xmasBG = this.game.map.createLayer(layerNum, xMasTileMap); layerNum += 1;
-    const xmas = this.game.map.createLayer(layerNum, xMasTileMap); layerNum += 1;
 
     const boxesLow = this.game.map.createLayer(layerNum, hqTilemap); layerNum += 1;
     const boxesMid = this.game.map.createLayer(layerNum, hqTilemap); layerNum += 1;
@@ -146,13 +144,13 @@ export class HQ {
 
     wallCollisionLayer.setDepth(-1)
     stageCollisionLayer.setDepth(-1)
-    console.log('layerNum+1 ', layerNum)
+    // console.log('layerNum+1 ', layerNum)
 
     const stageX: number[] = []
     const stageY: number[] = []
     this.game.stageArea.forEachTile(_tile => {
       if (_tile.index !== -1) {
-        // console.log(_tile)
+        // // console.log(_tile)
         stageX.push(_tile.x * 16)
         stageY.push(_tile.y * 16)
       }
@@ -163,7 +161,7 @@ export class HQ {
     const screenY: number[] = []
     displayScreen_4.forEachTile(_tile => {
       if (_tile.index !== -1 && _tile.index > 0) {
-        // console.log("debug_displayScreen_4 ", _tile.index, _tile.x, _tile.y)
+        // // console.log("debug_displayScreen_4 ", _tile.index, _tile.x, _tile.y)
         screenXY.push({
           x: _tile.x * 16,
           y: _tile.y * 16
@@ -293,16 +291,16 @@ export class HQ {
     ]);
     this.game.fightMachineOverlapText.setVisible(true)
     this.game.fightMachineOverlapText.setDepth(-1)
-    console.log("--***------fightMachineOverLapArea ", this.game.fightMachineOverlapText)
+    // console.log("--***------fightMachineOverLapArea ", this.game.fightMachineOverlapText)
 
-    console.log("inner boundary -- ", temp1);
-    console.log("outer boundary -- ", temp2);
+    // console.log("inner boundary -- ", temp1);
+    // console.log("outer boundary -- ", temp2);
     const scaleValue = isMobile ? 1 : 2;
 
     this.hitFightMachineArrow = this.scene.add.image(380, 360, "hit_box_tutorial")
       .setDepth(90000)
       .setScale(scaleValue);
-
+    
     this.goLeftSprite = this.scene.add.image(800, 300, "go_left_tutorial")
       .setDepth(90000)
       .setScale(scaleValue);
@@ -334,7 +332,7 @@ export class HQ {
       ) {
         if ((keysInfo.keyK.pressed || keysInfo.keyP.pressed)) {
           // overlap with atm
-          console.log("overlap atm and kick");
+          // console.log("overlap atm and kick");
           this.atmExt.setDepth(-1)
           setTimeout(() => {
             store.dispatch(OpenAtmView(!store.getState().userActionsDataStore.openAtmView));
@@ -361,7 +359,7 @@ export class HQ {
             // this.serviceExt.setDepth(1)
             store.dispatch(OpenServiceView(true));
 
-            // store.dispatch(OpenServiceView(!store.getState().userActionsDataStore.openServiceView));
+           // store.dispatch(OpenServiceView(!store.getState().userActionsDataStore.openServiceView));
             this.bootstrap.play_button_press_sound()
           }, 500)
         }
@@ -377,7 +375,7 @@ export class HQ {
           && tempMyPlayer.gameObject.playerContainer.y < this.brewRect.leftY + this.brewRect.height))
       ) {
         if ((keysInfo.keyK.pressed || keysInfo.keyP.pressed) && (tempMyPlayer.orientation === "left")) {
-          console.log("overlap brew and kick", store.getState().userActionsDataStore.brewMachinePunched);
+          // console.log("overlap brew and kick", store.getState().userActionsDataStore.brewMachinePunched);
           this.brewExt.setDepth(-1)
           setTimeout(() => {
             store.dispatch(BrewMachinePunched(!store.getState().userActionsDataStore.brewMachinePunched))
@@ -388,7 +386,7 @@ export class HQ {
       } else {
         store.dispatch(BrewMachinePunched(false))
       }
-      // console.log("-collision_with--",((tempMyPlayer.gameObject.playerContainer.x > this.game.fightMachineOverlapRectReverse.leftX &&tempMyPlayer.gameObject.playerContainer.x < this.game.fightMachineOverlapRectReverse.leftX + this.game.fightMachineOverlapRectReverse.width )
+      // // console.log("-collision_with--",((tempMyPlayer.gameObject.playerContainer.x > this.game.fightMachineOverlapRectReverse.leftX &&tempMyPlayer.gameObject.playerContainer.x < this.game.fightMachineOverlapRectReverse.leftX + this.game.fightMachineOverlapRectReverse.width )
       //   && (tempMyPlayer.gameObject.playerContainer.y > this.game.fightMachineOverlapRectReverse.leftY && tempMyPlayer.gameObject.playerContainer.y < this.game.fightMachineOverlapRectReverse.leftY + this.game.fightMachineOverlapRectReverse.height ) 
       // ), tempMyPlayer.orientation, keysInfo.keyK.pressed || keysInfo.keyP.pressed)
       if ((tempMyPlayer.gameObject.playerContainer.x > this.FightMachineRect.leftX && tempMyPlayer.gameObject.playerContainer.x < this.FightMachineRect.leftX + this.FightMachineRect.width)
@@ -406,7 +404,7 @@ export class HQ {
           if (store.getState().queueDetailedInfo.added_to_queue_pool) {
             check = true
           }
-          // console.log("collision_with checking if in queue ", check)
+          // // console.log("collision_with checking if in queue ", check)
           if (!check) {
             if (!store.getState().userActionsDataStore.hitFightMachine) {
               this.game.lobbySocketConnection.send(JSON.stringify({
@@ -442,7 +440,7 @@ export class HQ {
     }
 
 
-    // console.log("debug_onmouse ", onGameUI)
+    // // console.log("debug_onmouse ", onGameUI)
     // if (onGameUI) {
     //   store.dispatch(GameTurnMouseClickOff(true))
     // } 
@@ -468,7 +466,7 @@ export class HQ {
     //     "brew-can"
     //   )
     //   this.brewCanSprite.setDisplaySize(7, 14)
-    //   console.log("brew-- ", this.brewCanSprite.x, this.brewCanSprite.y)
+    //   // console.log("brew-- ", this.brewCanSprite.x, this.brewCanSprite.y)
     //   this.brewCanSprite.setDepth(this.brewCanSprite.y - DEFAULT_SPRITE_DISPLAY_HEIGHT/2)
     //   this.scene.tweens.add({
     //     targets: this.brewCanSprite,

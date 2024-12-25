@@ -3,12 +3,11 @@
 /* eslint @typescript-eslint/no-explicit-any: off */
 
 import React, { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ethers } from 'ethers'
 import { v4 as uuidv4 } from 'uuid'
 import styled from 'styled-components'
-import { LoadingButton } from '@mui/lab'
 import { isNullOrUndefined } from 'util'
-import Bootstrap from '../game/scenes/Bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
 import {
   Box,
   Fab,
@@ -17,11 +16,11 @@ import {
   Button,
   Select,
   Tooltip,
-  MenuItem,
   Snackbar,
+  MenuItem,
   ImageList,
-  InputLabel,
   Typography,
+  InputLabel,
   FormControl,
   TooltipProps,
   ImageListItem,
@@ -29,6 +28,7 @@ import {
   CircularProgress,
   SelectChangeEvent,
 } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 
@@ -36,22 +36,34 @@ import Footer from './Footer'
 import phaserGame from '../PhaserGame'
 import { registerBitfighter } from '../contract'
 import { Loader } from './components/Loader/Loader'
-import { ListGameServers } from '../utils/game_server_utils'
+import { makeid } from '@/utils'
+import { FetchGameServerConnection, ListGameServers, fetchSystemWalletsInfo } from '../utils/game_server_utils'
 import HeroSection from '../revamped/pages/landing/HeroSection'
 
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { fetchAllNFTsFromDbEntries } from '../hooks/FetchNFT'
-import { CheckIfAcceptableNickName, fetchNFTsFromDB, loginAndAuthenticatePlayer, updateSingleBfInDB } from '../hooks/ApiCaller'
+import {
+  CheckIfAcceptableNickName,
+  fetchNFTsFromDB,
+  loginAndAuthenticatePlayer,
+  updateSingleBfInDB,
+  ListGameServersApiCall,
+  loginAndAuthenticateUser,
+  randomGenarate,
+  randomGenarateBitfightersV2,
+  UpdateUserNetwork,
+  randomGenarateDripBitfightersV2,
+} from '../hooks/ApiCaller'
 
 import Chat from '../game/Components/Chat'
+import Bootstrap from '../game/scenes/Bootstrap'
 import { ATMView } from '../game/Components/ATMView'
 import { Tutorials } from '../game/Components/Tutorials'
 import { IPlayerData } from '../game/characters/IPlayer'
-import { SnowOverlay } from '../game/scenes/SnowOverlay'
 import { ServiceView } from '../game/Components/ServiceView'
 import { PlayersInfo } from '../game/Components/PlayersInfo'
-import { ControlsInfo } from '../game/Components/ControlsInfo'
 import NewMenuSideBar from '../game/Components/NewMenuSideBar'
+import { ControlsInfo } from '../game/Components/ControlsInfo'
 import { EquipView } from '../game/Components/InventoryView/EquipView'
 import { QueueAddInfoWindow } from '../game/Components/QueueAddInfoWindow'
 import { InventoryView } from '../game/Components/InventoryView/InventoryView'
@@ -66,11 +78,23 @@ import { BroadcastingAnnouncement } from '../game/Components/BroadcastingInfo/Br
 
 import store from '../stores'
 import { setPlayerAuthToken } from '../stores/AuthStore'
-import { setTotalNFTData, setNFTDetails } from '../stores/BitFighters'
-import { SetCurrentGamePlayer, setNickName } from '../stores/PlayerData'
-import { ChangeShowMenuBox, ChangeShowQueueBox } from '../stores/UserWebsiteStore'
+import { Login, SetConnectedWeb3, Web2LoginV2 } from '../stores/Web3Store'
+import { setTotalNFTData, setNFTDetails, setNFTLoadedBool } from '../stores/BitFighters'
+import { SetCurrentGamePlayer, setNickName, SetGameStarted } from '../stores/PlayerData'
+import { ChangeAuthTOken, ChangeShowMenuBox, ChangeShowQueueBox, ChangeValidUserState, ChangewbtcBalance, ChangeMaticBalance } from '../stores/UserWebsiteStore'
 import { SetFailureNotificationBool, SetFailureNotificationMessage } from '../stores/NotificationStore'
-import { SetGameLoadingState, SetSelectedGameServerURL, SetShowGameServersList } from '../stores/WebsiteStateStore'
+import { SetGameLoadingState, SetSelectedGameServerURL, SetShowGameServersList, SetSelectedRoomId } from '../stores/WebsiteStateStore'
+
+import floatinglight from 'url:../assets/images/floating-light.png'
+import diamond_icon from '../assets/bitfgihter_assets/icons/diamond_icon.png'
+import heart_icon from '../assets/bitfgihter_assets/icons/heart_icon.png'
+import kick_icon from '../assets/bitfgihter_assets/icons/kick_icon.png'
+import punch_icon from '../assets/bitfgihter_assets/icons/punch_icon.png'
+import flash_icon from '../assets/bitfgihter_assets/icons/flash_icon.png'
+import water_drop_icon from '../assets/bitfgihter_assets/icons/water_drop_icon.png'
+import AnimatedLoader from '@/revamped/loader/AnimatedLoader'
+import { Web2LoginNew } from './Web2Login'
+import zIndex from '@mui/material/styles/zIndex'
 
 const AttributeInfo = styled.div`
   display: flex;
@@ -113,31 +137,39 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {
 )
 
 function NewFighters(isGuest: boolean) {
+  // console.log(isGuest?.isGuest)
   const dispatch = useAppDispatch()
   const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const userAddress = useAppSelector((state) => state.web3store.userAddress)
+
   const web3Network = useAppSelector((state) => state.web3store.web3Network)
-  const bitFighterNFTData = useAppSelector((state) => state.bitFighters.nftData)
+  const connectKitProcessed = useAppSelector((state) => state.web3store.connectKitProcessed)
+
+  const web2EmailAddress = useAppSelector((state) => state.web3store.web2EmailAddress)
   const connectionMode = useAppSelector((state) => state.web3store.connectionMode)
+
+  const bitFighterNFTData = useAppSelector((state) => state.bitFighters.nftData)
   const gameStarted = useAppSelector((state) => state.playerDataStore.gameStarted)
   const bitfightersLoadedBool = useAppSelector((state) => state.bitFighters.loaded)
   const ShowMenuBoxRedux = useAppSelector((state) => state.userPathStore.ShowMenuBox)
-  const web2EmailAddress = useAppSelector((state) => state.web3store.web2EmailAddress)
   const ProfilemenuClicked = useAppSelector((state) => state.userPathStore.ShowMenuBox)
   const bitFightersTotalData = useAppSelector((state) => state.bitFighters.totalNFTData)
   const loggedInUserWalletAddress = useAppSelector((state) => state.web3store.userAddress)
-  const connectKitProcessed = useAppSelector((state) => state.web3store.connectKitProcessed)
+  // const gameServersInfo = useAppSelector((state) => state.websiteStateStore.serversInfo)
   const gameServerReginoSelected = useAppSelector((state) => state.websiteStateStore.region)
   const selectedPlayer = useAppSelector((state) => state.playerDataStore.current_game_player_info)
+  // const showing_jackpot_wheel = useAppSelector((state) => state.websiteStateStore.showing_jackpot_wheel)
 
-  const [isLoading, setIsLoading] = useState(false)
   const [formNickNameame, setFormNickName] = useState('')
   const [formLuckyNumber, setFormLuckyNumber] = useState(1)
   const [registerProcessRunning, setRegisterProcessRunning] = useState(false)
   const [playerSelectedBool, setPlayerSelectedBool] = useState(false)
   const [playerSelected, setPlayerSelected] = useState<IPlayerData>()
   const [cardSelected, setCardSelected] = useState('')
+  // const [fPSelect, setFPSelect] = useState(false)
 
   const isExecutingRef = useRef(false)
 
@@ -161,6 +193,10 @@ function NewFighters(isGuest: boolean) {
     }
   }
 
+  useEffect(() => {
+    // joinAsGuest()
+  }, [])
+
   function CommonToolTip({ data, indexkey }) {
     return (
       <HtmlTooltip
@@ -170,32 +206,32 @@ function NewFighters(isGuest: boolean) {
             {data.data.attributes.map((attr: { trait_type: any; value: any }, index) => {
               return attr.trait_type === 'Defense' ? (
                 <AttributeInfo key={`${attr.trait_type}-${index}`}>
-                  <img src='bitfgihter_assets/icons/diamond_icon.png' alt='.' />
+                  <img src={diamond_icon} alt='.' />
                   <h5>Defense: {attr.value} </h5>
                 </AttributeInfo>
               ) : attr.trait_type === 'Health' ? (
                 <AttributeInfo key={`${attr.trait_type}-${index}`}>
-                  <img src='bitfgihter_assets/icons/heart_icon.png' alt='.' />
+                  <img src={heart_icon} alt='.' />
                   <h5>Health: {attr.value} </h5>
                 </AttributeInfo>
               ) : attr.trait_type === 'Kick' ? (
                 <AttributeInfo key={`${attr.trait_type}-${index}`}>
-                  <img src='bitfgihter_assets/icons/kick_icon.png' alt='.' />
+                  <img src={kick_icon} alt='.' />
                   <h5>Kick: {attr.value} </h5>
                 </AttributeInfo>
               ) : attr.trait_type === 'Punch' ? (
                 <AttributeInfo key={`${attr.trait_type}-${index}`}>
-                  <img src='bitfgihter_assets/icons/punch_icon.png' alt='.' />
+                  <img src={punch_icon} alt='.' />
                   <h5>Punch: {attr.value} </h5>
                 </AttributeInfo>
               ) : attr.trait_type === 'Speed' ? (
                 <AttributeInfo key={`${attr.trait_type}-${index}`}>
-                  <img src='bitfgihter_assets/icons/flash_icon.png' alt='.' />
+                  <img src={flash_icon} alt='.' />
                   <h5>Speed: {attr.value} </h5>
                 </AttributeInfo>
               ) : attr.trait_type === 'Stamina' ? (
                 <AttributeInfo key={`${attr.trait_type}-${index}`}>
-                  <img src='bitfgihter_assets/icons/water_drop_icon.png' alt='.' />
+                  <img src={water_drop_icon} alt='.' />
                   <h5>Stamina: {attr.value} </h5>
                 </AttributeInfo>
               ) : (
@@ -224,6 +260,8 @@ function NewFighters(isGuest: boolean) {
 
   const registerFormValidate = async () => {
     setRegisterProcessRunning(true)
+
+    // console.log('in ---- register fn... ', formLuckyNumber, formNickNameame, playerSelected?.minted_id)
 
     if (!(formLuckyNumber > 0 && formLuckyNumber < 100)) {
       store.dispatch(SetFailureNotificationBool(true))
@@ -380,6 +418,40 @@ function NewFighters(isGuest: boolean) {
     console.log('running checkAndDirectPlayer', userAddress)
     try {
       await CommonWeb2Flow(userAddress)
+      // const result = await fetchNFTsFromDB(userAddress)
+      // const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
+      // dispatch(setTotalNFTData(result.message))
+      // dispatch(setNFTDetails(dataOfNFTS))
+      // dispatch(setNFTLoadedBool(true))
+      // dispatch(Login(userAddress))
+      // dispatch(SetConnectedWeb3(false))
+      // dispatch(ChangewbtcBalance('0'))
+      // dispatch(ChangeMaticBalance('0'))
+
+      // console.log("debug --- result", result)
+      // console.log("data of nft", dataOfNFTS)
+      // if (result?.message.length > 0 && dataOfNFTS.length) {
+      //   const data = result.message[0]
+      //   if (data) {
+      //     store.dispatch(SetShowGameServersList(true))
+      //     store.dispatch(SetCurrentGamePlayer(data))
+      //     store.dispatch(setNickName(data.nick_name))
+
+      //     const playerAuthToken = await loginAndAuthenticatePlayer(data.user_wallet_address, data.minted_id)
+      //     if (!isNullOrUndefined(playerAuthToken)) {
+      //       store.dispatch(setPlayerAuthToken(playerAuthToken))
+      //       const serverList = await ListGameServersApiCall(store.getState().web3store.userAddress, 'Washington_DC')
+      //       if (serverList && serverList?.data && serverList?.data.length > 0) {
+      //         await fetchServerUrlAndConnect(serverList.data[0].room_id)
+      //       }
+      //     } else {
+      //       console.error("failed in authenticating ")
+      //     }
+      //   } else {
+      //     console.error("failed in loading player")
+      //   }
+
+      // }
     } catch (err) {
       console.error('running loading some erro', err)
     }
@@ -414,7 +486,7 @@ function NewFighters(isGuest: boolean) {
       let address = localStorage.getItem('web2_wallet_address')
       console.log('executing freePlayerFlow 2 ', address)
       if (isNullOrUndefined(address) || address === '') {
-        const randomId = uuidv4()
+        let randomId = uuidv4()
         localStorage.setItem('web2_wallet_address', randomId)
         address = randomId
       }
@@ -600,7 +672,7 @@ function NewFighters(isGuest: boolean) {
                     </h4>
                   </div>
 
-                  <img src='/floating-light.png' alt='' className='floating-light-img' />
+                  <img src={floatinglight} alt='' className='floating-light-img' />
                 </div>
               ) : (
                 <> </>
@@ -721,7 +793,7 @@ function NewFighters(isGuest: boolean) {
                         {selectedPlayer.nick_name !== '' ? selectedPlayer.nick_name : '?'}
                       </h4>
                     </div>
-                    <img src='floating-light.png' alt='' className='floating-light-img-portable' />
+                    <img src={floatinglight} alt='' className='floating-light-img-portable' />
                   </div>
                   <div className='portable-serverlists'>
                     <ServerListPortable />
@@ -729,6 +801,12 @@ function NewFighters(isGuest: boolean) {
                 </div>
                 <ServerListWindow />
               </div>
+
+              {/* {isGuest.isGuest && (
+              <div>
+                <h1>Please wait ...</h1>
+              </div>
+            )} */}
             </div>
           </div>
         </>

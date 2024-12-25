@@ -54,7 +54,7 @@ const BetWindowViewDiv = styled(Box)`
 export default function BetWindowView() {
   const openBetWindowView = useAppSelector((state) => state.userActionsDataStore.openBetWindowView);
   const bettingOnPlayerData = useAppSelector((state) => state.userActionsDataStore.bettingOnPlayerData)
-  console.log("queue view-- ", openBetWindowView, bettingOnPlayerData)
+  // console.log("queue view-- ", openBetWindowView, bettingOnPlayerData)
   const dispatch = useAppDispatch()
   const [amount, setAmount] = useState(0);
   const ref = useDetectClickOutside({ onTriggered: closeView });
@@ -66,7 +66,7 @@ export default function BetWindowView() {
   }
 
   const addBetToFightPlayer = async () => {
-    console.log("queue bet ,, ", bettingOnPlayerData.selected_player, amount)
+    // console.log("queue bet ,, ", bettingOnPlayerData.selected_player, amount)
     // if (amount <= 0 || isNullOrUndefined(amount)) {
     //   return
     // }

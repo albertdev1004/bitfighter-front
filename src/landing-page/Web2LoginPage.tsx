@@ -94,14 +94,14 @@ export function Web2LoginPage() {
   };
 
   useEffect(() => {
-    console.log(localStorage.getItem("web2_email_address"))
+    // console.log(localStorage.getItem("web2_email_address"))
     if (!isNullOrUndefined(localStorage.getItem("web2_email_address")) && localStorage.getItem("web2_email_address") !== "") {
       setMode("")
     }
   }, []);
 
   const signUpBtnPressed = async () => {
-    console.log("sign up btn pressed...", signupFormFieldInput)
+    // console.log("sign up btn pressed...", signupFormFieldInput)
     if (!EmailValidator.validate(signupFormFieldInput.email)) {
       setErrSnackBarOpen(true)
       setErrSnackBarMessage("Not Valid Email")
@@ -130,7 +130,7 @@ export function Web2LoginPage() {
 
 
   const loginBtnPressed = async () => {
-    console.log("login up btn pressed...", loginFormFieldInput)
+    // console.log("login up btn pressed...", loginFormFieldInput)
     if (!EmailValidator.validate(loginFormFieldInput.email)) {
       setErrSnackBarOpen(true)
       setErrSnackBarMessage("Not Valid Email")

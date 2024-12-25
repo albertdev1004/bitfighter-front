@@ -312,7 +312,7 @@ export default function Chat() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     // console.log("handlesubmit__debug_chat", inputValue)
-    console.log('focus-- handle submit pressed')
+    // console.log("focus-- handle submit pressed",)
     if (new Date().getTime() - lastMessageSubmittedTime < 1 * 1000) {
       setSnackBarMessage('Please wait for the Slow Mode time to finish')
       inputRef.current?.blur()
@@ -345,7 +345,7 @@ export default function Chat() {
 
       PostUserMessage(val)
 
-      console.log('SCROLL  scrollToBottom();')
+      // console.log("SCROLL  scrollToBottom();")
     }
 
     game.enableKeyBoard()
@@ -358,6 +358,13 @@ export default function Chat() {
   }, [focussedOnChat])
 
   useEffect(() => {
+    // if (chatBoxRef.current) {
+    //   setTimeout(() => {
+    //     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight
+
+    //   }, 100)
+    // }
+    console.log(StoreChatMessage)
     if (chatBoxRef.current) {
       const scrollToBottom = () => {
         chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight
@@ -482,7 +489,7 @@ export default function Chat() {
                 //   }
                 // }}
                 onBlur={() => {
-                  console.log('on blur focused --', focussedOnChat, showChatWindow)
+                  // console.log("on blur focused --", focussedOnChat, showChatWindow)
                   // console.log("on blur triggered,, ")
                   // setFocused(false)
                   dispatch(SetFocussedOnChat(false))

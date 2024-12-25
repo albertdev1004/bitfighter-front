@@ -15,6 +15,6 @@ export default function messageSender(client: WebSocket, newPlayer: any, event: 
       room_id,
     }))
   } catch (err) {
-    console.log(err)
+    // console.log(err)
   }
 }

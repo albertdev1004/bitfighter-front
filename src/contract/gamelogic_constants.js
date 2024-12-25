@@ -890,7 +890,7 @@ export const PROD_GAMELOGIC_CONTRACT = '0xD49D1cA1FF72E043a5FEE7c48Ddb785B44A7dB
 
 function GetGameLogicContractAddress() {
   let connectedNetwork = localStorage.getItem('network_connected')
-  console.log('debug running GetGameLogicContractAddress --', connectedNetwork)
+  // console.log('debug running GetGameLogicContractAddress --', connectedNetwork)
   let response = ''
   if (process.env.REACT_APP_DEV_ENV === 'production') {
     response = PROD_GAMELOGIC_CONTRACT

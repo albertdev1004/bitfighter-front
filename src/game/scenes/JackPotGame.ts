@@ -35,10 +35,29 @@ export default class JackPotGame extends Phaser.Scene {
     const gameHeight = window.innerHeight;
     const centerX = gameWidth / 2;
     const centerY = gameHeight / 2;
+    console.log("game width --- ", gameWidth, gameHeight)
+
+    let outerRadius = 330
+    let radius = 300
+    let fontSize = '18px'
+    let innerRadius = 200
+
+    if (gameWidth < 500) {
+      outerRadius = gameWidth / 2 - 20
+      radius = gameWidth / 2 - 40
+      fontSize = '14px'
+      innerRadius = gameWidth / 2 - 100
+    }
+    if (gameHeight < 500) {
+      outerRadius = gameHeight / 2 - 20
+      radius = gameHeight / 2 - 40
+      fontSize = '14px'
+      innerRadius = gameHeight / 2 - 100
+    }
 
     const container = this.add.container(centerX, centerY - 50);
 
-    const outerCircle = this.add.circle(0, 0, 330, 0x111b28);
+    const outerCircle = this.add.circle(0, 0, outerRadius, 0x111b28);
     container.add(outerCircle);
 
     const wheel = this.add.graphics();
@@ -49,7 +68,7 @@ export default class JackPotGame extends Phaser.Scene {
     const numberOfSegments = 100;
     const segmentAngle = (Math.PI * 2) / numberOfSegments;
 
-    const radius = 300; // Increased segment radius for better visibility
+    // const radius = gameWidth / 2 - 40; // Increased segment radius for better visibility
 
     const numbers = [];
     // const lines = [];
@@ -121,7 +140,7 @@ export default class JackPotGame extends Phaser.Scene {
       const textY = Math.sin(textAngle) * textRadius;
 
       const numberText = this.add.text(textX, textY, segmentType.toString(), {
-        fontSize: "18px",
+        fontSize: fontSize,
         color: "#000000",
         align: "center",
         fontStyle: "bold",
@@ -146,7 +165,7 @@ export default class JackPotGame extends Phaser.Scene {
     }
 
 
-    const innerCircle = this.add.circle(0, 0, 200, 0x111b28);
+    const innerCircle = this.add.circle(0, 0, innerRadius, 0x111b28);
     container.add(innerCircle);
 
     const triangle = this.add.image(
@@ -158,7 +177,7 @@ export default class JackPotGame extends Phaser.Scene {
     triangle.setAngle(180);
 
     const bf = this.add.image(centerX, centerY, "jackpot_bf");
-    bf.setScale(0.5);
+    bf.setScale(0.3);
 
     const winZone = this.add.circle(
       triangle.x,

@@ -42,15 +42,15 @@ export default class MintingGame extends Phaser.Scene {
   constructor() {
     super('minting')
     this.bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
-    console.log("running constructor minting.. ")
+    // console.log("running constructor minting.. ")
   }
 
   init(data: { quantity: number }) {
-    console.log("running init in minting .. ", data)
+    // console.log("running init in minting .. ", data)
   }
 
   preload(data: { data: any }) {
-    console.log("minting preload ", data)
+    // console.log("minting preload ", data)
 
     this.load.spritesheet("mint_machine", "new_assets/mom/MINT_MACHINE.png", { frameWidth: 96, frameHeight: 147 });
     this.load.spritesheet("mint_machine_goo", "new_assets/mom/MINT_MACHINE_goo.png", { frameWidth: 96, frameHeight: 147 });
@@ -77,7 +77,7 @@ export default class MintingGame extends Phaser.Scene {
   }
 
   async create(data: any) {
-    console.log("minting create ", data)
+    // console.log("minting create ", data)
 
 
     this.quantity = store.getState().playerDataStore.mintingGameNftQuantity;
@@ -86,7 +86,7 @@ export default class MintingGame extends Phaser.Scene {
     const bitFightersTotalData = store.getState().bitFighters.totalNFTData;
     for (let i = bitFightersTotalData.length - this.quantity; i < bitFightersTotalData.length; i++) {
       this.nftImages.push(bitFightersTotalData[i].data.first_frame_image)
-      // console.log("debug ...", bitFightersTotalData[i].data.first_frame_image)
+      // // console.log("debug ...", bitFightersTotalData[i].data.first_frame_image)
       this.load.image({
         key: `${i - this.quantity}-bf`,
         url: bitFightersTotalData[i].data.first_frame_image
@@ -101,7 +101,7 @@ export default class MintingGame extends Phaser.Scene {
     this.play_mom_bg_music()
 
     this.load.on('loaderror', (data: any) => {
-      console.log("debug loaderror,, ", data)
+      // console.log("debug loaderror,, ", data)
     })
 
     this.load.on('filecomplete', (key: string, val: any) => {
@@ -109,7 +109,7 @@ export default class MintingGame extends Phaser.Scene {
       temp.displayHeight = 160;
       temp.displayWidth = 160;
       this.nftSprites.set(key, temp)
-      // console.log("debug loaded ----- ", key, val )
+      // // console.log("debug loaded ----- ", key, val )
     }, this);
 
     this.input.setPollAlways();
@@ -218,9 +218,9 @@ export default class MintingGame extends Phaser.Scene {
 
     this.Opensprite.on('animationcomplete', (animation: Phaser.Animations.Animation, fr: any) => {
       //
-      console.log("debug animation Opensprite done ....", animation.key)
+      // console.log("debug animation Opensprite done ....", animation.key)
       if (animation.key === "mom_door_open") {
-        console.log("debug animation Opensprite done 2 ....")
+        // console.log("debug animation Opensprite done 2 ....")
         this.Opensprite.stop()
         this.sprite.stop()
         this.Opensprite.play("second_stage_idle")
@@ -233,7 +233,7 @@ export default class MintingGame extends Phaser.Scene {
     })
 
     this.sprite.on('animationcomplete', (animation: Phaser.Animations.Animation, fr: any) => {
-      console.log("debug animation sprite done ....", animation.key)
+      // console.log("debug animation sprite done ....", animation.key)
       if (animation.key === "third_stage_idle") {
         this.Opensprite.setVisible(false)
         this.sprite.stop()
@@ -300,7 +300,7 @@ export default class MintingGame extends Phaser.Scene {
     })
 
     this.sprite.on("pointerdown", (pointer: any) => {
-      console.log("debug clicked on sprite ", this.clickCount, this.third_stage_idle, this.quantityLeft)
+      // console.log("debug clicked on sprite ", this.clickCount, this.third_stage_idle, this.quantityLeft)
       if (this.clickCount === 2 && this.third_stage_idle && this.quantityLeft >= 0) {
 
         //
@@ -328,7 +328,7 @@ export default class MintingGame extends Phaser.Scene {
     })
 
     this.Opensprite.on("pointerdown", (pointer: any) => {
-      console.log("debug clicked Opensprite... ", this.clickCount)
+      // console.log("debug clicked Opensprite... ", this.clickCount)
       if (this.clickCount === 0) {
         this.Opensprite.stop()
         this.Opensprite.play("mom_door_open")
@@ -371,10 +371,10 @@ export default class MintingGame extends Phaser.Scene {
     // this.cameras.getWorldPoint(pointer.x, pointer.y)
     // this.input.activePointer.updateWorldPoint(this.cameras.main);
     // const pointer = this.input.activePointer
-    // console.log("----", pointer.x, pointer.y, window.innerWidth/2, window.innerHeight/2 - 100)
-    // console.log("--update-", this.input.mousePointer.x, this.input.x)
+    // // console.log("----", pointer.x, pointer.y, window.innerWidth/2, window.innerHeight/2 - 100)
+    // // console.log("--update-", this.input.mousePointer.x, this.input.x)
     // if (this.sprite)
-    //   console.log("--", this.sprite.x, this.sprite.y, this.sprite.depth)
+    //   // console.log("--", this.sprite.x, this.sprite.y, this.sprite.depth)
   }
 }
 
@@ -384,9 +384,9 @@ function generateRandomXAndY(): { randomX: number, randomY: number } {
   const randomX = Math.sign(Math.random() - 0.5) * Math.random() * 800
   const randomY = Math.sign(Math.random() - 0.5) * Math.random() * 100 + 300;
   for (let i = 0; i < lastRandomX.length; i++) {
-    // console.log("debug----- ", randomX ,lastRandomX[i], Math.abs(randomX - lastRandomX[i]) < 60)
+    // // console.log("debug----- ", randomX ,lastRandomX[i], Math.abs(randomX - lastRandomX[i]) < 60)
     if (Math.abs(randomX - lastRandomX[i]) < 50) {
-      console.log("debug.. ", Math.abs(randomX - lastRandomX[i]))
+      // console.log("debug.. ", Math.abs(randomX - lastRandomX[i]))
       return generateRandomXAndY()
     }
   }

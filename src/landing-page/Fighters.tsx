@@ -144,7 +144,7 @@ const horizontal = 'center';
 function Fighters() {
     const navigate = useNavigate();
     const { height, width } = Utils();
-    // console.log("***********height", height, width)
+    // // console.log("***********height", height, width)
     let baseWidth = width / 45;
     if (getSystemInfo()) {
         if (width > 1000) {
@@ -161,10 +161,10 @@ function Fighters() {
     }
     const baseHeight = height / 14;
     // const baseWidth = width/45;
-    console.log("***********baseheight", height, width, baseHeight, baseWidth)
+    // console.log("***********baseheight", height, width, baseHeight, baseWidth)
     const bitFighterNFTData = useAppSelector((state) => state.bitFighters.nftData)
     const bitFightersTotalData = useAppSelector((state) => state.bitFighters.totalNFTData)
-    console.log("--------total_data-------", bitFightersTotalData)
+    // console.log("--------total_data-------", bitFightersTotalData)
 
     const loggedInUserWalletAddress = useAppSelector((state) => state.web3store.userAddress)
 
@@ -173,7 +173,7 @@ function Fighters() {
 
     const bitfightersLoadedBool = useAppSelector((state) => state.bitFighters.loaded)
 
-    console.log("current path 333 ", gameStarted)
+    // console.log("current path 333 ", gameStarted)
 
     const [game_server, set_game_server] = useState("Washington_DC")
 
@@ -198,12 +198,12 @@ function Fighters() {
 
     const SelectGameServerAndLoadInfo = async (region: string) => {
         ListGameServers(region)
-        console.log("in SelectGameServerAndLoadInfo", region)
+        // console.log("in SelectGameServerAndLoadInfo", region)
         set_game_server(region);
     }
 
     const handlePlayerSelection = async (data: IPlayerData) => {
-        console.log("--player selected.. data ", data)
+        // console.log("--player selected.. data ", data)
         setPlayerSelected(data);
         setPlayerSelectedBool(true);
 
@@ -215,7 +215,7 @@ function Fighters() {
         setCardSelected(data.data.image)
         bootstrap.play_select_sound()
 
-        console.log("--player selected.. calling login ")
+        // console.log("--player selected.. calling login ")
         const playerAuthToken = await loginAndAuthenticatePlayer(data.user_wallet_address, data.minted_id);
         if (!isNullOrUndefined(playerAuthToken)) {
             store.dispatch(setPlayerAuthToken(playerAuthToken))
@@ -223,7 +223,7 @@ function Fighters() {
         }
 
 
-        // console.log("game start -> ", playerSelected)
+        // // console.log("game start -> ", playerSelected)
     }
 
     const startGame = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -245,7 +245,7 @@ function Fighters() {
 
             // dispatch(setNickName(playerSelected!.nick_name))
             // const bodyHtml = document.querySelector('html');
-            // console.log("bodyhtml ", bodyHtml);
+            // // console.log("bodyhtml ", bodyHtml);
             store.dispatch(SetGameLoadingState(true))
             bootstrap.launchGame(playerSelected)
         }
@@ -319,13 +319,13 @@ function Fighters() {
             }
         }
 
-        // console.log("@@#$%$#@#$$#@", bitFighterNFTData.length, boxWidth, carouselItemsLength, "#$%^&*(")
+        // // console.log("@@#$%$#@#$$#@", bitFighterNFTData.length, boxWidth, carouselItemsLength, "#$%^&*(")
 
         let count = 0;
         let width = baseWidth;
         let height = baseWidth;
         for (let i = 0; i < bitFighterNFTData.length; i++) {
-            // console.log("-----carouselItemsLength- i--", i, carouselItemsLength)
+            // // console.log("-----carouselItemsLength- i--", i, carouselItemsLength)
             count = 0;
             width = baseWidth;
             height = baseHeight;
@@ -333,7 +333,7 @@ function Fighters() {
                 // <Card raised className="Banner" key={i.toString()} style={{backgroundColor: "#A1A7B8"}}>
                 <Grid container spacing={0} >
                     {nftTotalData.slice(i, i + carouselItemsLength).map((da, index) => {
-                        // console.log(" ---------- da -- index ----------- ", index, da)
+                        // // console.log(" ---------- da -- index ----------- ", index, da)
                         if (carouselItemsLength === 5) {
                             if ((index === 1) || (index === 3)) {
                                 height = baseHeight * 5;
@@ -368,7 +368,7 @@ function Fighters() {
                                 width = baseWidth * 4;
                             }
                         }
-                        // console.log('height , width, ', height, width, baseHeight, baseWidth)
+                        // // console.log('height , width, ', height, width, baseHeight, baseWidth)
 
                         return (
                             <ImageWraper key={uuidv4()}>

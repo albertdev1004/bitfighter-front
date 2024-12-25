@@ -65,7 +65,7 @@ export const websiteStateInfoStore = createSlice({
     },
 
     SetGameServersData: (state: { serversInfo: Array<ServersInfo> }, action: PayloadAction<Array<ServersInfo>>) => {
-      console.log("in_setting_game_server_data ", action.payload);
+      // console.log("in_setting_game_server_data ", action.payload);
       state.serversInfo = action.payload;
     },
 

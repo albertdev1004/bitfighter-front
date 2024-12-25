@@ -17,13 +17,13 @@ export default class Background extends Phaser.Scene {
 
   constructor() {
     super('background')
-    console.log("running constructor background.. ")
+    // console.log("running constructor background.. ")
   }
 
   preload() {
     this.load.image('bg_bg', 'bitfgihter_assets/landing-page-about-section-bg.webp');
     // this.load.image('bg_bg', 'images/landing-page-about-section-bg.webp');
-    console.log("running preload of background.. ")
+    // console.log("running preload of background.. ")
   }
 
   create(data: { backgroundMode: BackgroundMode }) {
@@ -88,7 +88,7 @@ export default class Background extends Phaser.Scene {
     // Add backdrop image
     // const backdropImage = this.add.image(sceneWidth / 2, sceneHeight / 2, this.backdropKey)
     // const scale = Math.max(sceneWidth / backdropImage.width, sceneHeight / backdropImage.height)
-    // console.log(sceneWidth, sceneWidth / backdropImage.width, sceneHeight / backdropImage.height)
+    // // console.log(sceneWidth, sceneWidth / backdropImage.width, sceneHeight / backdropImage.height)
     // backdropImage.setScale(scale).setScrollFactor(0)
 
     // Add sun or moon image
@@ -114,7 +114,7 @@ export default class Background extends Phaser.Scene {
     //   .setName("dummyI")
     //   .setInteractive()
     //   .on('pointerdown', (pointer: Phaser.Input.Pointer, a: any) => {    
-    //     console.log("objects clicked.. --- ", pointer.position)
+    //     // console.log("objects clicked.. --- ", pointer.position)
     //   })
 
   }

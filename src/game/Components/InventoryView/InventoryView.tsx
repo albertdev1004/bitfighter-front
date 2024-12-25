@@ -1,19 +1,20 @@
-import { useState } from 'react'
 import styled from 'styled-components'
-import { useDetectClickOutside } from 'react-detect-click-outside'
-
-import Game from '../../scenes/Game'
-import { Inventory } from './Inventory'
-import phaserGame from '../../../PhaserGame'
-
-import { parseWBTCBalanceV3 } from '../../../utils/web3_utils'
-
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { fetchPlayerWalletInfo, useAssetsApi } from '../../../hooks/ApiCaller'
-
-import store from '../../../stores'
 import { SetMouseClickControlInventory } from '../../../stores/UserActions'
+import { useState } from 'react'
+import { Inventory } from './Inventory'
+import { useDetectClickOutside } from 'react-detect-click-outside'
+import { parseWBTCBalanceV3 } from '../../../utils/web3_utils'
+import store from '../../../stores'
 import { SetFailureNotificationBool, SetFailureNotificationMessage } from '../../../stores/NotificationStore'
+import { fetchPlayerWalletInfo, useAssetsApi } from '../../../hooks/ApiCaller'
+import { SetEquippedBrewCount } from '../../../stores/AssetStore'
+import phaserGame from '../../../PhaserGame'
+import Game from '../../scenes/Game'
+
+import moneybag from '../../../assets/assets/money-bag.png'
+import bitgif from '../../../assets/bitfgihter_assets/items/bit.gif'
+import coingif from '../../../assets/bitfgihter_assets/items/coin.gif'
 
 const StyledButton = styled.button`
     position: relative;
@@ -29,6 +30,7 @@ const MoneyBagIcon = styled.img`
   position: static;
   height: 25px;
   width: 25px;
+
   @media only screen and (max-height: 575.98px) and (orientation: landscape) {
     width: 25px;
     height: 25px;
@@ -64,6 +66,7 @@ const Wrapper = styled.div`
   border-width: 1px;
   border-radius: 5px;
   gap: 1%;
+
   @media only screen and (max-height: 575.98px) and (orientation: landscape) {
     width: 100px;
     height: 50px;
@@ -73,16 +76,20 @@ const Wrapper = styled.div`
 const BitsView = styled.div`
   span {
     font-family: 'Cooper Black', sans-serif;
+    // font-style: bold;
     font-size: 1.1em;
     color: white;
   }
+
   h2,
   h3 {
     font-family: 'Cooper Black', sans-serif;
+    // font-style: bold;
     font-size: 1.5em;
     color: white;
     line-height: 75%;
   }
+
   h6 {
     font-family: 'Cooper Black', sans-serif;
     color: aliceblue;
@@ -91,6 +98,7 @@ const BitsView = styled.div`
     text-align: left;
     margin-top: 6px;
   }
+
   width: 100%;
 `
 
@@ -113,29 +121,33 @@ const NegNumberHighlight = styled.div`
 `
 
 export function InventoryView() {
-  const dispatch = useAppDispatch()
-  const game = phaserGame.scene.keys.game as Game
-
-  const assetsInfo = useAppSelector((state) => state.assetStore.assets)
-  const fightersInfo = useAppSelector((state) => state.userActionsDataStore.fightersInfo)
-  const changeInBalance = useAppSelector((state) => state.web3BalanceStore.changeInBalance)
-  const userBalanceInfo = useAppSelector((state) => state.web3BalanceStore.balanceInfoUser)
-  const changeInCoinBool = useAppSelector((state) => state.web3BalanceStore.coin_changed.changed)
+  // const bitsBalance = useAppSelector((state) => state.userPathStore.bitsBalance)
   const web2_credit_balance = useAppSelector((state) => state.web3BalanceStore.web2CreditBalance)
+  const fightersInfo = useAppSelector((state) => state.userActionsDataStore.fightersInfo)
   const changeInBalanceBool = useAppSelector((state) => state.web3BalanceStore.changeBalanceShowBool)
 
+  const changeInCoinBool = useAppSelector((state) => state.web3BalanceStore.coin_changed.changed)
+
+  const changeInBalance = useAppSelector((state) => state.web3BalanceStore.changeInBalance)
   const [lastEquipTime, setLastequipTime] = useState(0)
+  const dispatch = useAppDispatch()
   const [inventoryState, setInventoryState] = useState('basic')
+  const assetsInfo = useAppSelector((state) => state.assetStore.assets)
+  const game = phaserGame.scene.keys.game as Game
   const [showButtonGroupBool, setShowButtonGroupBool] = useState(false)
 
+  const userBalanceInfo = useAppSelector((state) => state.web3BalanceStore.balanceInfoUser)
+  // console.log("debug_inventory__", userBalanceInfo)
+
   function closeView() {
-    // console.log('debug_inventory... clicked outside')
+    // console.log("debug_inventory... clicked outside")
     setInventoryState('basic')
+    // setShowButtonGroupBool(false)
   }
 
   const ref = useDetectClickOutside({ onTriggered: closeView })
 
-  // console.log('----------inventoryState----', inventoryState)
+  // console.log("----------inventoryState----", inventoryState)
 
   async function useBrew() {
     if (store.getState().websiteStateStore.showing_jackpot_wheel) {
@@ -184,7 +196,7 @@ export function InventoryView() {
     if (store.getState().websiteStateStore.showing_jackpot_wheel) {
       return
     }
-    // console.log('debug_equip_brew...')
+    // console.log("debug_equip_brew...")
     if (new Date().getTime() - lastEquipTime <= 5 * 1000) {
       store.dispatch(SetFailureNotificationBool(true))
       store.dispatch(SetFailureNotificationMessage('Wait 5 seconds before equip again'))
@@ -203,9 +215,10 @@ export function InventoryView() {
       store.dispatch(SetFailureNotificationBool(true))
       store.dispatch(SetFailureNotificationMessage('Not Allowed'))
     } else {
+      // store.dispatch(SetEquippedBrewCount(1))
       const res = await useAssetsApi('brew')
       if (res) {
-        // store.dispatch(SetEquippedBrewCount(store.getState().assetStore.equippedBrewCount + 1))
+        store.dispatch(SetEquippedBrewCount(1))
         // send an message to
         const temp = game.otherPlayers.get(store.getState().web3store.player_id)
         if (temp?.gameObject) {
@@ -265,7 +278,7 @@ export function InventoryView() {
                 setInventoryState('inventory_view')
               }}
             >
-              <MoneyBagIcon className='user-select-none' src='assets/money-bag.png' alt='Cinque Terre' />
+              <MoneyBagIcon className='user-select-none' src={moneybag} alt='Cinque Terre' />
             </StyledButton>
           </div>
           <div
@@ -286,7 +299,7 @@ export function InventoryView() {
                 alignItems: 'center',
               }}
             >
-              <img className='user-select-none' src='bitfgihter_assets/items/bit.gif' alt='Cinque Terre' height='70%'></img>
+              <img className='user-select-none' src={bitgif} alt='Cinque Terre' height='70%'></img>
               <BitsView>
                 {/*Bits: */}
                 <h6 className='user-select-none'>{store.getState().web3store.web3Connected ? parseWBTCBalanceV3(web2_credit_balance) : 0}</h6>
@@ -302,7 +315,7 @@ export function InventoryView() {
                 alignItems: 'center',
               }}
             >
-              <img className='user-select-none' src='bitfgihter_assets/items/coin.gif' alt='Cinque Terre' height='70%'></img>
+              <img className='user-select-none' src={coingif} alt='Cinque Terre' height='70%'></img>
               <BitsView>
                 {/*Coins: */}
                 <h6 className='user-select-none'>

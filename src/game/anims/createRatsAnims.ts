@@ -3,7 +3,7 @@ import { isNullOrUndefined } from 'util'
 export default class createRatsAnims extends Phaser.Scene {
   constructor() {
     super({ key: 'CreateRatsAnims' });
-    console.log('createRatsAnims constructor')
+    // console.log('createRatsAnims constructor')
     this.init();
   }
 
@@ -27,7 +27,7 @@ export default class createRatsAnims extends Phaser.Scene {
     })
 
 
-    console.log('createRatsAnims create', this.anims)
+    // console.log('createRatsAnims create', this.anims)
   }
 }
 // export const createRatsAnims = (anims: Phaser.Animations.AnimationManager, key: string) => {

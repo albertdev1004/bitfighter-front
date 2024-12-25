@@ -237,9 +237,9 @@ export default function MintPage() {
     setMintingState('Generating Your Mint Card')
 
     const allowance = await checkAllowancePresale(store.getState().web3store.userAddress)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('10000000000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       if (!(await approveWBTC2(PRESALE_CONTRACT_ADDRESS, ethers.BigNumber.from('10000000000000000000')))) {
         setMintingBool(false)
         setMintingState('')
@@ -254,7 +254,7 @@ export default function MintPage() {
     }
 
     const output = await randomGenaratePreSale(store.getState().web3store.userAddress)
-    console.log('---output ', output)
+    // console.log('---output ', output)
 
     setMintingState('Minting Your Mint Card')
     const minted = await mintPreSaleNFT(output.data.nft_url)

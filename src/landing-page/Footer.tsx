@@ -61,7 +61,7 @@ export default function Footer() {
   const dispatch = useAppDispatch();
 
   const deleteUserFromQueue = async () => {
-    console.log("delete user from queue pressed..")
+    // console.log("delete user from queue pressed..")
     game.lobbySocketConnection.send(JSON.stringify({
       event: "delete_queue",
       walletAddress: store.getState().web3store.userAddress

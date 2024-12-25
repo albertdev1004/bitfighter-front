@@ -361,7 +361,7 @@ function MintCard() {
   }
 
   const ondrip1Fighter = () => {
-    console.log('ondrip1Fighter ', onlyTagFighter, onlyTaooFighter)
+    // console.log('ondrip1Fighter ', onlyTagFighter, onlyTaooFighter)
     if (onlyTagFighter === false) {
       if (onlyTaooFighter === true) {
         setOnlyTagFighter(false)
@@ -403,24 +403,24 @@ function MintCard() {
 
   const cardState = useAppSelector((state) => state.mintCardStateStore.state_selected)
   // const cardState = PageStates.NotConnectedState;
-  console.log('cardState ', cardState)
+  // console.log('cardState ', cardState)
 
   const initializePreMintVars = () => {
-    console.log('initializing pre mint vars')
+    // console.log('initializing pre mint vars')
     setRefAddrMintCard('')
     setRefBoxMintCard(0)
     setmintCardsQuantity(1)
   }
 
   const initializeBitfightersMintVars = () => {
-    console.log('initializing bitfighters mint vars')
+    // console.log('initializing bitfighters mint vars')
     setBitfightersRefAdd('')
     setBitfightersRefBoxMintCard(0)
     setBitFightersMintQuantity(5)
   }
 
   const initializeDripBitfightersMintVars = () => {
-    console.log('initializing drip bitfighters mint vars')
+    // console.log('initializing drip bitfighters mint vars')
     setDripfightersRefAdd('')
     setDripFightersRefBoxMintCard(0)
     setDripFightersMintQuantity(1)
@@ -428,7 +428,7 @@ function MintCard() {
   }
 
   const initializeDripPreMintVars = () => {
-    console.log('initializing drip pre mint vars')
+    // console.log('initializing drip pre mint vars')
     setdripRefAddrMintCard('')
     setDripRefBoxMintCard(0)
     setdripMintCardsQuantity(1)
@@ -442,7 +442,7 @@ function MintCard() {
   }
 
   const initializeOneKVars = () => {
-    console.log('initializing onek vars ')
+    // console.log('initializing onek vars ')
     setOnekClubQuantity(1)
   }
 
@@ -450,7 +450,7 @@ function MintCard() {
     // initializeOneKVars()
     // initializeDripPreMintVars()
     // initializePreMintVars()
-    console.log('debug_global_ref_code', global_ref_code)
+    // console.log('debug_global_ref_code', global_ref_code)
 
     if (global_ref_code !== '') {
       setRefAddrMintCard(global_ref_code)
@@ -461,7 +461,7 @@ function MintCard() {
   }, [])
 
   const preSaleMint = async () => {
-    console.log('in_presalemint', mintCardsQuantity, refAddrMintCard, mintCardsQuantity < 1)
+    // console.log('in_presalemint', mintCardsQuantity, refAddrMintCard, mintCardsQuantity < 1)
 
     setMintingState('')
 
@@ -493,16 +493,16 @@ function MintCard() {
       try {
         tempRefAddr = ethers.utils.getAddress(refAddrMintCard)
       } catch (err) {
-        console.log(' error in getting proper address from this .. ', err)
+        // console.log(' error in getting proper address from this .. ', err)
         tempRefAddr = ethers.constants.AddressZero
         setRefAddrMintCard(ethers.constants.AddressZero)
       }
     }
 
     const allowance = await checkAllowancePresale(store.getState().web3store.userAddress)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('100000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       setMintingState('Approval in Progress')
       if (!(await approveWBTC2(PRESALE_CONTRACT_ADDRESS, ethers.BigNumber.from('1000000000000')))) {
         setErrorState('Approval Failed')
@@ -517,7 +517,7 @@ function MintCard() {
     setMintingState('Minting in Progress')
 
     const output = await randomGenaratePreSaleV2(store.getState().web3store.userAddress, mintCardsQuantity)
-    console.log('---output ', output)
+    // console.log('---output ', output)
 
     const minted = await mintPreSaleNFTV2(output.data, tempRefAddr)
     if (minted.error === 1) {
@@ -546,7 +546,7 @@ function MintCard() {
   }
 
   const bitfightersMint = async () => {
-    console.log('bitfightersMint', bitfightersRefAddr, bitFightersMintQuantity, bitfightersRefBoxMintCard)
+    // console.log('bitfightersMint', bitfightersRefAddr, bitFightersMintQuantity, bitfightersRefBoxMintCard)
 
     // store.dispatch(SetMintGameStarted(true))
     // store.dispatch(SetMintGameQuantity(2))
@@ -585,7 +585,7 @@ function MintCard() {
       try {
         tempRefAddr = ethers.utils.getAddress(bitfightersRefAddr)
       } catch (err) {
-        console.log(' error in getting proper address from this .. ', err)
+        // console.log(' error in getting proper address from this .. ', err)
         tempRefAddr = ethers.constants.AddressZero
         setBitfightersRefAdd(ethers.constants.AddressZero)
       }
@@ -602,9 +602,9 @@ function MintCard() {
 
     if (!bitfighterUseMintCardCheckBox) {
       const allowance = await checkAllowance(store.getState().web3store.userAddress)
-      console.log('allowance -- >', allowance.toString())
+      // console.log('allowance -- >', allowance.toString())
       if (ethers.BigNumber.from('10000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-        console.log('less allowance')
+        // console.log('less allowance')
         setMintingState('Approval in Progress')
         if (!(await approveWBTC2(GetGameLogicContractAddress(), ethers.BigNumber.from('100000000')))) {
           setErrorState('Approval Failed')
@@ -619,7 +619,7 @@ function MintCard() {
     setMintingState('Generating Bit Fighters')
 
     const output = await randomGenarateBitfightersV2(store.getState().web3store.userAddress, bitfightersRefAddr, bitFightersMintQuantity)
-    console.log('---output ', output)
+    // console.log('---output ', output)
 
     setMintingState('Minting in Progress')
 
@@ -634,10 +634,10 @@ function MintCard() {
       } else {
         await updateNFTsInDB(store.getState().web3store.userAddress)
         const result = await fetchNFTsFromDB(store.getState().web3store.userAddress)
-        console.log('-------dataofnfts--*******-- .', result)
+        // console.log('-------dataofnfts--*******-- .', result)
 
         const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
-        console.log('dataofnfts -- ', dataOfNFTS)
+        // console.log('dataofnfts -- ', dataOfNFTS)
 
         store.dispatch(setTotalNFTData(result.message))
         store.dispatch(setNFTDetails(dataOfNFTS))
@@ -670,10 +670,10 @@ function MintCard() {
       } else {
         await updateNFTsInDB(store.getState().web3store.userAddress)
         const result = await fetchNFTsFromDB(store.getState().web3store.userAddress)
-        console.log('-------dataofnfts--*******-- .', result)
+        // console.log('-------dataofnfts--*******-- .', result)
 
         const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
-        console.log('dataofnfts -- ', dataOfNFTS)
+        // console.log('dataofnfts -- ', dataOfNFTS)
 
         store.dispatch(setTotalNFTData(result.message))
         store.dispatch(setNFTDetails(dataOfNFTS))
@@ -702,7 +702,7 @@ function MintCard() {
   }
 
   const DripBitfightersMint = async () => {
-    console.log('DripBitfightersMint---', dripFightersMintQuantity, dripFightersRefBoxMintCard, dripfightersRefAddr)
+    // console.log('DripBitfightersMint---', dripFightersMintQuantity, dripFightersRefBoxMintCard, dripfightersRefAddr)
 
     setMintingState('')
 
@@ -734,16 +734,16 @@ function MintCard() {
       try {
         tempRefAddr = ethers.utils.getAddress(dripfightersRefAddr)
       } catch (err) {
-        console.log(' error in getting proper address from this .. ', err)
+        // console.log(' error in getting proper address from this .. ', err)
         tempRefAddr = ethers.constants.AddressZero
         setDripfightersRefAdd(ethers.constants.AddressZero)
       }
     }
 
     const allowance = await checkAllowance(store.getState().web3store.userAddress)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('10000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       setMintingState('Approval in Progress')
       if (!(await approveWBTC2(GetGameLogicContractAddress(), ethers.BigNumber.from('10000000000')))) {
         setErrorState('Approval Failed')
@@ -755,7 +755,7 @@ function MintCard() {
     }
 
     setMintingState('Generating Bit Fighters')
-    console.log('---- debug ,,,', onlyTaooFighter || tagAndTatooFighter)
+    // console.log('---- debug ,,,', onlyTaooFighter || tagAndTatooFighter)
 
     const output = await randomGenarateDripBitfightersV2(
       store.getState().web3store.userAddress,
@@ -763,7 +763,7 @@ function MintCard() {
       dripFightersMintQuantity,
       onlyTaooFighter || tagAndTatooFighter,
     )
-    console.log('---output ', output)
+    // console.log('---output ', output)
 
     setMintingState('Minting in Progress')
 
@@ -778,10 +778,10 @@ function MintCard() {
       } else {
         await updateNFTsInDB(store.getState().web3store.userAddress)
         const result = await fetchNFTsFromDB(store.getState().web3store.userAddress)
-        console.log('-------dataofnfts--*******-- .', result)
+        // console.log('-------dataofnfts--*******-- .', result)
 
         const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
-        console.log('dataofnfts -- ', dataOfNFTS)
+        // console.log('dataofnfts -- ', dataOfNFTS)
 
         store.dispatch(setTotalNFTData(result.message))
         store.dispatch(setNFTDetails(dataOfNFTS))
@@ -809,9 +809,9 @@ function MintCard() {
       // } else {
       //   await updateNFTsInDB(store.getState().web3store.userAddress);
       //   const result = await fetchNFTsFromDB(store.getState().web3store.userAddress);
-      //   console.log("-------dataofnfts--*******-- .", result);
+      //   // console.log("-------dataofnfts--*******-- .", result);
       //   const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
-      //   console.log("dataofnfts -- ", dataOfNFTS )
+      //   // console.log("dataofnfts -- ", dataOfNFTS )
       //   store.dispatch(setTotalNFTData(result.message))
       //   store.dispatch(setNFTDetails(dataOfNFTS))
       //   bootstrap.play_dr_bits_success_sound();
@@ -838,7 +838,7 @@ function MintCard() {
   }
 
   const DripFightersMintUsingMintCard = async () => {
-    console.log('------ DripFightersMintUsingMintCard -- ', notagOrTattooCardsPick, tagAndTattooCardsPick, onlyTagCardPick, onlyTattooCardsPick)
+    // console.log('------ DripFightersMintUsingMintCard -- ', notagOrTattooCardsPick, tagAndTattooCardsPick, onlyTagCardPick, onlyTattooCardsPick)
 
     setMintingState('')
     const totalQuantity = notagOrTattooCardsPick + tagAndTattooCardsPick + onlyTagCardPick + onlyTattooCardsPick
@@ -867,11 +867,11 @@ function MintCard() {
     }
 
     setMintingState('Generating Bit Fighters')
-    console.log('---- debug ,,,', onlyTaooFighter || tagAndTatooFighter)
+    // console.log('---- debug ,,,', onlyTaooFighter || tagAndTatooFighter)
     const allowance = await checkAllowance(store.getState().web3store.userAddress)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('10000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       setMintingState('Approval in Progress')
       if (!(await approveWBTC2(GetGameLogicContractAddress(), ethers.BigNumber.from('10000000000')))) {
         setErrorState('Approval Failed')
@@ -894,7 +894,7 @@ function MintCard() {
         tokenIDs.push(noTagOrTattooCards[i].id)
       }
 
-      console.log('---debug notagOrTattooCardsPick output ', output, tokenURIs.length, tokenIDs.length)
+      // console.log('---debug notagOrTattooCardsPick output ', output, tokenURIs.length, tokenIDs.length)
     }
     if (onlyTagCardPick > 0) {
       const output: any = await randomGenarateDripBitfightersV2(store.getState().web3store.userAddress, dripfightersRefAddr, onlyTagCardPick, false)
@@ -903,7 +903,7 @@ function MintCard() {
         //
         tokenIDs.push(onlyTagCards[i].id)
       }
-      console.log('---debug onlyTagCardPick output ', output, tokenURIs.length, tokenIDs.length)
+      // console.log('---debug onlyTagCardPick output ', output, tokenURIs.length, tokenIDs.length)
     }
     if (onlyTattooCardsPick > 0) {
       const output: any = await randomGenarateDripBitfightersV2(store.getState().web3store.userAddress, dripfightersRefAddr, onlyTattooCardsPick, true)
@@ -912,7 +912,7 @@ function MintCard() {
         //
         tokenIDs.push(onlyTattooCards[i].id)
       }
-      console.log('---debug onlyTattooCardsPick output ', output, tokenURIs.length, tokenIDs.length)
+      // console.log('---debug onlyTattooCardsPick output ', output, tokenURIs.length, tokenIDs.length)
     }
     if (tagAndTattooCardsPick > 0) {
       const output: any = await randomGenarateDripBitfightersV2(store.getState().web3store.userAddress, dripfightersRefAddr, tagAndTattooCardsPick, true)
@@ -921,10 +921,10 @@ function MintCard() {
         //
         tokenIDs.push(tagAndTattooCards[i].id)
       }
-      console.log('---debug tagAndTattooCardsPick output ', output, tokenURIs.length, tokenIDs.length)
+      // console.log('---debug tagAndTattooCardsPick output ', output, tokenURIs.length, tokenIDs.length)
     }
 
-    console.log('----- debug important -- ', tokenURIs, tokenIDs, tokenURIs.length, totalQuantity, tokenIDs.length)
+    // console.log('----- debug important -- ', tokenURIs, tokenIDs, tokenURIs.length, totalQuantity, tokenIDs.length)
     //
     if (tokenURIs.length !== totalQuantity || tokenURIs.length !== tokenIDs.length) {
       setMintingState('')
@@ -946,10 +946,10 @@ function MintCard() {
     } else {
       await updateNFTsInDB(store.getState().web3store.userAddress)
       const result = await fetchNFTsFromDB(store.getState().web3store.userAddress)
-      console.log('-------dataofnfts--*******-- .', result)
+      // console.log('-------dataofnfts--*******-- .', result)
 
       const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
-      console.log('dataofnfts -- ', dataOfNFTS)
+      // console.log('dataofnfts -- ', dataOfNFTS)
 
       store.dispatch(setTotalNFTData(result.message))
       store.dispatch(setNFTDetails(dataOfNFTS))
@@ -978,7 +978,7 @@ function MintCard() {
   }
 
   const preSaleMintDrip = async () => {
-    console.log('in_presalemintDrip', dripMintCardsQuantity)
+    // console.log('in_presalemintDrip', dripMintCardsQuantity)
 
     if (dripMintCardsQuantity < 1) {
       initializeDripPreMintVars()
@@ -1008,7 +1008,7 @@ function MintCard() {
       try {
         tempRefAddr = ethers.utils.getAddress(refAddrMintCard)
       } catch (err) {
-        console.log(' error in getting proper address from this .. ', err)
+        // console.log(' error in getting proper address from this .. ', err)
         tempRefAddr = ethers.constants.AddressZero
         setdripRefAddrMintCard(ethers.constants.AddressZero)
       }
@@ -1017,9 +1017,9 @@ function MintCard() {
     // setMintingState("Generating Drip Mint Card");
 
     const allowance = await checkAllowanceGeneral(store.getState().web3store.userAddress, PRESALE_DRIP_CONTRACT_V2)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('100000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       setMintingState('Initiating Approval')
       if (!(await approveWBTC2(PRESALE_DRIP_CONTRACT_V2, ethers.BigNumber.from('10000000000000000')))) {
         setErrorState('Approval Failed')
@@ -1049,7 +1049,7 @@ function MintCard() {
       tempTatoo ? 'Yes' : 'No',
       tempTag ? 'Yes' : 'No',
     )
-    console.log('---output ', output)
+    // console.log('---output ', output)
 
     // setMintingState("Minting Drip Mint Card");
     const minted = await mintPreSaleDripNFTV2(output.data, tempRefAddr, tempTatoo ? 1 : 0, tempTag ? 1 : 0)
@@ -1081,9 +1081,9 @@ function MintCard() {
   }
 
   const oneKClubMint = async () => {
-    console.log('in onek club mint - ', onek_club_contract_adress)
+    // console.log('in onek club mint - ', onek_club_contract_adress)
     if (onekClubQuantity < 1) {
-      console.log('here .........')
+      // console.log('here .........')
       initializeOneKVars()
       setErrorState('Quantity should be greater than 0')
       dispatch(setCardState(PageStates.FailedState))
@@ -1094,9 +1094,9 @@ function MintCard() {
     setMintingState('Initiating Transaction')
 
     const allowance = await checkAllowanceOneKClub(store.getState().web3store.userAddress)
-    console.log('allowance -- >', allowance.toString())
+    // console.log('allowance -- >', allowance.toString())
     if (ethers.BigNumber.from('1000000000000000').gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log('less allowance')
+      // console.log('less allowance')
       if (!(await approveUSDC(onek_club_contract_adress, ethers.BigNumber.from('100000000000000000')))) {
         initializeOneKVars()
         setErrorState('Approval Failed')
@@ -1108,7 +1108,7 @@ function MintCard() {
 
     setMintingState('Minting in Progress')
     const minted = await mintOneKClubCard(onekClubQuantity)
-    console.log('-------minted ------', minted)
+    // console.log('-------minted ------', minted)
     if (minted.error === 1) {
       bootstrap.play_err_sound()
       initializeOneKVars()
@@ -1359,7 +1359,7 @@ function MintCard() {
                     <>
                       <div
                         onClick={() => {
-                          console.log('1---------')
+                          // console.log('1---------')
                           setDripRefBoxMintCard(dripRefBoxMintCard === 1 ? 0 : 1)
                           setdripRefAddrMintCard('')
                         }}
@@ -1370,7 +1370,7 @@ function MintCard() {
                     <>
                       <div
                         onClick={() => {
-                          console.log('2----------')
+                          // console.log('2----------')
                           setDripRefBoxMintCard(dripRefBoxMintCard === 1 ? 0 : 1)
                           setdripRefAddrMintCard(ethers.constants.AddressZero)
                         }}
@@ -1470,7 +1470,7 @@ function MintCard() {
                     <>
                       <div
                         onClick={() => {
-                          console.log('1---------', refBoxMintCard)
+                          // console.log('1---------', refBoxMintCard)
                           setRefBoxMintCard(refBoxMintCard === 1 ? 0 : 1)
                           setRefAddrMintCard('')
                         }}
@@ -1481,7 +1481,7 @@ function MintCard() {
                     <>
                       <div
                         onClick={() => {
-                          console.log('2----------', refBoxMintCard)
+                          // console.log('2----------', refBoxMintCard)
                           setRefBoxMintCard(refBoxMintCard === 1 ? 0 : 1)
                           setRefAddrMintCard(ethers.constants.AddressZero)
                         }}
@@ -1668,7 +1668,7 @@ function MintCard() {
                 id='mint-card-checkbox'
                 checked={bitfighterUseMintCardCheckBox}
                 onChange={() => {
-                  console.log('debug pressed checkbox ', bitfighterUseMintCardCheckBox)
+                  // console.log('debug pressed checkbox ', bitfighterUseMintCardCheckBox)
                   if (!bitfighterUseMintCardCheckBox) {
                     setBitFightersMintQuantity(totalCountOfPresaleMintCardForUser)
                   } else {
@@ -1897,7 +1897,7 @@ function MintCard() {
                 id='mint-card-checkbox'
                 checked={dripfighterUseMintCardCheckBox}
                 onChange={() => {
-                  console.log('debug pressed checkbox ', dripfighterUseMintCardCheckBox)
+                  // console.log('debug pressed checkbox ', dripfighterUseMintCardCheckBox)
                   setDripfighterUseMintCardCheckBox(!dripfighterUseMintCardCheckBox)
                 }}
               />
@@ -2000,12 +2000,7 @@ function MintCard() {
               onMouseOver={() => {
                 if (!onbutton) {
                   setOnButton(true)
-                  try {
-                    bootstrap.play_button_hover_sound()
-                  } catch (err) {
-                    //
-                  }
-
+                  bootstrap.play_button_hover_sound()
                 }
               }}
               onMouseOut={() => {
@@ -2040,7 +2035,7 @@ function MintCard() {
   }
 
   const handleModalOpen = () => {
-    // console.log("debug..... ", cardState)
+    // // console.log("debug..... ", cardState)
     setOpenModal(true)
   }
 

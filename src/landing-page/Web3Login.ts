@@ -43,7 +43,6 @@ import { PageStates } from "./components/SidePanel/SidePanel";
 import { Buffer } from "buffer";
 import { ReaderFunctions } from "../contract/ReaderFunctions";
 import { SetFailureNotificationBool, SetFailureNotificationMessage } from "../stores/NotificationStore";
-import Mixpanel from "../mixpanel";
 
 
 
@@ -55,8 +54,8 @@ declare global {
   }
 }
 
-const siweSign = async (accounts: Array<string>, siweMessage: string) => {
-  console.log("in siweSign");
+export const siweSign = async (accounts: Array<string>, siweMessage: string) => {
+  // console.log("in siweSign");
   try {
     const from = accounts[0];
     // const hashedMessage = Web3.utils.sha3(message);
@@ -66,7 +65,7 @@ const siweSign = async (accounts: Array<string>, siweMessage: string) => {
       method: "personal_sign",
       params: [msg, from],
     });
-    console.log("in siweSign ", sign);
+    // console.log("in siweSign ", sign);
     return sign;
   } catch (err) {
     console.error("error in siweSign", err);
@@ -74,11 +73,11 @@ const siweSign = async (accounts: Array<string>, siweMessage: string) => {
   }
 };
 
-const SignatureMessage =
+export const SignatureMessage =
   "By interacting with this game you are acknowledging that you have read, understood, and agree to be bound by the terms and conditions found here: https://docs.bitfighters.club/terms-of-service Failure to comply with these terms and conditions may result in, but will not be limited to, disqualification from participation in the game and the forfeiture of your account and all associated game assets. Sign to confirm and continue.";
 
 export async function Web3Login() {
-  console.log("in web3login ", window.ethereum);
+  // console.log("in web3login ", window.ethereum);
   const onboarding = new MetaMaskOnboarding();
 
   if (!store.getState().userPathStore.metaMaskInstalled) {
@@ -93,7 +92,7 @@ export async function Web3Login() {
     store.dispatch(SetFailureNotificationMessage("Please Select a Network"))
     return
   }
-  console.log("in web3login ....(*******", process.env.REACT_APP_DEV_ENV);
+  // console.log("in web3login ....(*******", process.env.REACT_APP_DEV_ENV);
   // @ts-ignore: Ignore the TypeScript error for the next lines
   await window.ethereum.enable();
   // @ts-ignore: Ignore TypeScript errors for the entire file
@@ -111,7 +110,7 @@ export async function Web3Login() {
       SUPPORTED_NETWORK_LONG = "BOB";
     }
     // store.dispatch(SetConnectedNetwork("bob"));
-    console.log("in web3login ....*******", network.name, process.env.NODE_ENV);
+    // console.log("in web3login ....*******", network.name, process.env.NODE_ENV);
     if (SUPPORTED_CHAINIDS.indexOf(network.chainId) === -1) {
       if (
         window.confirm(
@@ -156,7 +155,7 @@ export async function Web3Login() {
             ],
           });
         }
-        console.log("check..", check);
+        // console.log("check..", check);
       } else {
         return;
       }
@@ -221,18 +220,18 @@ export async function Web3Login() {
 
 
 
-        console.log("check..", check);
+        // console.log("check..", check);
       } else {
         return;
       }
     }
   }
-  console.log("here debug ")
+  // console.log("here debug ")
   const accounts = await provider.send("eth_requestAccounts", []);
 
   // check if signature exist in DB
   const userMetamaskSigned = await checkIfUserSignedMetamask(accounts[0]);
-  console.log("Validation before siweSign -- ", userMetamaskSigned);
+  // console.log("Validation before siweSign -- ", userMetamaskSigned);
   if (!userMetamaskSigned) {
     const signedRes = await siweSign(accounts, SignatureMessage);
     if (signedRes === "Error") {
@@ -247,9 +246,9 @@ export async function Web3Login() {
   localStorage.setItem("connected_matic_network", "10");
   localStorage.setItem("last_web3_login_time", (new Date()).toISOString())
   // const timestamp = new Date().toISOString();
-  console.log("-------accounts---- .");
-  console.log(accounts[0]);
-  console.log("----------- .");
+  // console.log("-------accounts---- .");
+  // console.log(accounts[0]);
+  // console.log("----------- .");
   if (!validation(accounts[0])) {
     store.dispatch(ChangeValidUserState(false));
     return;
@@ -275,7 +274,7 @@ export async function Web3Login() {
   // const fetchTokensOfUserFromSC =
   //   await ReaderFunctions.fetchTokenOfUserFromSC();
   let result = await fetchNFTsFromDB(accounts[0]);
-  console.log("______debug_tokenIds____web2__ ", result.message.length);
+  // console.log("______debug_tokenIds____web2__ ", result.message.length);
   // if mismatch. then call. the update function.
   if (result.message.length !== fetchTokensOfUserFromSC.length) {
     if (
@@ -298,12 +297,6 @@ export async function Web3Login() {
 
   await getBalances(store.getState().web3store.userAddress);
 
-  Mixpanel.identify(accounts[0]);
-  Mixpanel.track('Web3Login');
-  Mixpanel.people.set({
-    network: store.getState().web3store.web3Connected ? store.getState().web3store.web3Network.toLowerCase() : 'web2'
-  });
-
   // update nfts infos
   await updateBitfightersMintedCountAndTotal();
   await updatePresaleMintedCount();
@@ -314,17 +307,17 @@ export async function Web3Login() {
 function handleEthereum() {
   const { ethereum } = window;
   if (ethereum && ethereum.isMetaMask) {
-    console.log("Ethereum successfully detected!");
+    // console.log("Ethereum successfully detected!");
     store.dispatch(ChangeLoggerMessage("Ethereum successfully detected!"));
     // Access the decentralized web!
   } else {
-    console.log("Please install MetaMask!");
+    // console.log("Please install MetaMask!");
     store.dispatch(ChangeLoggerMessage("Please install MetaMask!"));
   }
 }
 
 export async function PhoneWeb3Login() {
-  console.log("in web3login in phone ....(*******");
+  // console.log("in web3login in phone ....(*******");
   // 8e5879b2c1feba071144472125c9ff8f
 
   // const provider = new ethers.providers.Web3Provider(walletConnectprovider)
@@ -346,7 +339,7 @@ export async function PhoneWeb3Login() {
 
   // // Subscribe to connection events
   // connector.on("connect", (error, payload) => {
-  //   console.log("payload ", payload)
+  //   // console.log("payload ", payload)
   //   if (error) {
   //     throw error;
   //   }
@@ -358,7 +351,7 @@ export async function PhoneWeb3Login() {
   const provider = await detectEthereumProvider();
 
   if (provider) {
-    console.log("Ethereum successfully detected!");
+    // console.log("Ethereum successfully detected!");
     store.dispatch(ChangeLoggerMessage("Ethereum successfully detected!"));
 
     /// Legacy providers may only have ethereum.sendAsync
@@ -372,3 +365,90 @@ export async function PhoneWeb3Login() {
   }
 
 }
+
+
+export async function Web3LoginV2(userAddress) {
+  // console.log("in web3login ", window.ethereum);
+  // const onboarding = new MetaMaskOnboarding();
+
+  // if (!store.getState().userPathStore.metaMaskInstalled) {
+  //   onboarding.startOnboarding();
+  //   return;
+  // }
+
+  // const connectedNetwork = store.getState().web3store.web3Network;
+
+  // if (connectedNetwork == '') {
+  //   store.dispatch(SetFailureNotificationBool(true))
+  //   store.dispatch(SetFailureNotificationMessage("Please Select a Network"))
+  //   return
+  // }
+  console.log("running Web3LoginV2 ....(*******", userAddress, window.ethereum, process.env.REACT_APP_DEV_ENV);
+
+
+  let accounts = [userAddress]
+  const userMetamaskSigned = await checkIfUserSignedMetamask(accounts[0]);
+
+  console.log("running Web3LoginV2 ....(******* userMetamaskSigned", userMetamaskSigned);
+
+
+  if (!userMetamaskSigned) {
+    const signedRes = await siweSign(accounts, SignatureMessage);
+    if (signedRes === "Error") {
+      window.alert("Failed Metamask signature. Without that you cannot play.");
+      return;
+    }
+    postUserSignedMessage(accounts[0], signedRes);
+  }
+
+  localStorage.setItem("connected_matic_network", "10");
+  localStorage.setItem("last_web3_login_time", (new Date()).toISOString())
+  if (!validation(accounts[0])) {
+    store.dispatch(ChangeValidUserState(false));
+    return;
+  }
+  store.dispatch(Login(accounts[0]));
+  store.dispatch(Login(accounts[0]));
+  store.dispatch(SetConnectedWeb3(true));
+  store.dispatch(setCardState(PageStates.ProgressState));
+  store.dispatch(ChangeValidUserState(true));
+
+  // check if user owns 1k club card - prod
+
+  const auth_token: string = await loginAndAuthenticateUser(accounts[0]);
+  store.dispatch(ChangeAuthTOken(auth_token));
+
+  await UpdateUserNetwork()
+
+  const rc = new ReaderFunctions();
+  const fetchTokensOfUserFromSC = await rc.fetchTokenOfUserFromSC();
+
+  let result = await fetchNFTsFromDB(accounts[0]);
+  if (result.message.length !== fetchTokensOfUserFromSC.length) {
+    if (
+      !(
+        store.getState().web3store.userAddress === "0x49d318a4f85936fe49d86c0c5a0633bc27ec480c"
+        || store.getState().web3store.userAddress === "0x854b7f5dc5e6a96c076a0fae6d5c8dc334a2dd77"
+        // || store.getState().web3store.userAddress === "0xb4c2d38ca5382b565cb9e8f849da42d8e441b59e"
+      )
+    ) {
+      await updateNFTsInDB(accounts[0]);
+    }
+  }
+  result = await fetchNFTsFromDB(accounts[0]);
+
+  const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message);
+  store.dispatch(setTotalNFTData(result.message));
+  store.dispatch(setNFTDetails(dataOfNFTS));
+  store.dispatch(setNFTLoadedBool(true));
+
+
+  await getBalances(store.getState().web3store.userAddress);
+
+  // update nfts infos
+  await updateBitfightersMintedCountAndTotal();
+  await updatePresaleMintedCount();
+  await updateOneKClubMintedCount();
+  await FetchPresaleInfoMintedByUser();
+}
+

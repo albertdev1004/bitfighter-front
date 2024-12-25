@@ -155,7 +155,7 @@ export default function OldMintPage() {
   });
 
   const validateFields = () => {
-    console.log(" validation ......", formFieldInput)
+    // console.log(" validation ......", formFieldInput)
     if (formFieldInput.nick_name.length < 2) {
       setErrSnackBarMessage("Set Nick Name of Length greater than 1")
       setErrSnackBarOpen(true)
@@ -185,7 +185,7 @@ export default function OldMintPage() {
       try {
         inputValues.referer_address = ethers.utils.getAddress(formFieldInput.referer_address)
       } catch (err) {
-        console.log(" error in getting proper address from this .. ", err)
+        // console.log(" error in getting proper address from this .. ", err)
         inputValues.referer_address = ethers.constants.AddressZero;
         setFormFieldInput(prevState => ({
           ...prevState,
@@ -203,9 +203,9 @@ export default function OldMintPage() {
     setMintingState("Generating Your Bitfighter");
 
     const allowance = await checkAllowance(store.getState().web3store.userAddress)
-    console.log("allowance -- >", allowance.toString());
+    // console.log("allowance -- >", allowance.toString());
     if (ethers.BigNumber.from("1000000000").gte(ethers.BigNumber.from(allowance.toString()))) {
-      console.log("less allowance")
+      // console.log("less allowance")
       if (!await approveWBTC2(GetGameLogicContractAddress(), ethers.BigNumber.from("100000000000000000"))) {
         setMintingBool(false);
         setMintingState("");
@@ -224,8 +224,8 @@ export default function OldMintPage() {
     const output = await randomGenarate(userAddress, inputValues.referer_address, inputValues.lucky_number, inputValues.nick_name);
 
     setMintingState("Minting Your BitFighter");
-    // console.log("approved.. wbtc ")
-    console.log(" just before minting ... ", inputValues)
+    // // console.log("approved.. wbtc ")
+    // console.log(" just before minting ... ", inputValues)
     const minted = await createBitFighter3(output.ipfsURL, inputValues.referer_address, inputValues.lucky_number, inputValues.nick_name, 0);
     // let minted = await WriterContractHandler.createBitfighters(output.ipfsURL, inputValues.referer_address, inputValues.lucky_number, inputValues.nick_name);
     if (!minted) {
@@ -243,8 +243,8 @@ export default function OldMintPage() {
     }
     await updateNFTsInDB(userAddress);
     const result = await fetchNFTsFromDB(userAddress);
-    console.log(userAddress);
-    console.log("---------*******-- .", result);
+    // console.log(userAddress);
+    // console.log("---------*******-- .", result);
     const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
     dispatch(setTotalNFTData(result.message))
     dispatch(setNFTDetails(dataOfNFTS))

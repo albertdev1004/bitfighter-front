@@ -20,7 +20,7 @@ export interface ListViewerDataWrapper {
 }
 
 export default function ListViewer(data: ListViewerData) {
-  console.log(data)
+  // console.log(data)
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {/* {

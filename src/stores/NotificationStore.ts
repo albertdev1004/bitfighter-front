@@ -37,7 +37,7 @@ export const NotificationStore = createSlice({
     //Happy message
     SetSuccessNotificationBool: (state: { successNotificationBool: boolean; }, action: PayloadAction<boolean>) => {
       state.successNotificationBool = action.payload;
-      console.log("SUCCESS ", action.payload)
+      // console.log("mouse clikced? ", action.payload)
     },
     SetSuccessNotificationMessage: (state: { successNotificationMessage: string; }, action: PayloadAction<string>) => {
       state.successNotificationMessage = action.payload;

@@ -35,7 +35,7 @@ export class Rect {
 
 export function calculateRect(map: Phaser.Tilemaps.Tilemap, arena1_area: Phaser.Tilemaps.TilemapLayer) {
   // 1053.0813520135102 416.28495201354303
-  console.log("--***------fightMachineOverLapArea ",map.widthInPixels, map.heightInPixels, arena1_area.hasTileAtWorldXY(1052,416))
+  // console.log("--***------fightMachineOverLapArea ",map.widthInPixels, map.heightInPixels, arena1_area.hasTileAtWorldXY(1052,416))
   let minX = 99999;
   let minY = 99999;
   let maxX = -99999;
@@ -53,7 +53,7 @@ export function calculateRect(map: Phaser.Tilemaps.Tilemap, arena1_area: Phaser.
   }
   // console.log(minX, maxX, minY, maxY)
   const rect = new Rect(minX, minY, maxX - minX, maxY - minY)
-  console.log("rect---",rect)
+  // console.log("rect---",rect)
   return rect
 }
 

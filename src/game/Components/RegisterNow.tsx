@@ -42,7 +42,7 @@ export function RegisterNow() {
   // console.log("web3ConnectedUser ", web3ConnectedUser )
 
   const registerButtonClicked =() => {
-    console.log("register button clicked..")
+    // console.log("register button clicked..")
     dispatch(ChangeRegisterShowInGame(true))
   }
 

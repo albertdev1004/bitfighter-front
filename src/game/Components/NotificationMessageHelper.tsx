@@ -43,7 +43,7 @@ export default function NotificationMessageHelper () {
         open={openSuccessNotificationBool}
         autoHideDuration={5000}
         onClose={handleClose}
-        key={vertical + horizontal}
+        key={vertical + horizontal + "success"}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} variant="filled">
           <AlertTitle> Success </AlertTitle>
@@ -56,7 +56,7 @@ export default function NotificationMessageHelper () {
         open={openFailureNotificationBool}
         autoHideDuration={5000}
         onClose={handleCloseErr}
-        key={vertical + horizontal + "sdsdfsd"}
+        key={vertical + horizontal + "failure"}
       >
         <Alert onClose={handleCloseErr} severity="error" sx={{ width: '100%' }} variant="filled">
           <AlertTitle> Failure </AlertTitle>
@@ -69,7 +69,7 @@ export default function NotificationMessageHelper () {
         open={openNewLevelNotificationBool}
         autoHideDuration={5000}
         onClose={handleCloseErr}
-        key={vertical + horizontal}
+        key={vertical + horizontal + "newLevel"}
       >
         <Alert onClose={handleCloseErr} severity="success" sx={{ width: '100%' }} variant="filled">
           <AlertTitle> Congratulations! </AlertTitle>
@@ -82,7 +82,7 @@ export default function NotificationMessageHelper () {
         open={openRewardNotification}
         autoHideDuration={5000}
         onClose={handleCloseErr}
-        key={vertical + horizontal}
+        key={vertical + horizontal + "reward"}
       >
         <Alert onClose={handleCloseErr} severity="success" sx={{ width: '100%' }} variant="filled">
           <AlertTitle> GET! </AlertTitle>

@@ -162,7 +162,7 @@ function FightersNewCenterPart() {
   const registerFormValidate = async () => {
     setRegisterProcessRunning(true)
 
-    console.log("in ---- register fn... ", formLuckyNumber, formNickNameame, playerSelected?.minted_id)
+    // console.log("in ---- register fn... ", formLuckyNumber, formNickNameame, playerSelected?.minted_id)
 
     if (!(formLuckyNumber > 0 && formLuckyNumber < 100)) {
       store.dispatch(SetFailureNotificationBool(true))
@@ -200,18 +200,18 @@ function FightersNewCenterPart() {
       //
       await updateSingleBfInDB(store.getState().web3store.userAddress, playerSelected.minted_id);
       const result = await fetchNFTsFromDB(store.getState().web3store.userAddress);
-      console.log("-------dataofnfts--*******-- .", result);
+      // console.log("-------dataofnfts--*******-- .", result);
 
       const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
-      console.log("dataofnfts -- ", dataOfNFTS)
+      // console.log("dataofnfts -- ", dataOfNFTS)
 
       store.dispatch(setTotalNFTData(result.message))
       store.dispatch(setNFTDetails(dataOfNFTS))
 
-      console.log("--dataofnfts-", playerSelected.minted_id)
+      // console.log("--dataofnfts-", playerSelected.minted_id)
 
       for (let i = 0; i < result.message.length; i++) {
-        console.log("--dataofnfts-", playerSelected.minted_id, result.message[i].minted_id)
+        // console.log("--dataofnfts-", playerSelected.minted_id, result.message[i].minted_id)
         if (playerSelected.minted_id === result.message[i].minted_id) {
           store.dispatch(SetCurrentGamePlayer(result.message[i]));
         }

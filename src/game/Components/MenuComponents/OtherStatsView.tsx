@@ -43,7 +43,7 @@ export default function OtherStatsView(data: any) {
     const game = phaserGame.scene.keys.game as Game;
     const otherPlayerSelected = useAppSelector((state) => state.userPathStore.OtherPlayerSelectedForStats)
 
-    console.log("debug_OtherStatsView 1 ", otherPlayerSelected)
+    // console.log("debug_OtherStatsView 1 ", otherPlayerSelected)
 
     const [playerData, setPlayerData] = useState<IAttributes>();
     const pdata: IAttributes = {}
@@ -107,7 +107,7 @@ export default function OtherStatsView(data: any) {
     //   // console.log("debug_stats setting player data", )
     // }, [])
 
-    console.log("debug_OtherStatsView ", pdata)
+    // console.log("debug_OtherStatsView ", pdata)
 
     return (
         <div key={uuidv4()}>

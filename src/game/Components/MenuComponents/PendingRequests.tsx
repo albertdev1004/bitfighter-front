@@ -22,7 +22,7 @@ export default function PendingRequests() {
   const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
 
   const accptFriendButtonClick = async(user_wallet_string: string) => {
-    console.log("sending friend request")
+    // console.log("sending friend request")
     await acceptFriendRequest(user_wallet_string.split(":")[0], parseInt(user_wallet_string.split(":")[1]) )
     const user_all_data: USER_DETAILS = await fetchUserDetails();
     if (!user_all_data) return;

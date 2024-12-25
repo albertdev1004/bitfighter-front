@@ -8,7 +8,7 @@ import store from "../../stores";
 import Game from "../scenes/Game";
 import { IKeysInfo, INFTDataOfConnections, IPlayerData } from "../characters/IPlayer";
 import { fetchPlayerWalletInfo } from "../../hooks/ApiCaller";
-import { SetEquippedBrewCount, SetInHandBrew, SetSemiEquippedBrewCount } from "../../stores/AssetStore";
+import { SetEquippedBrewCount, SetInHandBrew } from "../../stores/AssetStore";
 import { addToChatArray, MessageType, AddInitialToChatArray } from "../../stores/ChatStore";
 import { SetCurrentFightId, SetFightWinner } from "../../stores/FightsStore";
 import { SetServerLatency, SetTotalConnections } from "../../stores/MetaInfoStore";
@@ -47,39 +47,36 @@ import Bootstrap from "../scenes/Bootstrap";
 import Rat, { IRatsStateManager, RatState } from "../scenes/Rat";
 import { SetBigWinScreenTargetValue, SetJackpotWheelTargetValue } from "../../stores/WebsiteStateStore";
 import Coin from '../items/Coin';
+import bitfighters_atlas from '../../assets/bitfgihter_assets/player/texture-v2.json'
 
 export default class Network {
   game: Game;
   movementUpdateCounter = 0;
   bootstrap: Bootstrap;
-  gothitIds = []
-
 
   constructor() {
     this.game = phaserGame.scene.keys.game as Game;
     this.bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
 
     this.setSocketConnections();
-
-    this.gothitIds = []
   }
 
   setSocketConnections() {
     this.game.lobbySocketConnection.addEventListener("message", async (event) => {
       // const objs = JSON.parse(event.data.replace(/'/g, '"'))
       const objs = JSON.parse(event.data);
-      // if (objs.length > 0) console.log("message_here --> ", objs)
+      // if (objs.length > 0) // console.log("message_here --> ", objs)
 
       for (let gameQueueMessageIndex = 0; gameQueueMessageIndex < objs.length; gameQueueMessageIndex++) {
         const obj = objs[gameQueueMessageIndex];
         if (obj.event === "live_players") {
-          // console.log("live_players..", obj)
+          // // console.log("live_players..", obj)
           const tempList = [];
           // delete disconnected players
           this.game.otherPlayers.forEach((_otherplayer) => {
             tempList.push(_otherplayer.wallet_address);
             if (!obj.live_players.includes(_otherplayer.wallet_address)) {
-              console.log("live_players removing player,", _otherplayer.wallet_address);
+              // console.log("live_players removing player,", _otherplayer.wallet_address);
               _otherplayer.gameObject?.DestroyGameObject();
               if (_otherplayer.gameObject) {
                 this.game.otherPlayersGroup.remove(_otherplayer.gameObject?.sprite);
@@ -91,22 +88,22 @@ export default class Network {
         }
 
         if (obj.event === "live_players_init") {
-          console.log("live_players_init --- 1", obj);
-          // console.log("live_players_init --- 1", this.game.otherPlayers)
+          // console.log("live_players_init --- 1", obj);
+          // // console.log("live_players_init --- 1", this.game.otherPlayers)
           obj.live_players.forEach((_details: INFTDataOfConnections) => {
             // if (
             //   // _details.walletAddress !== store.getState().web3store.userAddress
             //   true
             // ) {
             if (!this.game.otherPlayers.get(_details.walletAddress + "_" + _details.minted_id)) {
-              console.log("live_players_init player does not exists ", this.game.otherPlayers.size, _details);
+              // console.log("live_players_init player does not exists ", this.game.otherPlayers.size, _details);
               if (this.game.textures.exists(_details.walletAddress + "_" + _details.minted_id)) {
-                console.log("live_players_init texture exists ", this.game.otherPlayers.size);
+                // console.log("live_players_init texture exists ", this.game.otherPlayers.size);
                 // if (!isNullOrUndefined(this.game.otherPlayers.get(_details.walletAddress + "_" + _details.minted_id))) {
 
                 const _otherplayer = this.game.otherPlayers.get(_details.walletAddress + "_" + _details.minted_id);
                 if (_otherplayer) {
-                  console.log("live_players_init deleting the other player ... ");
+                  // console.log("live_players_init deleting the other player ... ");
                   _otherplayer.gameObject?.DestroyGameObject();
                   if (_otherplayer.gameObject) this.game.otherPlayersGroup.remove(_otherplayer.gameObject.sprite);
                   _otherplayer.gameObject = undefined;
@@ -168,12 +165,12 @@ export default class Network {
                   this.game.otherPlayers.set(_details.walletAddress, otherPlayer);
                   this.game.otherPlayersGroup.add(otherPlayer.sprite);
                 }
-                console.log("live_players_init check ", _details, this.game.otherPlayers.size);
+                // console.log("live_players_init check ", _details, this.game.otherPlayers.size);
                 // }
               } else {
-                console.log("live_players_init texture not found ", this.game.otherPlayers.size, _details.walletAddress + "_" + _details.minted_id.toString());
+                // console.log("live_players_init texture not found ", this.game.otherPlayers.size, _details.walletAddress + "_" + _details.minted_id.toString());
                 // createOtherCharacterAnims(this.game.anims, _details.walletAddress + "_" + _details.minted_id.toString())
-                this.game.load.atlas(_details.walletAddress + "_" + _details.minted_id.toString(), _details.sprite_url, "bitfgihter_assets/player/texture-v2.json");
+                this.game.load.atlas(_details.walletAddress + "_" + _details.minted_id.toString(), _details.sprite_url, bitfighters_atlas);
                 this.game.otherPlayers.set(_details.walletAddress + "_" + _details.minted_id.toString(), {
                   wallet_address: _details.walletAddress,
                   nick_name: _details.nick_name,
@@ -199,18 +196,73 @@ export default class Network {
                   user_type: _details.user_type,
                 });
                 this.game.load.start();
-                console.log("adding other player live_players_init", this.game.otherPlayers);
+                // console.log("adding other player live_players_init", this.game.otherPlayers);
               }
             }
             // }
           });
         }
 
+        if (obj.event === "show_stunned") {
+          // // console.log(obj);
+          this.game.otherPlayers.forEach((_player) => {
+            if (_player.gameObject) {
+              if (_player.wallet_address === obj.walletAddress) {
+                _player.stunned = false;
+                _player.stunnedStarted = true;
+                _player.gameObject.currStamina = obj.stamina;
+              }
+            }
+          });
+        }
 
+        if (obj.event === "equip_brew") {
+          // // console.log(obj)
+          this.game.otherPlayers.forEach((_player) => {
+            if (_player.gameObject) {
+              if (_player.wallet_address === obj.walletAddress) {
+                _player.hasBrewInHand = true;
+                _player.showEquipAnimationStarted = true;
+                if (_player.wallet_address === store.getState().web3store.userAddress) {
+                  store.dispatch(SetEquippedBrewCount(1));
+                  store.dispatch(SetInHandBrew(true));
+                }
+              }
+              this.game.bootstrap.play_can_open_sound();
+            }
+          });
+        }
 
+        if (obj.event === "semi_equip_brew") {
+          this.game.otherPlayers.forEach((_player) => {
+            if (_player.gameObject) {
+              if (_player.wallet_address === obj.walletAddress) {
+                if (_player.wallet_address === store.getState().web3store.userAddress) {
+                  store.dispatch(SetEquippedBrewCount(2));
+                }
+              }
+              // this.game.bootstrap.play_can_open_sound()
+            }
+          });
+        }
+
+        if (obj.event === "unequip_brew") {
+          // console.log(obj);
+          this.game.otherPlayers.forEach((_player) => {
+            if (_player.gameObject) {
+              if (_player.wallet_address === obj.walletAddress) {
+                _player.hasBrewInHand = false;
+                if (_player.wallet_address === store.getState().web3store.userAddress) {
+                  store.dispatch(SetEquippedBrewCount(0));
+                  store.dispatch(SetInHandBrew(false));
+                }
+              }
+            }
+          });
+        }
 
         if (obj.event === "showWinAnimation") {
-          console.log(obj);
+          // console.log(obj);
           this.game.otherPlayers.forEach((_player) => {
             if (_player.gameObject) {
               if (_player.wallet_address === obj.walletAddress) {
@@ -222,7 +274,7 @@ export default class Network {
         }
 
         if (obj.event === "showLosingAnimation") {
-          console.log(obj);
+          // console.log(obj);
           this.game.otherPlayers.forEach((_player) => {
             if (_player.gameObject) {
               if (_player.wallet_address === obj.walletAddress) {
@@ -234,7 +286,7 @@ export default class Network {
         }
 
         if (obj.event === "showDeadAnim") {
-          // console.log(obj)
+          // // console.log(obj)
           this.game.otherPlayers.forEach((_player) => {
             if (_player.gameObject) {
               if (_player.wallet_address === obj.walletAddress) {
@@ -246,7 +298,7 @@ export default class Network {
         }
 
         if (obj.event === "stop_show_stunned") {
-          // console.log(obj)
+          // // console.log(obj)
           this.game.otherPlayers.forEach((_player) => {
             if (_player.gameObject) {
               if (_player.wallet_address === obj.walletAddress) {
@@ -259,7 +311,7 @@ export default class Network {
         }
 
         if (obj.event === "fight_update") {
-          // console.log("debug.. fight_update", obj);
+          // // console.log("debug.. fight_update", obj);
           // store.dispatch(SetFightersInfo(obj))
           // const newObj: IfightersInfo = { ...obj };
           const newObj = JSON.parse(JSON.stringify(obj))
@@ -305,14 +357,14 @@ export default class Network {
         }
 
         if (obj.event === "teleport") {
-          console.log(obj);
+          // console.log(obj);
           this.game.otherPlayers.forEach((_player) => {
             if (
               _player.wallet_address === obj.walletAddress &&
               _player.gameObject
               //  && _player.wallet_address !== store.getState().web3store.userAddress && _player.gameObject
             ) {
-              // console.log("only move ", obj)
+              // // console.log("only move ", obj)
               _player.gameObject.moving = false;
               _player.moving = false;
               _player.kicking = false;
@@ -320,7 +372,7 @@ export default class Network {
               _player.gameObject.playerContainer.x = obj.x
               _player.gameObject.playerContainer.y = obj.y
               _player.gameObject.teleport = true;
-              // console.log("teleport_debug------", _player.gameObject.gassed_lift_off_fallen)
+              // // console.log("teleport_debug------", _player.gameObject.gassed_lift_off_fallen)
               _player.gameObject.teleport_coordinates = {
                 x: obj.x,
                 y: obj.y,
@@ -336,7 +388,7 @@ export default class Network {
         }
 
         if (obj.event === "got_hit_lift_off_fall") {
-          console.log(obj);
+          // console.log(obj);
           this.game.otherPlayers.forEach((_player) => {
             if (_player.wallet_address === obj.walletAddress && _player.gameObject) {
               this.game.playHitSound();
@@ -357,7 +409,7 @@ export default class Network {
         }
 
         if (obj.event === "showGotBackHitAnimation") {
-          // console.log(obj);
+          // // console.log(obj);
           this.game.otherPlayers.forEach((_player) => {
             if (_player.wallet_address === obj.walletAddress && _player.gameObject) {
               _player.gotBackHit = true;
@@ -367,7 +419,7 @@ export default class Network {
         }
 
         if (obj.event === "block_anim_play") {
-          // console.log(obj);
+          // // console.log(obj);
           this.game.otherPlayers.forEach((_player) => {
             if (_player.wallet_address === obj.walletAddress && _player.gameObject) {
               _player.blocked = true;
@@ -377,7 +429,7 @@ export default class Network {
         }
 
         if (obj.event === "showGotHitAnimation") {
-          // console.log(obj);
+          // // console.log(obj);
           this.game.otherPlayers.forEach((_player) => {
             if (_player.wallet_address === obj.walletAddress && _player.gameObject) {
               _player.gotHit = true;
@@ -387,13 +439,13 @@ export default class Network {
         }
 
         if (obj.event === "queue_info") {
-          //console.log("debug queue_info--> ", obj.data);
+          //// console.log("debug queue_info--> ", obj.data);
           // store.dispatch(ChangeQueueData(obj.data))
           store.dispatch(ChangeCombinedQueueData(obj.data));
           const queueData: Array<IQueueCombined> = obj.data;
-          // console.log("queue info 2--> ", queueData)
+          // // console.log("queue info 2--> ", queueData)
           queueData.map((data) => {
-            // console.log("queue ",  data.user_wallet_address,
+            // // console.log("queue ",  data.user_wallet_address,
             //   (data.user_wallet_address === store.getState().web3store.userAddress
             //   && !store.getState().userActionsDataStore.fightersInfo.fightStarted))
             if (
@@ -432,7 +484,7 @@ export default class Network {
         }
 
         if (obj.event === "notification") {
-          /// console.log("debug_notification--> ", obj);
+          /// // console.log("debug_notification--> ", obj);
           if (obj.walletAddress === store.getState().web3store.userAddress) {
             if (obj.state === "join") {
               store.dispatch(SetQueuePoolState(true));
@@ -445,7 +497,7 @@ export default class Network {
         }
 
         if (obj.event === "fight_confirmation") {
-          console.log(" in fight_confirmation msg,,, ", obj);
+          // console.log(" in fight_confirmation msg,,, ", obj);
           if (obj.walletAddress === store.getState().web3store.userAddress) {
             store.dispatch(ShowFightConfirmationStartTime(new Date().getTime()));
             store.dispatch(ShowFightConfirmationBox(true));
@@ -457,7 +509,7 @@ export default class Network {
         }
 
         if (obj.event === "fight_start_pre_announcement") {
-          // console.log("debug_fight_start_pre_announcement  ",obj)
+          // // console.log("debug_fight_start_pre_announcement  ",obj)
           store.dispatch(SetCurrentFightId(obj.fight_id));
           if (obj.message === "Fight!") {
             // this.game.myPlayer.movementAbility = true;
@@ -494,7 +546,7 @@ export default class Network {
             store.dispatch(ShowChatWindow(false));
             // this.game.cameras.main.centerOn(this.game.centerCoordinatesStage.x, this.game.centerCoordinatesStage.y);
           }
-          // console.log("fight_start_announcement", "you are ", you_are_player_state, obj)
+          // // console.log("fight_start_announcement", "you are ", you_are_player_state, obj)
           this.game.otherPlayers.forEach((_player) => {
             if (_player.wallet_address === obj.player1 || _player.wallet_address === obj.player2) {
               if (_player.gameObject) {
@@ -502,7 +554,7 @@ export default class Network {
               }
             }
           });
-          // console.log("fight_start_announcement", "other player ", this.game.fighterOtherPlayer)
+          // // console.log("fight_start_announcement", "other player ", this.game.fighterOtherPlayer)
         }
 
         if (obj.event === "fight_end_announcement") {
@@ -518,22 +570,22 @@ export default class Network {
           store.dispatch(SetCurrentOtherPlayerFighting(""));
 
           setTimeout(() => {
-            console.log("fight_end_announcement 4 seconds done.");
+            // console.log("fight_end_announcement 4 seconds done.");
             store.dispatch(ChangeFightAnnouncementStateFromServer(false));
             store.dispatch(SetCurrentPlayerFighting(false));
           }, 6000);
 
-          console.log("debug_fight_end_announcement", store.getState().web3store.userAddress);
+          // console.log("debug_fight_end_announcement", store.getState().web3store.userAddress);
 
           const tempMyPlayer = this.game.otherPlayers.get(store.getState().web3store.player_id);
           if (tempMyPlayer?.gameObject) {
             if ((newObj.player1 && store.getState().web3store.userAddress === newObj.player1.walletAddress) || (newObj.player2 && store.getState().web3store.userAddress === newObj.player2.walletAddress)) {
-              console.log("debug_fight_end_announcement 1", store.getState().web3store.userAddress);
+              // console.log("debug_fight_end_announcement 1", store.getState().web3store.userAddress);
               this.game.cameras.main.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);
               this.game.cameras.main.startFollow(tempMyPlayer.gameObject.playerContainer);
               if (store.getState().web3store.userAddress === obj.winner) {
                 // show that card..
-                console.log("in here fight_end_announcement ", obj.winner);
+                // console.log("in here fight_end_announcement ", obj.winner);
                 setTimeout(() => {
                   store.dispatch(ShowWinnerCardAtFightEnd(true));
                 }, 7000);
@@ -550,7 +602,7 @@ export default class Network {
                   store.dispatch(SetMovementAbilityOfPlayer(true));
                 }, 3000);
               } else {
-                console.log("debug_fight_end_announcement 2", store.getState().web3store.userAddress);
+                // console.log("debug_fight_end_announcement 2", store.getState().web3store.userAddress);
                 store.dispatch(ChangeFightAnnouncementMessageFromServer("You Lose"));
                 this.game.playDrBitzYouLose();
                 store.dispatch(ChangeFightAnnouncementStateFromServer(true));
@@ -573,15 +625,6 @@ export default class Network {
           const last_health_p1 = obj.last_health_p1;
           const last_health_p2 = obj.last_health_p2;
 
-          // tracker_id = obj.unique_id;
-          if (this.gothitIds.includes(obj.unique_id)) {
-            return
-          }
-          this.gothitIds.push(obj.unique_id);
-          if (this.gothitIds.length > 20) {
-            this.gothitIds.shift();
-          }
-
           this.game.otherPlayers.forEach((_player) => {
             if (_player.wallet_address === newObj.player1.walletAddress) {
               _player.gameObject?.EnableHealthBars();
@@ -591,7 +634,7 @@ export default class Network {
                 _player.gameObject?.DecreaseHealthValue(tempHealthP1, last_health_p1);
               }
             }
-            else if (_player.wallet_address === newObj.player2.walletAddress) {
+            if (_player.wallet_address === newObj.player2.walletAddress) {
               _player.gameObject?.EnableHealthBars();
               if (_player.wallet_address === store.getState().web3store.userAddress) {
                 _player.gameObject?.DecreaseHealthValue(tempHealthP2, last_health_p2, "red");
@@ -680,7 +723,7 @@ export default class Network {
         }
 
         if (obj.event === "chat") {
-          // console.log("here --> ", obj)
+          // // console.log("here --> ", obj)
           if (obj.walletAddress === store.getState().web3store.userAddress) {
             store.dispatch(
               addToChatArray({
@@ -703,13 +746,13 @@ export default class Network {
             );
           }
           this.game.otherPlayers.forEach((_player) => {
-            console.log(_player.wallet_address, obj.walletAddress);
+            // console.log(_player.wallet_address, obj.walletAddress);
             if (_player.wallet_address === obj.walletAddress) _player.gameObject?.createNewDialogBox(obj.message);
           });
         }
 
         if (obj.event === "player_left") {
-          // console.log(obj);
+          // // console.log(obj);
           store.dispatch(
             addToChatArray({
               nick_name: obj.nick_name,
@@ -722,7 +765,7 @@ export default class Network {
         }
 
         if (obj.event === "joined") {
-          console.log(obj);
+          // console.log(obj);
           if (obj.walletAddress !== store.getState().web3store.userAddress) {
             store.dispatch(
               addToChatArray({
@@ -754,7 +797,7 @@ export default class Network {
         }
 
         if (obj.event === "update_balance") {
-          console.log(obj)
+          // console.log(obj)
           if (obj.walletAddress === store.getState().web3store.userAddress) {
             getBalances(store.getState().web3store.userAddress);
             fetchPlayerWalletInfo()
@@ -762,7 +805,7 @@ export default class Network {
         }
 
         if (obj.event === "fetch_balance") {
-          console.log("in fetchPlayerWalletInfo", obj, store.getState().web3store.userAddress);
+          // console.log("in fetchPlayerWalletInfo", obj, store.getState().web3store.userAddress);
           if (obj.user_wallet_address === store.getState().web3store.userAddress) {
             fetchPlayerWalletInfo();
             // getBalances(store.getState().web3store.userAddress)
@@ -770,7 +813,7 @@ export default class Network {
         }
 
         if (obj.event === "jackpot_show") {
-          console.log("in jackpot_show", obj, store.getState().web3store.userAddress);
+          // console.log("in jackpot_show", obj, store.getState().web3store.userAddress);
           if (obj.user_wallet_address === store.getState().web3store.userAddress) {
             store.dispatch(SetJackpotWheelTargetValue(obj.target_value));
             this.bootstrap.launchJackPotGame();
@@ -778,7 +821,7 @@ export default class Network {
         }
 
         if (obj.event === "assets_update") {
-          console.log(obj);
+          // console.log(obj);
           // if (obj.walletAddress === store.getState().web3store.userAddress) {
           //   store.dispatch(SetAssetsInfo(obj.data))
           // }
@@ -806,77 +849,6 @@ export default class Network {
           // store.dispatch(SetFightersInfo(newObj))
         }
 
-        if (obj.event === "eject_brew_server") {
-          console.log(obj);
-          this.game.brews.push({
-            brew_id: obj.brew_id,
-            gameObject: new BrewManager(this.game, obj.fromX, obj.fromY, obj.toX, obj.toY),
-          });
-        }
-
-        if (obj.event === "show_stunned") {
-          // console.log(obj);
-          this.game.otherPlayers.forEach((_player) => {
-            if (_player.gameObject) {
-              if (_player.wallet_address === obj.walletAddress) {
-                _player.stunned = false;
-                _player.stunnedStarted = true;
-                _player.gameObject.currStamina = obj.stamina;
-              }
-            }
-          });
-        }
-
-
-        if (obj.event === "semi_equip_brew") {
-          this.game.otherPlayers.forEach((_player) => {
-            if (_player.gameObject) {
-              if (_player.wallet_address === obj.walletAddress) {
-                if (_player.wallet_address === store.getState().web3store.userAddress) {
-                  store.dispatch(SetSemiEquippedBrewCount(store.getState().assetStore.semiEquippedBrewCount + 1));
-                  store.dispatch(SetEquippedBrewCount(store.getState().assetStore.equippedBrewCount - 1));
-                }
-              }
-              // this.game.bootstrap.play_can_open_sound()
-            }
-          });
-        }
-
-        if (obj.event === "equip_brew") {
-          // console.log(obj)
-          this.game.otherPlayers.forEach((_player) => {
-            if (_player.gameObject) {
-              if (_player.wallet_address === obj.walletAddress) {
-                _player.hasBrewInHand = true;
-                _player.showEquipAnimationStarted = true;
-                if (_player.wallet_address === store.getState().web3store.userAddress) {
-                  store.dispatch(SetEquippedBrewCount(store.getState().assetStore.equippedBrewCount + 1));
-                  store.dispatch(SetSemiEquippedBrewCount(store.getState().assetStore.semiEquippedBrewCount - 1));
-                  store.dispatch(SetInHandBrew(true));
-                }
-              }
-              this.game.bootstrap.play_can_open_sound();
-            }
-          });
-        }
-
-        if (obj.event === "unequip_brew") {
-          console.log(obj);
-          this.game.otherPlayers.forEach((_player) => {
-            if (_player.gameObject) {
-              if (_player.wallet_address === obj.walletAddress) {
-                _player.hasBrewInHand = false;
-                if (_player.wallet_address === store.getState().web3store.userAddress) {
-                  store.dispatch(SetEquippedBrewCount(store.getState().assetStore.equippedBrewCount - 1));
-                  // store.dispatch(SetSemiEquippedBrewCount(store.getState().assetStore.semiEquippedBrewCount - 1));
-                  store.dispatch(SetInHandBrew(false));
-                }
-              }
-            }
-          });
-        }
-
-
         if (obj.event === "brew_used") {
           // this.game.bootstrap.play_can_open_sound()
           this.game.otherPlayers.forEach((_player) => {
@@ -889,15 +861,21 @@ export default class Network {
                 this.game.bootstrap.play_can_open_sound();
               }
               //If equipped brew was used then set it to 0?
-              // store.dispatch(SetEquippedBrewCount(store.getState().assetStore.equippedBrewCount - 1));
+              store.dispatch(SetEquippedBrewCount(0));
             }
           });
         }
 
-
+        if (obj.event === "eject_brew_server") {
+          // console.log(obj);
+          this.game.brews.push({
+            brew_id: obj.brew_id,
+            gameObject: new BrewManager(this.game, obj.fromX, obj.fromY, obj.toX, obj.toY),
+          });
+        }
 
         if (obj.event === "magnet_move_brew") {
-          console.log(obj);
+          // console.log(obj);
           for (let i = 0; i < this.game.brews.length; i++) {
             if (this.game.brews[i].brew_id === obj.brew_id) {
               this.game.otherPlayers.forEach((_player) => {
@@ -912,7 +890,7 @@ export default class Network {
 
         if (obj.event === "magnet_move_item") {
           try {
-            console.log(obj);
+            // console.log(obj);
             for (let i = 0; i < this.game.items.length; i++) {
               // if (obj.index !== i) {
               //   continue
@@ -951,7 +929,7 @@ export default class Network {
 
 
         if (obj.event === "jackpot_win") {
-          console.log(obj);
+          // console.log(obj);
           // store.dispatch(
           //   ChangeFightAnnouncementMessageFromServer("You Win JackPot")
           // );
@@ -973,7 +951,7 @@ export default class Network {
         }
 
         if (obj.event === "fetch_balance") {
-          console.log("in fetchPlayerWalletInfo", objs, store.getState().web3store.userAddress);
+          // console.log("in fetchPlayerWalletInfo", objs, store.getState().web3store.userAddress);
           if (obj.user_wallet_address === store.getState().web3store.userAddress) {
             fetchPlayerWalletInfo();
             // getBalances(store.getState().web3store.userAddress)
@@ -994,18 +972,18 @@ export default class Network {
         }
 
         if (obj.event === "mouse_update" && this.game.rats.length > 0) {
-          // console.log(obj);
+          // // console.log(obj);
 
           if (this.game.rats.length > obj.rats_count) {
             this.game.resetRats(obj);
           }
-          // console.log("debug_rats ---", this.game.rats.length, obj.rats_count)
+          // // console.log("debug_rats ---", this.game.rats.length, obj.rats_count)
           const newObj = obj as IRatsStateManager;
 
           for (let i = 0; i < this.game.rats.length; i++) {
             const mouseObj = this.game.rats[i].gameObject;
             mouseObj.currentHealth = newObj.rats_health[i];
-            // console.log("debug_rats ---", newObj.rats_orientations[i])
+            // // console.log("debug_rats ---", newObj.rats_orientations[i])
             mouseObj.sprite.flipX = false
             if (newObj.rats_orientations[i] === "right") {
               mouseObj.sprite.flipX = true
@@ -1015,7 +993,7 @@ export default class Network {
               y: newObj.rats_positiions[i].y,
             }
             if (newObj.rats_state[i] === RatState.RUN_AWAY && !mouseObj.escaped) {
-              console.log('RatState.RUN_AWAY', i);
+              // console.log('RatState.RUN_AWAY', i);
               mouseObj.ratContainer.remove([mouseObj.healthBar, mouseObj.healthBarBackground]);
               mouseObj.playSmokeScreen();
               mouseObj.escaped = true;
@@ -1024,7 +1002,7 @@ export default class Network {
               turnRatToCoin(mouseObj)
             }
             if (newObj.rats_state[i] === RatState.DEAD) {
-              console.log('RatState.DEAD mouse_update', i, newObj.rats_state[i]);
+              // console.log('RatState.DEAD mouse_update', i, newObj.rats_state[i]);
               turnToMoseDead(mouseObj);
               mouseObj.dead = true;
             }
@@ -1032,7 +1010,7 @@ export default class Network {
         }
 
         if (obj.event === "items_update") {
-          // console.log(obj)
+          // // console.log(obj)
           // {
           //   item_name: 'coin',
           //     item_id: value.item_id,
@@ -1042,7 +1020,7 @@ export default class Network {
           // }
 
           // if (obj.arr.length > 0) {
-          //   console.log(obj)
+          //   // console.log(obj)
           // }
 
           for (let i = 0; i < obj.arr.length; i++) {
@@ -1057,7 +1035,7 @@ export default class Network {
                 }
               }
               if (!found) {
-                // console.log("items_update_debug", obj.arr)
+                // // console.log("items_update_debug", obj.arr)
                 // create it
                 this.game.items.push({
                   item_id: obj.arr[i].item_id,
@@ -1077,11 +1055,11 @@ export default class Network {
         }
 
         if (obj.event === "mouse_got_hit") {
-          //  console.log(obj);
+          //  // console.log(obj);
           if (this.game.rats.length > obj.rats_count) {
             this.game.resetRats(obj);
           }
-          // console.log("debug rats ---", this.game.rats.length, obj.rats_count)
+          // // console.log("debug rats ---", this.game.rats.length, obj.rats_count)
           const newObj = obj as IRatsStateManager;
 
           for (let i = 0; i < this.game.rats.length; i++) {
@@ -1093,7 +1071,7 @@ export default class Network {
                 x: newObj.rats_positiions[i].x,
                 y: newObj.rats_positiions[i].y,
               }
-              // console.log("mouse_got_hit ---", mouseObj.target_position_stored, mouseObj.sprite.x)
+              // // console.log("mouse_got_hit ---", mouseObj.target_position_stored, mouseObj.sprite.x)
 
               this.bootstrap.play_uhOh_sound()
             }
@@ -1105,7 +1083,7 @@ export default class Network {
               mouseObj.dead = true
               // mouseObj.playSmokeScreen();
               const randomNumber = Math.floor(Math.random() * 4) + 1;
-              console.log('RatState.DEAD randomNumber ', i);
+              // console.log('RatState.DEAD randomNumber ', i);
               switch (randomNumber) {
                 case 1:
                   this.bootstrap.play_ratDie1_sound();
@@ -1129,7 +1107,7 @@ export default class Network {
       }
 
       if (objs.event === "all_chats") {
-        // console.log(objs)
+        // // console.log(objs)
         const chats = [];
         for (let i = 0; i < objs.chats.length; i++) {
           if (objs.chats[i].type === MessageType.Chat && objs.chats[i].walletAddress === store.getState().web3store.userAddress) {
@@ -1143,7 +1121,7 @@ export default class Network {
       }
 
       if (objs.event === "ping") {
-        // console.log(objs)
+        // // console.log(objs)
         this.game.lobbySocketConnection.send(
           JSON.stringify({
             event: "pong",
@@ -1157,25 +1135,25 @@ export default class Network {
         const now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
         const timezoneOffset = new Date().getTimezoneOffset();
         const tempDiff = Math.abs(new Date(now_utc).getTime() - objs.server_time);
-        // console.log("received ping ", new Date().getTime(), new Date(now_utc).getTime(), objs.server_time, (2 * tempDiff).toString(), timezoneOffset, objs.server_offset)
+        // // console.log("received ping ", new Date().getTime(), new Date(now_utc).getTime(), objs.server_time, (2 * tempDiff).toString(), timezoneOffset, objs.server_offset)
         // store.dispatch(SetServerLatency((2 * tempDiff).toString()))
         try {
           store.dispatch(SetServerLatency(objs.latency_time.toString()));
           store.dispatch(SetTotalConnections(objs.total_connections));
         } catch (err) {
-          console.log("error in 873 ", err);
+          // console.log("error in 873 ", err);
         }
       }
 
       if (objs.event === "move" || objs.event === "running") {
-        // console.log("--- ", objs)
+        // // console.log("--- ", objs)
         this.game.otherPlayers.forEach((_player) => {
           if (
             _player.wallet_address === objs.walletAddress &&
             _player.gameObject
             // && _player.wallet_address !== store.getState().web3store.userAddress
           ) {
-            // console.log("only move ", objs)
+            // // console.log("only move ", objs)
             if (objs.event === "running") {
               _player.runStart = true;
             } else {
@@ -1185,7 +1163,7 @@ export default class Network {
             _player.kicking = false;
             _player.punching = false;
             _player.gameObject.currStamina = objs.stamina;
-            // console.log("move_current_stamina ", _player.gameObject.currStamina )
+            // // console.log("move_current_stamina ", _player.gameObject.currStamina )
             _player.gameObject.currHealth = objs.health;
 
             _player.gameObject.target_position_stored = {
@@ -1197,7 +1175,7 @@ export default class Network {
             else _player.gameObject.sprite.flipX = true;
           }
           // else if (_player.wallet_address === objs.walletAddress && _player.wallet_address === store.getState().web3store.userAddress && _player.gameObject) {
-          //   // console.log("---- ", obj)
+          //   // // console.log("---- ", obj)
 
           //   _player.gameObject.currStamina = objs.stamina;
           //   _player.gameObject.currHealth = objs.health;
@@ -1205,18 +1183,18 @@ export default class Network {
           //   _player.gameObject.server_position_stored = {x: objs.x, y: objs.y};
           //   _player.gameObject.last_server_move_action_id = objs.action_id;
           //   _player.gameObject.last_server_move_updated_at = new Date().getTime()
-          //   // console.log("pos_from_server", obj.walletAddress,  obj.x, obj.y, "pos_from_client", _player.gameObject?.sprite.x, _player.gameObject?.sprite.y, _player.stunned)
+          //   // // console.log("pos_from_server", obj.walletAddress,  obj.x, obj.y, "pos_from_client", _player.gameObject?.sprite.x, _player.gameObject?.sprite.y, _player.stunned)
           // }
         });
       }
 
       this.game.load.on("filecomplete", (key: string, val: any) => {
-        // console.log("filecomplete- live_players_init", key, val)
+        // // console.log("filecomplete- live_players_init", key, val)
         if (this.game.otherPlayers.get(key) && key.split("_").length === 2) {
           const otherPlayer = this.game.otherPlayers.get(key);
           if (otherPlayer) {
             if (!otherPlayer.setupDone) {
-              console.log("filecomplete- live_players_init ---", key);
+              // console.log("filecomplete- live_players_init ---", key);
               createOtherCharacterAnimsV2(this.game.anims, key);
               otherPlayer.setupDone = true;
               const otherP = otherPlayer.wallet_address !== store.getState().web3store.userAddress;
@@ -1247,9 +1225,9 @@ export default class Network {
               otherPlayer.sprite = otherPlayer.gameObject.sprite;
               this.game.otherPlayers.set(key, otherPlayer);
               this.game.otherPlayersGroup.add(otherPlayer.sprite);
-              console.log("--- live_players_init all players ---", this.game.otherPlayers.size, this.game.otherPlayers);
+              // console.log("--- live_players_init all players ---", this.game.otherPlayers.size, this.game.otherPlayers);
               if (otherPlayer.wallet_address === store.getState().web3store.userAddress) {
-                console.log("following live_players_init --", this.game.otherPlayers.size);
+                // console.log("following live_players_init --", this.game.otherPlayers.size);
                 this.game.cameras.main.setBounds(0, 0, this.game.map.widthInPixels, this.game.map.heightInPixels);
                 this.game.cameras.main.startFollow(otherPlayer.gameObject.playerContainer);
               }
@@ -1261,7 +1239,7 @@ export default class Network {
   }
 }
 function turnToMoseDead(mouseObj: Rat) {
-  // console.log("debug_rats_dead")
+  // // console.log("debug_rats_dead")
   // mouseObj.show_coins = true;
   // mouseObj.hideMouse = false;
 }

@@ -37,24 +37,21 @@ const SidePanel = () => {
   const state = useAppSelector(
     (state) => state.mintCardStateStore.state_selected
   );
-
-  const connectedNetwork = useAppSelector((state) => state.web3store.web3Network)
-
   const [onbutton, setOnButton] = useState(false);
   const [hoverplace, startHover] = useState(0)
 
   const refrinkHandle = () => {
     const temp = document.URL;
-    console.log(temp, document);
+    // console.log(temp, document);
     bootstrap.play_button_down_sound()
 
     const allMetaElements = document.getElementsByTagName('meta')
-    console.log("meta -- ", allMetaElements)
+    // console.log("meta -- ", allMetaElements)
     for (let i = 0; i < allMetaElements.length; i++) {
-      console.log("---meta", allMetaElements[i].getAttribute("name"))
+      // console.log("---meta", allMetaElements[i].getAttribute("name"))
       if (allMetaElements[i].getAttribute("name") === "description") {
         //make necessary changes
-        console.log("meta 1 -- ", allMetaElements[i])
+        // console.log("meta 1 -- ", allMetaElements[i])
         // Use my ref code to join my gang and dominate the cities with me!
         // store.dispatch(SetMetaTagDescription())
         allMetaElements[i].setAttribute('description', "Use my ref code to join my gang and dominate Bit Fighters with me!");
@@ -95,7 +92,7 @@ const SidePanel = () => {
                           }
                         }}
                         onMouseOut={() => {
-                          console.log("on mouse out fn. 1 active ")
+                          // console.log("on mouse out fn. 1 active ")
                           setOnButton(false)
                         }}
                     ></div>
@@ -118,7 +115,7 @@ const SidePanel = () => {
                           }
                         }}
                         onMouseOut={() => {
-                          console.log("on mouse out fn. 1")
+                          // console.log("on mouse out fn. 1")
                           setOnButton(false)
                         }}
                         className="btn-mint--small sidePanel-drip"
@@ -161,7 +158,7 @@ const SidePanel = () => {
                             }
                           }}
                           onMouseOut={() => {
-                            console.log("on mouse out fn. 3")
+                            // console.log("on mouse out fn. 3")
                             setOnButton(false)
                           }}
                           className="btn-mint--small sidePanel-bit"
@@ -181,7 +178,7 @@ const SidePanel = () => {
                           }
                         }}
                         onMouseOut={() => {
-                          console.log("on mouse out fn. 2 active ")
+                          // console.log("on mouse out fn. 2 active ")
                           setOnButton(false)
                         }}
                     ></div>
@@ -198,14 +195,14 @@ const SidePanel = () => {
                           bootstrap.play_button_down_sound()
                         }}
                         onMouseOver={() => {
-                          console.log("on mouse in fn. 2 ", onbutton)
+                          // console.log("on mouse in fn. 2 ", onbutton)
                           if (hoverplace !== 2) {
                             setOnButton(true)
                             bootstrap.play_button_hover_sound()
                           }
                         }}
                         onMouseOut={() => {
-                          console.log("on mouse out fn. 2")
+                          // console.log("on mouse out fn. 2")
                           setOnButton(false)
                         }}
                         className="btn-mint--small sidePanel-bit"
@@ -215,72 +212,60 @@ const SidePanel = () => {
                 )} */}
 
 
-                {/* <div className="btn-mint--small sidePanel-disabled"></div> */}
+                <div className="btn-mint--small sidePanel-disabled"></div>
+                {/* @TODO: uncoment this later */}
+                {/* <div style={{
+                  height: '50px'
+                }}></div> */}
 
-
-
-                <>
-                  {connectedNetwork == 'AVALANCHE' &&
-                    <> {state === PageStates.OneKClub ? (
-                      <>
-                        <div className="btn-mint--small oneclub-state-active"
-                          onMouseOver={() => {
-                            if (hoverplace !== 3) {
-                              setOnButton(true)
-                              bootstrap.play_button_hover_sound()
-                            }
-                          }}
-                          onMouseOut={() => {
-                            console.log("on mouse out fn. 3 active ")
-                            setOnButton(false)
-                          }}
-                        ></div>
-                      </>
+                {/* {state === PageStates.OneKClub ? (
+                  <>
+                    <div className="btn-mint--small oneclub-state-active"
+                      onMouseOver={() => {
+                        if (hoverplace !== 3) {
+                          setOnButton(true)
+                          bootstrap.play_button_hover_sound()
+                        }
+                      }}
+                      onMouseOut={() => {
+                        // console.log("on mouse out fn. 3 active ")
+                        setOnButton(false)
+                      }}
+                    ></div>
+                  </>
+                ) : (
+                  <>
+                    {state === PageStates.NotConnectedState ? (
+                      <div className="btn-mint--small sidePanel-disabled"
+                      ></div>
                     ) : (
-                      <>
-                        {state === PageStates.NotConnectedState ? (
-                          <div className="btn-mint--small sidePanel-disabled"
-                          ></div>
-                        ) : (
-                          <div
-                            onClick={() => {
-                              localStorage.setItem("state", "The 1K Club");
-                              dispatch(setCardState(PageStates.OneKClub));
-                              bootstrap.play_button_down_sound()
-                            }}
-                            onMouseOver={() => {
-                              if (hoverplace !== 3) {
-                                setOnButton(true)
-                                bootstrap.play_button_hover_sound()
-                              }
-                            }}
-                            onMouseOut={() => {
-                              console.log("on mouse out fn. 3")
-                              setOnButton(false)
-                            }}
-                            className="btn-mint--small sidePanel-oneclub"
-                          ></div>
-                        )}
-                      </>
+                      <div
+                        onClick={() => {
+                          localStorage.setItem("state", "The 1K Club");
+                          dispatch(setCardState(PageStates.OneKClub));
+                          bootstrap.play_button_down_sound()
+                        }}
+                        onMouseOver={() => {
+                          if (hoverplace !== 3) {
+                            setOnButton(true)
+                            bootstrap.play_button_hover_sound()
+                          }
+                        }}
+                        onMouseOut={() => {
+                          // console.log("on mouse out fn. 3")
+                          setOnButton(false)
+                        }}
+                        className="btn-mint--small sidePanel-oneclub"
+                      ></div>
                     )}
-                    </>}
-                </>
+                  </>
+                )} */}
 
-                <>
-                  <div className="btn-mint--small sidePanel-disabled"></div>
+                <div className="btn-mint--small sidePanel-disabled"></div>
 
-                  <div style={{
-                    height: '50px'
-                  }}></div>
-                </>
-
-                {connectedNetwork != 'AVALANCHE' && <>
-
-                  <div style={{
-                    height: '50px'
-                  }}></div>
-                </>}
-
+                <div style={{
+                  height: '50px'
+                }}></div>
 
 
                 {state === PageStates.NotConnectedState ? (
@@ -296,7 +281,7 @@ const SidePanel = () => {
                       }
                     }}
                     onMouseOut={() => {
-                      console.log("on mouse out fn. 4")
+                      // console.log("on mouse out fn. 4")
                       setOnButton(false)
                     }}
                   ></div>
@@ -340,7 +325,7 @@ const SidePanel = () => {
                           }
                         }}
                         onMouseOut={() => {
-                          console.log("on mouse out fn. 3")
+                          // console.log("on mouse out fn. 3")
                           setOnButton(false)
                         }}
                         className="btn-mint--small sidePanel-bit"
@@ -388,7 +373,7 @@ const SidePanel = () => {
                           }
                         }}
                         onMouseOut={() => {
-                          console.log("on mouse out fn. 3")
+                          // console.log("on mouse out fn. 3")
                           setOnButton(false)
                         }}
                         className="btn-mint--small sidePanel-drip"

@@ -4,53 +4,48 @@
 
 import { enableMapSet } from 'immer'
 import { configureStore } from '@reduxjs/toolkit'
-// import userReducer from './UserStore'
-// import computerReducer from './ComputerStore'
-// import whiteboardReducer from './WhiteboardStore'
-// import chatReducer from './ChatStore'
-// import roomReducer from './RoomStore'
 
+import AuthStore from './AuthStore'
+import AssetStore from './AssetStore'
+import userGeoStore from './UserGeoStore'
+import FightInfoStore from './FightsStore'
+import playerDataStore from './PlayerData'
+import chatMessageStore from './ChatStore'
+import web3storeReducer from './Web3Store'
+import MetaInfoStore from './MetaInfoStore'
 import counterReducer from './CounterStore'
 import textEditorReducer from './TextStore'
-import web3storeReducer from './Web3Store'
 import bitfighterReducer from './BitFighters'
-import chatMessageStore from './ChatStore'
 import userpathStore from './UserWebsiteStore'
-import playerDataStore from './PlayerData'
 import userActionsDataStore from './UserActions'
 import web3StoreBalance from './Web3StoreBalances'
-import userGeoStore from './UserGeoStore'
-import AuthStore from './AuthStore'
 import NotificationStore from './NotificationStore'
-import AssetStore from './AssetStore'
-import MetaInfoStore from './MetaInfoStore'
-import FightInfoStore from './FightsStore'
 import QueueDetailedInfo from './QueueDetailedInfo'
-import MintCardStateStore from './MintCardStateStore'
 import WebsiteStateStore from './WebsiteStateStore'
+import MintCardStateStore from './MintCardStateStore'
 
 enableMapSet()
 
 const store = configureStore({
   reducer: {
+    authStore: AuthStore,
+    assetStore: AssetStore,
+    geoStore: userGeoStore,
     counter: counterReducer,
     editor: textEditorReducer,
     web3store: web3storeReducer,
-    bitFighters: bitfighterReducer,
     chatStore: chatMessageStore,
     userPathStore: userpathStore,
-    playerDataStore: playerDataStore,
-    userActionsDataStore: userActionsDataStore,
-    web3BalanceStore: web3StoreBalance,
-    geoStore: userGeoStore,
-    authStore: AuthStore,
-    notificatinoStore: NotificationStore,
-    assetStore: AssetStore,
     metaInfoStore: MetaInfoStore,
+    bitFighters: bitfighterReducer,
     fightInfoStore: FightInfoStore,
+    playerDataStore: playerDataStore,
+    web3BalanceStore: web3StoreBalance,
+    notificatinoStore: NotificationStore,
     queueDetailedInfo: QueueDetailedInfo,
-    mintCardStateStore: MintCardStateStore,
     websiteStateStore: WebsiteStateStore,
+    mintCardStateStore: MintCardStateStore,
+    userActionsDataStore: userActionsDataStore,
   },
   // Temporary disable serialize check for redux as we store MediaStream in ComputerStore.
   // https://stackoverflow.com/a/63244831

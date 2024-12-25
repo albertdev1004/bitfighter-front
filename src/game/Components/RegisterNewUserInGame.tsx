@@ -71,7 +71,7 @@ export function RegisterNewUserInGame() {
   const web3ConnectedUser = useAppSelector((state) => state.web3store.web3Connected);
   const registerOptionShow = useAppSelector((state) => state.userPathStore.registerShowInGame)
   const [regBtnClicked, setregBtnClicked] = useState(false);
-  console.log("web3ConnectedUser ", web3ConnectedUser )
+  // console.log("web3ConnectedUser ", web3ConnectedUser )
   const [errsnackBarOpen , setErrSnackBarOpen] = useState(false);
   const [errSnackBarMessage, setErrSnackBarMessage] = useState("");
   const dispatch = useAppDispatch()
@@ -88,7 +88,7 @@ export function RegisterNewUserInGame() {
   };
 
   const signUpBtnPressed = async () => {
-    console.log("sign up btn pressed...", signupFormFieldInput)
+    // console.log("sign up btn pressed...", signupFormFieldInput)
     if (!EmailValidator.validate(signupFormFieldInput.email)) {
       setErrSnackBarOpen(true)
       setErrSnackBarMessage("Not Valid Email")
@@ -101,7 +101,7 @@ export function RegisterNewUserInGame() {
       return;
     }
     const res = await signUpWeb2User(signupFormFieldInput.email, signupFormFieldInput.password)
-    console.log("res --------", res);
+    // console.log("res --------", res);
 
     if (isNullOrUndefined(res)) {
       setErrSnackBarOpen(true)

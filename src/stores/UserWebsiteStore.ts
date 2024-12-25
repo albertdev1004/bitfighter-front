@@ -166,7 +166,7 @@ export const UserWebsiteStoreSlice = createSlice({
   initialState,
   reducers: {
     ChangePath: (state: { path: string; }, action: PayloadAction<string>) => {
-      console.log("changing current path -- ")
+      // console.log("changing current path -- ")
       state.path = action.payload;
     },
     ChangeAuthTOken: (state: { auth_token: string; }, action: PayloadAction<string>) => {
@@ -192,11 +192,11 @@ export const UserWebsiteStoreSlice = createSlice({
     },
 
     ChangeFightAnnouncementStateFromServer: (state: { GotFightAnnouncementFromServer: boolean; }, action: PayloadAction<boolean>) => {
-      // console.log("BroadcastingAnnouncement status", action.payload)
+      // // console.log("BroadcastingAnnouncement status", action.payload)
       state.GotFightAnnouncementFromServer = action.payload;
     },
     ChangeFightAnnouncementMessageFromServer: (state: { FightAnnouncementMessageFromServer: string; }, action: PayloadAction<string>) => {
-      // console.log("BroadcastingAnnouncement message", action.payload)
+      // // console.log("BroadcastingAnnouncement message", action.payload)
       state.FightAnnouncementMessageFromServer = action.payload;
     },
 
@@ -228,7 +228,7 @@ export const UserWebsiteStoreSlice = createSlice({
     },
 
     ChangeShowMenuBox: (state: { ShowMenuBox: boolean; }, action: PayloadAction<boolean>) => {
-      //console.log("in ChangeShowMenuBox", action.payload)
+      //// console.log("in ChangeShowMenuBox", action.payload)
       state.ShowMenuBox = action.payload;
     },
 
@@ -237,17 +237,17 @@ export const UserWebsiteStoreSlice = createSlice({
     },
 
     ChangeMaticBalance: (state: { maticBalance: string; }, action: PayloadAction<string>) => {
-      console.log("changing matic balance ..", action.payload)
+      // console.log("changing matic balance ..", action.payload)
       state.maticBalance = action.payload;
     },
 
     ChangewbtcBalance: (state: { wbtcBalance: string; }, action: PayloadAction<string>) => {
-      console.log("changing wbtc balance ..", action.payload)
+      // console.log("changing wbtc balance ..", action.payload)
       state.wbtcBalance = action.payload;
     },
 
     ChangeBitsBalance: (state: { bitsBalance: string; }, action: PayloadAction<string>) => {
-      console.log("changing bits balance ..", action.payload)
+      // console.log("changing bits balance ..", action.payload)
       state.bitsBalance = action.payload;
     },
 

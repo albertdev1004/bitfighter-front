@@ -26,11 +26,11 @@ export class ReaderFunctions {
     const tokenIds = await this.readOnlyContract.getTokensOfUser(
       store.getState().web3store.userAddress
     );
-    console.log("______debug_tokenIds____",
-      GetBFContractAddress(),
-      store.getState().web3store.userAddress,
-      tokenIds
-    );
+    // console.log("______debug_tokenIds____",
+    //   GetBFContractAddress(),
+    //   store.getState().web3store.userAddress,
+    //   tokenIds
+    // );
     return tokenIds;
   }
 

@@ -16,8 +16,8 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
 
   // var tempMover = false;
   // actions
-  // console.log("double pressed.. ", actions.running, actions.runStart)
-  // console.log("stunned--", 
+  // // console.log("double pressed.. ", actions.running, actions.runStart)
+  // // console.log("stunned--", 
   //   store.getState().userActionsDataStore.showStunnedSprite, 
   //   actions.showStunnedAnim, actions.gotHit, actions.gotBackHit, 
   //   player.anims.currentAnim.key === 'gotHit-' + animation_id,
@@ -34,10 +34,10 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
       store.dispatch(ShowGotHitSprite(false));
       player.stop();
       //play hit mp3
-      console.log("PLAY HIT!")
+      // console.log("PLAY HIT!")
       this.hit01.play({ loop: false });
       player.play('gotHit-' + animation_id).once('animationcomplete', () => {
-        console.log("animation finish got hit ..")
+        // console.log("animation finish got hit ..")
         actions.gotHit = false;
         if (store.getState().userActionsDataStore.showStunnedSprite) {
           player.play('stunned-' + animation_id)
@@ -57,7 +57,7 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
       store.dispatch(ShowGotBacktHitSprite(false));
       player.stop();
       player.play('gotBackHit-' + animation_id).once('animationcomplete', () => {
-        console.log("animation finish got back hit ..")
+        // console.log("animation finish got back hit ..")
         actions.gotBackHit = false;
         if (store.getState().userActionsDataStore.showStunnedSprite) {
           player.play('stunned-' + animation_id)
@@ -73,10 +73,10 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
       actions.running = false;
       actions.kicking = false;
       actions.punching = false;
-      console.log("showing stunned animation");
+      // console.log("showing stunned animation");
       player.stop();
       player.play('stunned-' + animation_id).once('animationcomplete', () => {
-        console.log("animation finish stunned..")
+        // console.log("animation finish stunned..")
         actions.showStunnedAnim = false;
       })
       actions.showStunnedAnim = true;
@@ -97,7 +97,7 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
         //   }
         // })
         .once('animationcomplete', () => {
-          console.log("animation finish lift..")
+          // console.log("animation finish lift..")
           player.play('falldown-' + animation_id)
             // .on("animationupdate", () => {
             //   if (actions.downAnimPlaying) {
@@ -110,7 +110,7 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
             //   }
             // })
             .once('animationcomplete', () => {
-              console.log("animation finish fall down")
+              // console.log("animation finish fall down")
               actions.downAnimPlaying = false;
               player.play('idle-' + animation_id);
             })
@@ -123,7 +123,7 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
       player.stop();
       // player.play('lift-'+animation_id)
       // .once('animationcomplete', () => {
-      console.log("animation finish lift..")
+      // console.log("animation finish lift..")
       player.play('dead-' + animation_id)
         .once('animationcomplete', () => {
           // dead //
@@ -140,7 +140,7 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
         walletAddress: store.getState().web3store.userAddress,
       }))
       player.play('run-' + animation_id).once('animationcomplete', () => {
-        // console.log("animation finish running ..")
+        // // console.log("animation finish running ..")
         actions.running = false;
         actions.runStart = true;
         player.play('idle-' + animation_id);
@@ -153,7 +153,7 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
     if (!actions.kicking && !actions.showStunnedAnim && !actions.punching) {
       player.stop();
       player.play('kick-' + animation_id).once('animationcomplete', () => {
-        console.log("animation finished kick")
+        // console.log("animation finished kick")
         player.play('idle-' + animation_id);
         actions.kickEnd = true;
         setTimeout(() => {
@@ -170,7 +170,7 @@ export const animateMovementv2 = (newSystemKeys: IKeysInfo, player: Phaser.Types
       player.stop();
       player.play('punch-' + animation_id).once('animationcomplete', () => {
         player.play('idle-' + animation_id);
-        // console.log("animation finished punch")
+        // // console.log("animation finished punch")
         setTimeout(() => {
           actions.punching = false;
           actions.punchStart = true;

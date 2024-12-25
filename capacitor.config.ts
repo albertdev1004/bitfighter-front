@@ -3,8 +3,13 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.bitfighters',
   appName: 'Bit fighters',
-  webDir: 'build',
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
+  "server": {
+    "url": "https://dev.dsipqx94z3to6.amplifyapp.com/",
+    "allowNavigation": [
+
+    ]
+  }
 };
 
 export default config;

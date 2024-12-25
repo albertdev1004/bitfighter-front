@@ -68,9 +68,8 @@ export default class KeyControls {
     if (store.getState().assetStore.in_hand_brew && this.keys.keyQ.time_last_lifted && new Date().getTime() - this.keys.keyQ.time_last_lifted > 100) {
       this.keys.keyQ.pressed = true;
     }
-    console.log("keyQCodeDownHandler---", store.getState().assetStore)
 
-    if (store.getState().assetStore.semiEquippedBrewCount > 0) {
+    if (store.getState().assetStore.equippedBrewCount > 1) {
       const temp = this.game.otherPlayers.get(store.getState().web3store.player_id);
       if (temp?.gameObject) {
         this.keys.keyQ.time_last_lifted = new Date().getTime();
@@ -195,7 +194,7 @@ export default class KeyControls {
 
   addControls() {
     this.game.input.keyboard.on("keydown", (event: { code: string }) => {
-      // console.log("keydown--",event.code)
+      // // console.log("keydown--",event.code)
       switch (event.code) {
         case "KeyB":
           this.keys.keyBlock.pressed = true;
@@ -267,12 +266,12 @@ export default class KeyControls {
 
     // Gamepad Input
     window.addEventListener("gamepadconnected", (e: GamepadEvent) => {
-      console.log("Gamepad connected at index " + e.gamepad.index);
+      // console.log("Gamepad connected at index " + e.gamepad.index);
       this.gameLoop(); // Start game loop
     });
 
     window.addEventListener("gamepaddisconnected", (e: GamepadEvent) => {
-      console.log("Gamepad disconnected from index " + e.gamepad.index);
+      // console.log("Gamepad disconnected from index " + e.gamepad.index);
     });
 
   }
@@ -318,11 +317,11 @@ export default class KeyControls {
 
       if (currentState && !previousState) {
         // Key down event
-        console.log(`${buttonMappings[index] || `Button ${index}`} is pressed`);
+        // console.log(`${buttonMappings[index] || `Button ${index}`} is pressed`);
         this.handleButtonDown(index);  // Call the appropriate action based on button
       } else if (!currentState && previousState) {
         // Key up event
-        console.log(`${buttonMappings[index] || `Button ${index}`} is released`);
+        // console.log(`${buttonMappings[index] || `Button ${index}`} is released`);
         this.handleButtonUp(index);    // Handle button release logic here
       }
 

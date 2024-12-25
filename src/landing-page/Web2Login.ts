@@ -5,16 +5,15 @@ import { fetchNFTsFromDB, fetchUserDetails, fetchWalletInfo, loginAndAuthenticat
 import store from '../stores';
 import { Login, SetConnectedWeb3 } from '../stores/Web3Store';
 import { isNullOrUndefined } from 'util';
-import Mixpanel from '../mixpanel';
 
 export async function Web2Login(web2Address: string) {
   console.log("in web2login ....(*******", web2Address)
 
   // const web2Address = localStorage.getItem("web2_wallet_address")
   if (!isNullOrUndefined(web2Address) && web2Address !== "") {
-    console.log("-------accounts---- .",);
-    console.log(web2Address);
-    console.log("----------- .",);
+    // console.log("-------accounts---- .",);
+    // console.log(web2Address);
+    // console.log("----------- .",);
 
     store.dispatch(Login(web2Address));
     store.dispatch(ChangeValidUserState(true))
@@ -26,7 +25,7 @@ export async function Web2Login(web2Address: string) {
     store.dispatch(ChangeUserData(user_all_data));
 
     const result = await fetchNFTsFromDB(web2Address);
-    // console.log(web2Address);
+    // // console.log(web2Address);
     const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
     store.dispatch(setTotalNFTData(result.message))
     store.dispatch(setNFTDetails(dataOfNFTS))
@@ -34,20 +33,54 @@ export async function Web2Login(web2Address: string) {
     store.dispatch(Login(web2Address));
     store.dispatch(SetConnectedWeb3(false));
 
+    store.dispatch(ChangewbtcBalance("0"));
+    store.dispatch(ChangeMaticBalance("0"));
+    const coins = await fetchWalletInfo(web2Address);
+    if (!isNullOrUndefined(coins)) {
+      // console.log("coins -- ", coins.data.web2_coins );
+      store.dispatch(ChangeBitsBalance(coins.data.web2_coins.toString()))
+    }
 
-    Mixpanel.identify(web2Address);
-    Mixpanel.track('Web2Login');
-    Mixpanel.people.set({
-      network: 'web2'
-    });
+  }
+}
+
+
+
+export async function Web2LoginNew(web2Address: string) {
+  console.log("in web2login ....(*******", web2Address)
+
+  // const web2Address = localStorage.getItem("web2_wallet_address")
+  if (!isNullOrUndefined(web2Address) && web2Address !== "") {
+    // console.log("-------accounts---- .",);
+    // console.log(web2Address);
+    // console.log("----------- .",);
+
+    store.dispatch(Login(web2Address));
+    store.dispatch(ChangeValidUserState(true))
+
+    const auth_token: string = await loginAndAuthenticateUser(web2Address);
+    store.dispatch(ChangeAuthTOken(auth_token));
+
+    const user_all_data: USER_DETAILS = await fetchUserDetails();
+    store.dispatch(ChangeUserData(user_all_data));
+
+    const result = await fetchNFTsFromDB(web2Address);
+    // // console.log(web2Address);
+    const dataOfNFTS = await fetchAllNFTsFromDbEntries(result.message)
+    store.dispatch(setTotalNFTData(result.message))
+    store.dispatch(setNFTDetails(dataOfNFTS))
+    store.dispatch(setNFTLoadedBool(true))
+    store.dispatch(Login(web2Address));
+    store.dispatch(SetConnectedWeb3(false));
 
     store.dispatch(ChangewbtcBalance("0"));
     store.dispatch(ChangeMaticBalance("0"));
     const coins = await fetchWalletInfo(web2Address);
     if (!isNullOrUndefined(coins)) {
-      console.log("coins -- ", coins.data.web2_coins);
+      // console.log("coins -- ", coins.data.web2_coins );
       store.dispatch(ChangeBitsBalance(coins.data.web2_coins.toString()))
     }
+    return dataOfNFTS
 
   }
 }
