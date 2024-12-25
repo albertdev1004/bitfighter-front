@@ -1,0 +1,50 @@
+import React, { useState } from 'react';
+//import './BuildingCarousel.css'; // Optional: for additional styles if needed
+
+// Import the images directly
+//import buildingImage from '../../../bitfgihter_assets/ui/buildingSquare.png';
+
+const BuildingCarousel = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Use the imported image in the list
+    const buildings = [
+        { id: 1, name: 'Building 1', imageUrl: buildingImage },
+        { id: 2, name: 'Building 2', imageUrl: buildingImage },
+    ];
+
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % buildings.length);
+    };
+
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + buildings.length) % buildings.length);
+    };
+
+    return (
+        <div>cool
+        </div>
+        // <div className="carousel-container">
+        //     <button onClick={handlePrev} className="carousel-control prev">&lt;</button>
+
+        //     <div className="carousel-content">
+        //         {buildings.map((building, index) => (
+        //             <div
+        //                 key={building.id}
+        //                 className={`carousel-item ${index === currentIndex ? 'active' : ''}`}
+        //                 style={{ transform: `translateX(${(index - currentIndex) * 100}%)` }}
+        //             >
+        //                 <div className="building-thumbnail" style={{ backgroundImage: `url(${building.imageUrl})` }}>
+        //                     {/* Placeholder for your building image */}
+        //                 </div>
+        //                 <p>{building.name}</p>
+        //             </div>
+        //         ))}
+        //     </div>
+
+        //     <button onClick={handleNext} className="carousel-control next">&gt;</button>
+        // </div>
+    );
+};
+
+export default BuildingCarousel;

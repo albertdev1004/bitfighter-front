@@ -1,0 +1,21 @@
+.carousel-container::-webkit-scrollbar {
+    height: 22px; /* Increase the height (thickness) of the horizontal scrollbar */
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+    background-color: #ff4000; /* Color of the scroll thumb */
+    border-radius: 40px; /* Round the corners of the scroll thumb */
+}
+
+.carousel-container::-webkit-scrollbar-track {
+    background-color: #ff4000; /* Background of the scroll track */
+}
+
+.carousel-container {
+    scrollbar-width: auto; /* For Firefox */
+    scrollbar-color: #9b2e2e #f1f1f1; /* Thumb and track colors for Firefox */
+}
+.buildingID {
+    margin-left: auto; /* This ensures it takes up space on the right */
+    padding-left: 10px;
+}
